@@ -1,0 +1,931 @@
+
+
+  <title>所有证书 - 证书管理 - 网站管理</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">首页</a>
+      <a><cite>网站管理</cite></a>
+      <a><cite>证书管理</cite></a>
+      <a><cite>所有证书</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <script type="text/html" template lay-done="layui.data.done(d);">
+      <div class="layui-row layui-col-space15">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            域名
+          </div>
+          <div class="layui-col-md2 layui-form">
+            <input type="text" name="domain" required lay-verify="required" placeholder="模糊搜索" autocomplete="off" class="layui-input">    
+          </div>      
+
+          <div class="layui-col-md2 layui-form search-btn">
+            <button type="button" class="layui-btn search">搜索</button>
+            <button type="button" class="layui-btn layui-btn-primary more-option">更多</button>
+          </div>
+
+      </div>
+
+      {{# if(layui.router().search.show_all === '1'){ }}
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            用户ID
+          </div>
+          <div class="layui-col-md2 layui-form">
+            <input type="text" name="uid" required lay-verify="required" placeholder="用户ID" autocomplete="off" class="layui-input">    
+          </div>      
+      </div>
+      {{# } }}
+
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            证书名称
+          </div>
+          <div class="layui-col-md2 layui-form">
+            <input type="text" name="name" required lay-verify="required" placeholder="模糊搜索" autocomplete="off" class="layui-input">    
+          </div>      
+      </div>
+
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            证书备注
+          </div>
+          <div class="layui-col-md2 layui-form">
+            <input type="text" name="des" required lay-verify="required" placeholder="模糊搜索" autocomplete="off" class="layui-input">    
+          </div>      
+      </div>
+
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            证书类型
+          </div>
+          <div class="layui-col-md10 layui-form">
+              <input type="radio" name="type" value="" title="不限" checked>
+              <input type="radio" name="type" value="custom" title="用户上传">
+              <input type="radio" name="type" value="zerossl" title="ZeroSSL">
+              <input type="radio" name="type" value="lets" title="Let's Encrypt">
+          </div>      
+      </div>
+
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            DNS API
+          </div>
+          <div class="layui-col-md2 layui-form">
+            <select lay-filter="dnsapi" id="dnsapi" name="dnsapi">
+              <option value="">请选择</option>
+            </select>
+
+          </div>      
+      </div>
+
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            到期时间
+          </div>
+          <div class="layui-col-md10 layui-form">
+            <input type="radio" name="expire" value="" title="不限" checked>
+            <input type="radio" name="expire" value="30" title="一个月内">
+            <input type="radio" name="expire" value="7" title="一周内">
+          </div>    
+      </div>
+
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            启用
+          </div>
+          <div class="layui-col-md10 layui-form">
+            <input type="radio" name="enable" value="" title="不限" checked>
+            <input type="radio" name="enable" value="1" title="是">
+            <input type="radio" name="enable" value="0" title="否">
+          </div>      
+      </div>
+
+      {{# if(layui.router().search.show_all === '1'){ }}
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            同步状态
+          </div>
+          <div class="layui-col-md2 layui-form">
+            <select lay-filter="sync_state" id="sync_state" name="sync_state">
+              <option value="">请选择</option>
+              <option value="done">正常</option>
+              <option value="pending">待同步</option>
+              <option value="process">同步中</option>
+              <option value="failed">同步失败</option>
+            </select>
+          </div>      
+      </div>
+      {{# } }}
+
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2" style="padding-left:40px;padding-top:10px;">
+            签发状态
+          </div>
+          <div class="layui-col-md2 layui-form">
+            <select lay-filter="issue_state" id="issue_state" name="issue_state">
+              <option value="">请选择</option>
+              <option value="pending">待签发</option>
+              <option value="process">签发中</option>
+              <option value="failed">失败</option>
+              <option value="done">完成</option>
+            </select>
+          </div>      
+      </div>
+
+      <div class="layui-row layui-col-space15 layui-hide search-item">
+          <div class="layui-col-md2 layui-form" style="padding-left:40px;">
+            <button type="button" class="layui-btn search">搜索</button>
+          </div>
+          <div class="layui-col-md2 layui-form">
+            <button type="button" class="layui-btn layui-btn-normal reset">重置</button>
+            <button style="float: right;" type="button" class="layui-btn layui-btn-primary close-btn">关闭</button>
+          </div>
+      </div>
+
+    </script>
+
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            <table class="layui-hide" id="test-table-toolbar" lay-filter="test-table-toolbar"></table>
+            
+            <script type="text/html" id="test-table-toolbar-toolbarDemo">
+                <div class="layui-row layui-col-space10">
+                  <div class="layui-col-md9">
+                    <div class="layui-btn-group">
+                      <button style="margin-right:15px;" class="layui-btn layui-btn-sm" lay-event="add">新增</button>
+                      <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="update">修改</button>
+                    </div>
+                    <div class="layui-btn-group">
+                      <button class="layui-btn layui-btn-normal layui-btn-sm" lay-event="enable">启用</button>
+                      <button class="layui-btn layui-btn-warm layui-btn-sm" lay-event="disable">禁用</button>
+                      <button class="layui-btn layui-btn-danger layui-btn-sm" lay-event="delete">删除</button>
+                    </div>  
+                    <div class="layui-btn-group">
+                      
+                      <button style="margin-left:15px;"  class="layui-btn layui-btn-normal layui-btn-sm" lay-event="reissue">重签</button>
+                    </div>
+
+                    <div class="layui-btn-group">
+                      
+                      <button style="margin-left:15px;"  class="layui-btn layui-btn-normal layui-btn-sm" lay-event="set_auto_renew">自动续签</button>
+                      <button class="layui-btn layui-btn-warm layui-btn-sm" lay-event="cancel_auto_renew">取消续签</button>
+                    </div>
+
+                  </div>
+
+                </div>
+            </script>
+             
+            <script type="text/html" id="test-table-toolbar-barDemo">
+              <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+              <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+              <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="download">下载</a>
+            </script>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  layui.data.done = function(d){
+    layui.use(['form'], function(){
+      var $ = layui.$
+      ,admin = layui.admin
+      ,view = layui.view
+      ,table = layui.table
+      ,form = layui.form;
+
+      form.render()
+
+      $(".more-option").click(function (argument) {
+        $(".search-item").removeClass("layui-hide")
+        $(".search-btn").addClass("layui-hide")
+      })
+
+      $(".close-btn").click(function (argument) {
+        $(".search-item").addClass("layui-hide")
+        $(".search-btn").removeClass("layui-hide")      
+      })
+
+      // 获取dnsapi
+      admin.req({
+        url: '/dnsapis?limit=0' //实际使用请改成服务端真实接口
+        ,type: "get"
+        ,contentType:"application/json"
+        ,dataType: "json"
+        ,done: function(res){
+          var data = res.data
+          for (i in data) {
+            $("select[name='dnsapi']").append("<option value='"+data[i]["id"]+"'>"+data[i]["name"]+"</option>");
+          }
+
+          form.render("select");      
+        }
+      }); 
+
+
+      // 搜索
+      $(".search").click(function (argument) {
+        var $ = layui.$
+        var table = layui.table
+
+        var domain = $("input[name='domain']").val()
+        var uid = $("input[name='uid']").val()        
+        var name = $("input[name='name']").val()
+        var des = $("input[name='des']").val()
+        var type = $("input[name='type']:checked").val()
+        var dnsapi = $("select[name='dnsapi']").val()
+        var expire = $("input[name='expire']:checked").val()
+        var enable = $("input[name='enable']:checked").val()
+        var sync_state = $("select[name='sync_state']").val()
+        var issue_state = $("select[name='issue_state']").val()
+
+        table.reload('test-table-toolbar', {
+          where: {"domain":domain,"uid":uid,"name":name,"des":des,"type":type,"dnsapi":dnsapi,"expire":expire,"enable":enable,"sync_state":sync_state,"issue_state":issue_state}
+          , page: {curr: 1}
+        });
+
+      })
+
+      // 重置
+      $(".reset").click(function (argument) {
+        $("input[name='domain']").val("")
+        $("input[name='uid']").val("")        
+        $("input[name='name']").val("")
+        $("input[name='des']").val("")
+        $("input[name='type'][value='']").prop("checked",true)
+        $("select[name='dnsapi']").val("")
+        $("input[name='expire'][value='']").prop("checked",true)
+        $("input[name='enable'][value='']").prop("checked",true)
+        $("select[name='sync_state']").val("")
+        $("select[name='issue_state']").val("")
+
+        form.render()
+      })
+
+    });
+  };
+</script>  
+  <script>
+
+
+  layui.use(['admin', 'table', 'element'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,element = layui.element
+    ,form = layui.form;
+
+    var access_token = layui.data('layuiAdmin')['access-token']
+    var show_all = layui.router().search.show_all
+    var uid_hide = true
+    if (show_all == "1") {
+      uid_hide = false
+    }
+
+    table.render({
+      elem: '#test-table-toolbar'
+      ,url:'/certs'
+      ,limits: [10,20,50,100,200,500]
+      ,headers: {"access-token":access_token}
+      ,toolbar: '#test-table-toolbar-toolbarDemo'
+      ,title: '证书列表'
+      ,where: {"show_all": show_all}
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'id', title:'ID',   sort: true,width: 60}
+        ,{field:'name', title:'用户', hide: uid_hide,templet: function (d) {
+          return d.username + "(" + d.uid + ")"
+        }}
+        ,{field:'name', title:'名称'}
+        ,{field:'type', title:'类型', templet: function(d){
+          if (d.type == "custom") {
+            return '用户上传'           
+          } else if (d.type == "lets") {
+            return "Let's Encrypt"
+          } else {
+            return "ZeroSSL"
+          }
+        }}
+        ,{field:'domain', title:'域名'}
+        ,{field:'create_at2', title:'创建时间'}        
+        ,{field:'expire_time2', title:'到期时间'}
+        ,{field:'enable', title:'自动续签',templet: function(d){
+          if (d.type == "custom") {
+            return ""
+          }
+          if (d.auto_renew == 1) {
+            return '<i class="layui-icon layui-icon-ok-circle" style="font-size: 25px; color: #009688;"></i>'            
+          } else {
+            return '否'  
+          }
+        }}
+
+        ,{field:'enable', title:'启用',templet: function(d){
+          if (d.enable == 1) {
+            return '<i class="layui-icon layui-icon-ok-circle" style="font-size: 25px; color: #009688;"></i>'            
+          } else {
+            return '<i class="layui-icon layui-icon-close-fill" style="font-size: 25px; color: #FF5722;"></i>'  
+          }
+        }}
+        ,{field:'sync_state', title:'状态',templet: function(d){
+          if (d.task_enable == 0) {
+            return '<span class="layui-badge layui-bg-red">次数超限,已取消,请查明原因后重试</span>'
+          }
+
+          if (d.type == "custom") {
+            return '<i class="layui-icon layui-icon-ok-circle" style="font-size: 25px; color: #009688;"></i>'           
+          } else {
+            if (d.issue_state == "pending") {
+              return '<span class="layui-badge layui-bg-orange">待签发</span>'
+            } else if (d.issue_state == "process") {
+              return '<span class="layui-badge layui-bg-orange">签发中</span>'
+            } else if (d.issue_state == "failed") {
+              return '<span class="layui-badge layui-bg-red">签发失败，下次重试'+d.retry_at2 + '</span>'
+            } else {
+              return '<i class="layui-icon layui-icon-ok-circle" style="font-size: 25px; color: #009688;"></i>'   
+            }
+          }
+        }}
+        ,{field:'task_ret', title:'失败原因'}
+        ,{fixed: 'right', title:'操作', toolbar: '#test-table-toolbar-barDemo', width:160}
+      ]]
+      ,page: true
+    });
+    
+    //头工具栏事件
+    table.on('toolbar(test-table-toolbar)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch(obj.event){
+        case 'add':
+          admin.popup({
+            title: '新增证书'
+            ,area: ['700px', '630px']
+            ,id: 'LAY-popup-cert-add'
+            ,success: function(layero, index){
+              view(this.id).render('site/cert/addform',).done(function(){
+                form.render(null, 'layuiadmin-form-nodeadmin');
+                // 管理员
+                if (!uid_hide) {
+                  $(".users").removeClass("layui-hide")
+                  form.on('select(users)', function(data){
+                    var uid = data.value
+                    admin.req({
+                    url: '/dnsapis?limit=0&uid='+uid //实际使用请改成服务端真实接口
+                    ,type: "get"
+                    ,contentType:"application/json"
+                    ,dataType: "json"
+                    ,done: function(res){
+                      var data = res.data
+                      $(".dnsapi-select").empty()
+                      $(".dnsapi-select").append("<option value=''>请选择</option>");
+                      for (i in data) {
+                        $(".dnsapi-select").append("<option value='"+data[i]["id"]+"'>"+data[i]["name"]+"</option>");
+                      }
+
+                      form.render("select");      
+                    }
+                    });   
+
+                   
+                  }); 
+
+                  //请求用户列表
+                  admin.req({
+                    url: '/users?limit=0&type=2' //实际使用请改成服务端真实接口
+                    ,type: "get"
+                    ,contentType:"application/json"
+                    ,dataType: "json"
+                    ,done: function(res){
+                      var data = res.data
+                      for (i in data) {
+                        var id = data[i]['id']
+                        var name = data[i]['name']
+                        var phone = data[i]['phone']
+                        var email = data[i]['email']
+                        var identify = id
+                        if (name) {
+                          identify = name 
+                        } else if (phone) {
+                          identify = phone
+                        } else if (email) {
+                          identify = email
+                        }
+
+                        $("#users").append("<option value='"+data[i]["id"]+"'>"+identify+"</option>");
+                      }
+
+                      form.render(null, 'layuiadmin-form-nodeadmin');
+                    }
+                  });                     
+                } else {
+                  $(".users").addClass("layui-hide")
+                }
+                
+                //监听提交
+                form.on('submit(LAY-node-front-submit)', function(data){
+                  var field = data.field; //获取提交的字段
+                  var name = field.name
+                  var des = field.des
+                  var type = field.type
+                  var cert_type = field.cert_type
+                  var domain = field.domain
+                  var domains = field.domains
+                  var cert = field.cert
+                  var dnsapi = field.dnsapi
+                  var key = field.key
+                  var count = field.count
+                  if (dnsapi == "") {
+                    dnsapi = null
+                  }
+
+                  var req_data
+                  var uid = undefined
+                  if (!uid_hide) {
+                    uid = $("select[name='users']").val()
+                    if (!uid) {
+                      layer.alert("请选择用户")
+                      return  
+                    }
+                  }
+                  
+
+                  if (count == "single") {
+                    if (type == "custom") {
+                      req_data = {"uid":uid, "name":name,"des":des,"type":type,"cert":cert,"key":key}
+                    } else {
+                      req_data = {"uid":uid, "name":name,"des":des,"type":type,"domain":domain,"dnsapi":dnsapi}
+                    }
+
+                    admin.req({
+                      url: '/certs' //实际使用请改成服务端真实接口
+                      ,data: JSON.stringify(req_data)
+                      ,type: "post"
+                      ,contentType:"application/json"
+                      ,dataType: "json"
+                      ,done: function(res){
+                        //登入成功的提示与跳转
+                        layer.msg('新增成功', {
+                          offset: '15px'
+                          ,icon: 1
+                          ,time: 1000
+                        }, function(){
+                          layui.table.reload('test-table-toolbar'); //重载表格
+                          layer.close(index); //执行关闭 
+                        });
+                      }
+                    });
+
+                  } else {
+                    req_data = []
+                    if (domains == "") {
+                      layer.alert("域名不能为空")
+                    }
+
+                    var domains_arr = domains.split("\n")
+                    for (i in domains_arr) {
+                      var domain = domains_arr[i]
+                      if (domain.match(/^\s*$/)) {
+                        continue
+                      }
+                      var name = domain.split(/\s+/)[0] + "证书"
+
+                      req_data.push({"uid":uid, "name":name,"type":cert_type,"dnsapi":dnsapi,"domain":domain})
+                    }
+
+
+                    var size = req_data.length
+                    window.cert_cancel = false
+
+                    var add_cert = function (data, index, size) {
+                      admin.req({
+                        url: '/certs' //实际使用请改成服务端真实接口
+                        ,data: JSON.stringify(data[index])
+                        ,type: "post"
+                        ,loader: false
+                        ,contentType:"application/json"
+                        ,dataType: "json"
+                        ,done: function(res){
+                          element.progress('process', parseInt((index+1)/size*100)+"%");
+                          index += 1
+                          if (index == size) {
+                            layer.closeAll();
+                            layui.table.reload('test-table-toolbar'); //重载表格
+                          } else {
+                            if (!window.cert_cancel) {
+                              add_cert(data, index, size)
+                            }
+                          }
+                        }
+                      });
+                    }
+
+                    // 弹出进度条                    
+                    layer.open({
+                      title: '处理中...'
+                      ,content: '<div lay-filter="process" style="margin-left:20px;margin-right:20px;margin-top:20px;" class="layui-progress layui-progress-big" lay-showPercent="true"><div class="layui-progress-bar layui-bg-blue" lay-percent="0%"></div></div>'
+                      ,type: 1
+                      ,btn: ['取消']
+                      ,area: '300px'
+                      ,yes: function(index, layero){
+                        window.cert_cancel = true
+                        layer.close(index);
+                      }
+                      ,cancel: function(){ 
+                        return false
+                      }
+                      ,success: function(layero, index){
+                        element.render()
+                        // 开始添加
+                        add_cert(req_data, 0, size)
+                      }
+                    });
+
+                  }
+
+
+
+                });
+              });
+            }
+          });
+        break;
+        case 'update':
+         var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择证书');   
+            return
+          }
+
+          window.cert_ids = []
+          for (i in data) {
+            window.cert_ids.push(data[i]['id'])
+          }
+
+          var cert_ids = window.cert_ids.join(", ")
+
+          admin.popup({
+              title: '修改证书'
+              ,area: ['400px', '300px']
+              ,id: 'LAY-popup-set-cert-type'
+              ,success: function(layero, index){
+                view(this.id).render('site/cert/update-cert-type',{"cert_ids":cert_ids}).done(function(){
+                  if (show_all == "1") {
+                    $(".dnsapi").addClass("layui-hide")
+                  }
+
+                  //监听提交
+                  $("#update").click(function (argument) {
+                      var cert_type = $("#cert_type").val()
+                      var dnsapi = $("select[name='dnsapi-update']").val()
+                      if (dnsapi == "") {
+                        dnsapi = null
+                      }
+                      var req_data = []
+                      var cert_ids_arr = cert_ids.split(", ")
+                      for (i in cert_ids_arr) {
+                        var cert_id = cert_ids_arr[i]
+                        var data = {"id":cert_id,"type": cert_type,"dnsapi":dnsapi} 
+                        req_data.push(data)
+                      }
+
+                      admin.req({
+                        url: '/certs' //实际使用请改成服务端真实接口
+                        ,data: JSON.stringify(req_data)
+                        ,type: "put"
+                        ,contentType:"application/json"
+                        ,dataType: "json"
+                        ,done: function(res){
+                          //登入成功的提示与跳转
+                          layer.msg('更新成功', {
+                            offset: '15px'
+                            ,icon: 1
+                            ,time: 1000
+                          }, function(){
+                            layui.table.reload('test-table-toolbar'); //重载表格
+                            layer.close(index); //执行关闭 
+                          });
+                        }
+                      });
+                      layer.close(index);
+
+                  }) 
+                });
+              }
+            });
+        break;        
+        case 'download':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要下载的证书');   
+            return
+          }
+          var access_token = layui.data('layuiAdmin')['access-token']
+          access_token = access_token.replace(/\//g,"_")
+          access_token = access_token.replace(/\+/g,"-")          
+          for (i in data) {
+            window.open("/certs/" + data[i]['id'] + "?action=download&access_token="+ access_token)        
+          }
+
+        break;
+
+        case 'enable':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要启用的证书');   
+            return
+          }
+          req_data = []
+          for (i in data) {
+            req_data.push({"id":data[i]['id'],"enable":1})
+          }
+          admin.req({
+            url: '/certs' //实际使用请改成服务端真实接口
+            ,type: "put"
+            ,data: JSON.stringify(req_data)
+            ,done: function(res){
+              //登入成功的提示与跳转
+              layer.msg('启用成功', {
+                offset: '15px'
+                ,icon: 1
+                ,time: 1000
+              }, function(){
+                layui.table.reload('test-table-toolbar'); //重载表格
+              });
+            }
+          });
+        break;
+        case 'reissue':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要重签的证书');   
+            return
+          }
+          req_data = []
+          for (i in data) {
+            req_data.push({"id":data[i]['id'],"reissue":1})
+          }
+          admin.req({
+            url: '/certs' //实际使用请改成服务端真实接口
+            ,type: "put"
+            ,data: JSON.stringify(req_data)
+            ,done: function(res){
+              //登入成功的提示与跳转
+              layer.msg('已发送重签请求，请稍等', {
+                offset: '15px'
+                ,icon: 1
+                ,time: 1000
+              }, function(){
+                layui.table.reload('test-table-toolbar'); //重载表格
+              });
+            }
+          });
+        break;       
+        case 'set_auto_renew':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要设置的证书');   
+            return
+          }
+          req_data = []
+          for (i in data) {
+            req_data.push({"id":data[i]['id'],"auto_renew":1})
+          }
+          admin.req({
+            url: '/certs' //实际使用请改成服务端真实接口
+            ,type: "put"
+            ,data: JSON.stringify(req_data)
+            ,done: function(res){
+              //登入成功的提示与跳转
+              layer.msg('已设置自动续签', {
+                offset: '15px'
+                ,icon: 1
+                ,time: 1000
+              }, function(){
+                layui.table.reload('test-table-toolbar'); //重载表格
+              });
+            }
+          });
+        break;
+        case 'cancel_auto_renew':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要设置的证书');   
+            return
+          }
+          req_data = []
+          for (i in data) {
+            req_data.push({"id":data[i]['id'],"auto_renew":0})
+          }
+          admin.req({
+            url: '/certs' //实际使用请改成服务端真实接口
+            ,type: "put"
+            ,data: JSON.stringify(req_data)
+            ,done: function(res){
+              //登入成功的提示与跳转
+              layer.msg('已取消自动续签', {
+                offset: '15px'
+                ,icon: 1
+                ,time: 1000
+              }, function(){
+                layui.table.reload('test-table-toolbar'); //重载表格
+              });
+            }
+          });
+        break;
+        case 'disable':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要禁用的证书');   
+            return
+          }
+          req_data = []
+          for (i in data) {
+            req_data.push({"id":data[i]['id'],"enable":0})
+          }
+          admin.req({
+            url: '/certs' //实际使用请改成服务端真实接口
+            ,type: "put"
+            ,data: JSON.stringify(req_data)
+            ,done: function(res){
+              //登入成功的提示与跳转
+              layer.msg('禁用成功', {
+                offset: '15px'
+                ,icon: 1
+                ,time: 1000
+              }, function(){
+                layui.table.reload('test-table-toolbar'); //重载表格
+              });
+            }
+          });
+        break;
+        case 'delete':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要删除的证书');   
+            return
+          }
+          req_data = []
+          for (i in data) {
+            req_data.push(data[i]['id'])
+          }
+
+          var ids = req_data.join(",")
+          layer.confirm('将删除('+ids+')证书，是否继续', function(index){
+            admin.req({
+              url: '/certs/'+ids //实际使用请改成服务端真实接口
+              ,type: "delete"
+              ,done: function(res){
+                //登入成功的提示与跳转
+                layer.msg('删除成功', {
+                  offset: '15px'
+                  ,icon: 1
+                  ,time: 1000
+                }, function(){
+                  layui.table.reload('test-table-toolbar'); //重载表格
+                });
+              }
+            });
+          });
+        break;        
+      };
+    });
+    
+    //监听行工具事件
+    table.on('tool(test-table-toolbar)', function(obj){
+      var data = obj.data;
+      if(obj.event === 'del'){
+        layer.confirm('是否确定删除证书', function(index){
+          var id = data.id
+          admin.req({
+            url: '/certs/' + id //实际使用请改成服务端真实接口
+            ,type: "delete"
+            ,done: function(res){
+              //登入成功的提示与跳转
+              layer.msg('删除成功', {
+                offset: '15px'
+                ,icon: 1
+                ,time: 1000
+              }, function(){
+                layui.table.reload('test-table-toolbar'); //重载表格
+                layer.close(index); //执行关闭 
+              });
+            }
+          });
+
+        });
+      } 
+      else if(obj.event === 'download'){
+        var data = obj.data;
+        var access_token = layui.data('layuiAdmin')['access-token']
+        access_token = access_token.replace(/\//g,"_")
+        access_token = access_token.replace(/\+/g,"-")
+        window.open("/certs/" + data['id'] + "?action=download&access_token="+ access_token)        
+      }  
+      else if(obj.event === 'edit'){
+        admin.popup({
+          title: '编辑证书'
+          ,area: ['700px', '630px']
+          ,id: 'LAY-popup-node-add'
+          ,success: function(layero, index){
+            view(this.id).render('site/cert/addform',data).done(function(){
+              
+              $(".count").addClass("layui-hide")
+
+              // 获取证书详情
+              admin.req({
+                url: '/certs/' + data.id //实际使用请改成服务端真实接口
+                ,type: "get"
+                ,done: function(res){
+                  var data = res.data
+                  $("input[name='des']").val(data.des)
+                  $("input[name='type'][value='"+data.type+"']").prop("checked",true)
+                  $("textarea[name='cert']").val(data.cert)
+                  $("textarea[name='key']").val(data.key)
+                  if (data.dnsapi) {
+                    $("select[name='dnsapi']").val(data.dnsapi)
+                  }
+
+                  if (data.type == "lets" || data.type == "zerossl") {
+                    $(".domain").removeClass("layui-hide")
+                    $(".dnsapi").removeClass("layui-hide")
+                    $("textarea[name='cert']").attr("readonly",true)      
+                    $("textarea[name='key']").attr("readonly",true)              
+                  }
+
+                  form.render();
+
+                }
+              });
+
+
+              //监听提交
+              form.on('submit(LAY-node-front-submit)', function(data){
+                  var field = data.field; //获取提交的字段
+                  var name = field.name
+                  var des = field.des
+                  var type = field.type
+                  var domain = field.domain
+                  var domains = field.domains
+                  var cert = field.cert
+                  var dnsapi = field.dnsapi
+                  var key = field.key
+                  var id = field.id
+                  if (dnsapi == "") {
+                    dnsapi = null
+                  }
+
+                  if (type == "custom") {
+                    var req_data = {"name":name,"des":des,"type":type,"cert":cert,"key":key}
+                  } else {
+                    var req_data = {"name":name,"des":des,"type":type,"domain":domain,"dnsapi":dnsapi}
+                  }
+
+                  admin.req({
+                    url: '/certs/'+id //实际使用请改成服务端真实接口
+                    ,data: JSON.stringify(req_data)
+                    ,type: "put"
+                    ,contentType:"application/json"
+                    ,dataType: "json"
+                    ,done: function(res){
+                      //登入成功的提示与跳转
+                      layer.msg('保存成功', {
+                        offset: '15px'
+                        ,icon: 1
+                        ,time: 1000
+                      }, function(){
+                        layui.table.reload('test-table-toolbar'); //重载表格
+                        layer.close(index); //执行关闭 
+                      });
+                    }
+                  });
+
+              });
+            });
+          }
+        });
+      }
+    });  
+
+  });
+
+  function search (argument) {
+      var search = layui.$("input[name='search']").val()
+
+      layui.table.reload('test-table-toolbar', {
+        where: {search: search},
+        done: function (argument) {
+          layui.$("input[name='search']").val(search)
+        }
+        ,page: {curr: 1}
+      });
+
+  }
+
+  </script>

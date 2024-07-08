@@ -1,0 +1,269 @@
+<style type="text/css">
+.textarea__label {
+    font-size: 12px;
+    position: absolute;
+    bottom: 21px;
+    right: 11px;
+    color: #888;
+}
+</style>
+
+
+
+<title>刷新预热 - 网站管理</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">首页</a>
+    <a><cite>网站管理</cite></a>
+    <a><cite>刷新预热</cite></a>
+  </div>
+</div>
+
+<style type="text/css">
+.layui-elem-quote{padding: 6px;}
+.thin-gray{font-weight: 400;color: #999;} 
+.small-title{font-weight:700;font-size:14px}
+hr {margin-bottom: 30px}
+</style>
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-body">
+         <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+          <ul class="layui-tab-title">
+            <li class="layui-this">刷新缓存</li>
+            <li lay-id="op">操作记录</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+              <form class="layui-form" action="">
+                <div class="layui-form-item">
+                  <label class="layui-form-label">操作类型</label>
+                  <div class="layui-input-block" style="width:400px;">
+                    <input type="radio" name="type" lay-filter="type" value="clean_url" title="刷新URL" checked>
+                    <input type="radio" name="type" lay-filter="type" value="clean_dir" title="刷新目录">
+                    <input type="radio" name="type" lay-filter="type" value="pre_cache_url" title="预热">
+
+
+                  </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                  <label class="layui-form-label">URL</label>
+                  <div class="layui-input-block"  style="width:600px;">
+                    <textarea rows="12" name="url" placeholder="一行一条url" class="layui-textarea"></textarea>
+                    <span class="remain_times" style="color:#bbb"></span>
+                  </div>                   
+                </div>
+
+                <div class="layui-form-item">
+                  <div class="layui-input-block">
+                    <button type="botton" class="layui-btn" id="clean-cache">提交</button>
+                  </div>
+                </div>
+              </form>            
+            </div>
+
+            <div class="layui-tab-item">
+                <table id="clean_cache_op" lay-filter="clean_cache_op"></table>
+                <script type="text/html" id="clean-cache-toolbar">
+                      <div class="layui-col-md2">
+                        <select name="type" lay-verify="">
+                          <option value="">请选择类型</option>
+                          <option value="clean_url">刷新URL</option>
+                          <option value="clean_dir">刷新目录</option>
+                          <option value="pre_cache_url">预热</option>
+                        </select> 
+                      </div>
+
+                      <div class="layui-col-md3" style="margin-left:20px;">
+                        <input type="text" name="host_url" placeholder="URL或域名" autocomplete="off" class="layui-input">
+                      </div>
+                      <div class="layui-col-md1" style="margin-left:10px">
+                        <button class="layui-btn  layui-btn-sm" onclick="clean_cache_search()">
+                          <i class="layui-icon layui-icon-search layuiadmin-button-btn"></i>
+                        </button>
+                      </div>
+                                     
+                </script>            
+            </div>
+        
+        </div>
+      </div>                 
+
+    </div>
+  </div>
+</div>
+</div>
+</div>  
+
+<script>
+  layui.use(['admin', 'table'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form;
+
+    form.render()    
+
+    layui.element.on('tab(clean_cache_tab)', function(data){
+      table.resize("clean_cache_op");
+    }); 
+
+    var access_token = layui.data('layuiAdmin')['access-token']
+    table.render({
+      elem: '#clean_cache_op'
+      ,toolbar: '#clean-cache-toolbar'
+      ,headers: {"access-token":access_token}
+      ,where: {"type":"clean_url,clean_dir,pre_cache_url"}
+      ,url: '/jobs' //数据接口
+      ,page: true //开启分页
+      ,cols: [[ //表头
+        {field: 'task_id', title: '任务ID'},
+        {field:'type', title:'类型' , templet: function(d){
+          if (d.type == "clean_url") {
+            return '刷新URL'
+          }  
+          else if (d.type == "clean_dir")  {
+            return '刷新目录'
+          } else {
+            return "预热"
+          }
+        }}   
+        ,{field:'data', title:'URL', templet: function(d){
+          var data = JSON.parse(d.data)
+          return data.url
+        }}   
+        ,{field:'state', title:'状态',  width: 120, templet: function(d){
+          if (d.enable == 0) {
+            return '<span class="layui-badge layui-bg-orange">出错，已取消</span>'
+          }
+
+          if (d.state == "pending") {
+            return '<span class="layui-badge layui-bg-orange">待执行</span>'
+          } else if (d.state == "process") {
+            return '<span class="layui-badge layui-bg-orange">执行中</span>'
+          } else if (d.state == "failed") {
+            return '<span class="layui-badge layui-bg-orange">出错</span>'            
+          } else {
+            return '<span class="layui-badge layui-bg-green">完成</span>'   
+          }
+        }}  
+        ,{field: 'create_at2', title: '创建时间'}
+      ]]
+    });
+
+    $("#clean-cache").click(function (argument) {
+      var type = $("input[name='type']:checked").val()
+      var urls = $("textarea[name='url']").val().split("\n")
+      req_data = []
+      for (i in urls) {
+        var url = urls[i].trim()
+        if (url == "") {
+          continue
+        }
+        req_data.push({"type":type,"data":{"url":url}})
+      }
+
+      admin.req({
+        url: '/jobs' //实际使用请改成服务端真实接口
+        ,data: JSON.stringify(req_data)
+        ,type: "post"
+        ,contentType:"application/json"
+        ,dataType: "json"
+        ,done: function(res){
+          //登入成功的提示与跳转
+          layer.msg('提交成功，请到操作记录里查看进度.', {
+            offset: '15px'
+            ,icon: 1
+            ,time: 3000
+          }, function(){
+            $("textarea[name='url']").val("")
+          });
+        }
+      });
+      return false
+
+    })
+
+    get_count("global-0-site-clean_url", "clean_url")
+
+    function get_count(config_id, job_type) {
+      // 获取日刷新URL限额
+      var max_allow_ajax = admin.req({
+        url: '/configs/'+config_id //实际使用请改成服务端真实接口
+        ,type: "get"
+        ,contentType:"application/json"
+        ,dataType: "json"
+        ,done: function(res){
+          window.max_allow = res.data.value
+        }
+      }); 
+
+      // 获取今日刷新URL次数
+      var day = new Date();
+      day.setTime(day.getTime());
+      var today = day.getFullYear()+"-" + (day.getMonth()+1) + "-" + day.getDate();
+
+      var today_job_ajax = admin.req({
+        url: '/jobs?type='+job_type+'&start=' + today //实际使用请改成服务端真实接口
+        ,type: "get"
+        ,contentType:"application/json"
+        ,dataType: "json"
+        ,done: function(res){
+          window.today_count = res.count
+        }
+      });
+
+      $.when(today_job_ajax,max_allow_ajax).then(function (argument) {
+        $(".remain_times").text("每日限额"+ window.max_allow +"次，今日剩余"+(window.max_allow-window.today_count)+"次")
+        
+      })
+    }
+
+    form.on('radio(type)', function(data){
+      var type = data.value
+      if (type == "clean_url") {
+        get_count("global-0-site-clean_url",type)
+      } else if (type == "clean_dir") {
+        get_count("global-0-site-clean_dir",type)
+      } else  {
+        get_count("global-0-site-pre_cache_url",type)
+      }
+    });    
+
+   }); 
+
+  function clean_cache_search (argument) {
+    var $ = layui.$
+    var table = layui.table
+    var form = layui.form
+
+    // type
+    var type_select = $("select[name='type']").val()
+    var job_type = "clean_url,clean_dir,pre_cache_url"
+    if (type_select != "") {
+      job_type = type_select
+    }
+
+    var where = {"type":job_type}
+
+    // host_url
+    var host_url = $("input[name='host_url']").val()
+    if (host_url.startsWith("http://") || host_url.startsWith("https://") ) {
+      where["key2"] = host_url
+    } else {
+      where["key1"] = host_url
+    }
+
+    table.reload("clean_cache_op",{"where":where,"done":function (argument) {
+      $("select[name='type']").val(type_select)
+      $("input[name='host_url']").val(host_url)
+      form.render("select")
+    }})
+
+  }
+
+</script>    

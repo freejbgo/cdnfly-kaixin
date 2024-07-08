@@ -1,0 +1,70 @@
+<style type="text/css">
+.textarea__label {
+    font-size: 12px;
+    position: absolute;
+    bottom: 21px;
+    right: 11px;
+    color: #888;
+}
+</style>
+  <script type="text/html" template>
+  <span style="color:#009688">已选证书：</span><span id="cert_id">{{ d.params.cert_ids }}</span>
+  </script>  
+
+<div class="layui-form" lay-filter="layuiadmin-form-cert-type" style="padding: 20px 0 0 0;">
+  <div class="layui-form-item">
+    <label class="layui-form-label">证书类型</label>
+    <div class="layui-input-inline layui-form">
+        <select lay-search id="cert_type">
+          <option value="zerossl">ZeroSSL</option>
+          <option value="lets">Let's Encrypt</option>
+        </select>
+    </div>
+  </div>
+
+  <div class="layui-form-item dnsapi ">
+    <label class="layui-form-label">DNS API</label>
+    <div class="layui-input-inline">
+      <script type="text/html" template>
+        <select class="dnsapi-select" name="dnsapi-update">
+        </select>
+      </script>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label"></label>
+    <div class="layui-input-inline">
+      <input type="button" lay-submit id="update" value="确认" class="layui-btn">
+    </div>
+  </div>
+</div>
+
+<script>
+  layui.use(['admin', 'table'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form;
+
+    form.render()
+    admin.req({
+      url: '/dnsapis?limit=0' //实际使用请改成服务端真实接口
+      ,type: "get"
+      ,contentType:"application/json"
+      ,dataType: "json"
+      ,done: function(res){
+        var data = res.data
+        $(".dnsapi-select").append("<option value=''>请选择</option>");
+        for (i in data) {
+          $(".dnsapi-select").append("<option value='"+data[i]["id"]+"'>"+data[i]["name"]+"</option>");
+        }
+
+        form.render("select");      
+      }
+    });   
+
+  })
+
+</script>    

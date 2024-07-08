@@ -1,0 +1,418 @@
+
+
+  <title>分组 - 网站管理</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">首页</a>
+      <a><cite>网站管理</cite></a>
+      <a><cite>CC防护</cite></a>
+      <a><cite>参数配置</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            <div class="layui-tab" lay-filter="region-tab" style="margin-bottom:20px">
+              <ul class="layui-tab-title regions">
+                <li data-id="0" class="layui-this">全局</li>
+              </ul>
+
+            </div>
+
+          <form class="layui-form node-config layui-hide" action="">
+            <div class="layui-form-item" style="margin-left: 10px;">
+              <div class="layui-input-inline" style="width: 230px;">
+                <input type="radio" name="config" lay-filter="config" value="region" title="区域默认" checked>
+                <input type="radio" name="config" lay-filter="config" value="node" title="配置节点">
+              </div>        
+              <div class="layui-input-inline node layui-hide">
+                <select name="node" lay-filter="node" lay-verify="required" lay-search>
+
+                </select>
+              </div>
+            </div>
+          </form> 
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">400错误页面：</div>
+                <div class="layui-col-md4">
+                  <textarea name="p400" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">403错误页面：</div>
+                <div class="layui-col-md4">
+                  <textarea name="p403" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">502错误页面：</div>
+                <div class="layui-col-md4">
+                  <textarea name="p502" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">504错误页面：</div>
+                <div class="layui-col-md4">
+                  <textarea name="p504" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">流量超限页面：</div>
+                <div class="layui-col-md4">
+                  <textarea name="p513" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">套餐到期页面：</div>
+                <div class="layui-col-md4">
+                  <textarea name="p512" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">站点锁定页面：</div>
+                <div class="layui-col-md4">
+                  <textarea name="p514" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">域名未配置时访问：</div>
+                <div class="layui-col-md4">
+                  <textarea name="host_not_found" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">直接访问节点IP：</div>
+                <div class="layui-col-md4">
+                  <textarea name="access_ip_not_allow" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">套餐连接数超限：</div>
+                <div class="layui-col-md4">
+                  <textarea name="p515" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+                </div>
+              </div> 
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+
+
+  layui.use(['admin', 'table'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,element = layui.element
+    ,form = layui.form;
+
+    // 获取所有区域
+    admin.req({
+      url: '/regions?limit=0' //实际使用请改成服务端真实接口
+      ,type: "get"
+      ,done: function(res){
+        var data = res.data
+        window.region_list = data
+        for (var i = 0; i < data.length; i++) {
+          $(".regions").append("<li data-id='"+data[i]['id']+"'>"+data[i]['name']+"</li>")
+        };
+        element.render()
+      }
+    });
+
+    // 清空配置
+    function clean_input (argument) {
+      $("input[type='text']").each(function (index, ele) {
+        if (!$(ele).parent().hasClass("layui-select-title")) {
+          $(ele).val("")
+        }
+      })
+    }
+
+    // 监听radio
+    form.on('radio(config)', function(data){
+      if (data.value == "region" ) {
+        $(".node").addClass("layui-hide")
+        $("input[type='text']").attr("disabled",false)
+        $("textarea").attr("disabled",false)
+
+        clean_input()
+        $("textarea").val("")
+        // 获取全局配置
+        var global_ajax = get_config("global","0", true)
+
+        // 获取该区域配置
+        var scope_id = $(".regions").find(".layui-this").data("id")
+        $.when(global_ajax).then(function (params) {
+          get_config("region",scope_id, false)
+        })
+        
+
+      } else {
+        $(".node").removeClass("layui-hide")
+        
+        var node = $("select[name='node']").val()
+        if (node) {
+          $("input[type='text']").attr("disabled",false)
+          $("textarea").attr("disabled",false)
+          clean_input()
+          $("textarea").val("")
+
+          // 获取该区域配置
+          var scope_id = $(".regions").find(".layui-this").data("id")
+          var region_ajax = get_config("region",scope_id, true)          
+
+          // 获取节点配置
+          $.when(region_ajax).then(function (params) {
+            get_config("node",node, false)
+          })
+          
+        } else {
+          $("input[type='text']").attr("disabled",true)
+          $("textarea").attr("disabled",true)
+        }
+
+      }
+    });  
+
+    // 监听select
+    form.on('select(node)', function(data){
+      var v = data.value
+      if (v) {
+        $("input[type='text']").attr("disabled",false)
+        $("textarea").attr("disabled",false)
+        clean_input()
+
+        // 获取当前区域配置
+        var scope_id = $(".regions").find(".layui-this").data("id")
+        var region_ajax = get_config("region",scope_id, true)           
+
+        // 获取该节点的配置
+        $.when(region_ajax).then(function (params) {
+          get_config("node",v, false)
+        })
+        
+      } else {
+        $("input[type='text']").attr("disabled",true)
+        $("textarea").attr("disabled",true)
+      }
+    });
+
+
+    // 监听tab
+    element.on('tab(region-tab)', function(data){
+      var scope_id = $(this).data("id")
+      // 清空input
+      clean_input()
+      $("textarea").val("")
+
+      var scope_name = "global"
+      if (scope_id != "0") {
+        scope_name = "region"
+        $(".node-config").removeClass("layui-hide")
+        // 获取该区域节点
+        admin.req({
+          url: '/nodes?limit=0&region_id=' + scope_id //实际使用请改成服务端真实接口
+          ,type: "get"
+          ,done: function(res){
+            $("select[name='node']").empty()
+            $("select[name='node']").append("<option value=''>请选择节点</option>")
+            var data = res.data
+            for (var i = 0; i < data.length; i++) {
+              $("select[name='node']").append("<option value='"+data[i]['id']+"'>("+data[i]['id']+") " + data[i]['name']+"</option>")
+            };
+            form.render("select")
+          }
+        });     
+
+        // 获取全局配置
+        var global_ajax = get_config("global","0",true)
+
+        // 获取区域配置
+        $.when(global_ajax).then(function (params) {
+          get_config(scope_name,scope_id,false)
+        })
+        
+
+      } else {
+        $(".node-config").addClass("layui-hide")
+        // 获取全局配置
+        get_config(scope_name,scope_id,false)
+      }
+
+      
+
+    });
+
+    function get_config(scope_name,scope_id,placeholder) {
+      if (scope_name == "global") {
+        $(".log-set").addClass("layui-hide")
+        $(".auto-set").addClass("layui-hide")
+      } else {
+        $(".log-set").removeClass("layui-hide")
+        $(".auto-set").removeClass("layui-hide")        
+      }
+
+      var config_ajax = admin.req({
+        url: '/configs/' + scope_name + "-" + scope_id + "-error_page-error-page" //实际使用请改成服务端真实接口
+        ,type: "get"
+        ,contentType:"application/json"
+        ,dataType: "json"
+        ,done: function(res){
+          var value
+          if (!res.data) {
+            value = '{}'
+          } else {
+            value = res.data.value
+          }
+
+          window.data = JSON.parse(value)
+          var data = window.data
+
+          if (placeholder == true) {
+            $("textarea[name='p400']").attr("placeholder",data.p400)
+            $("textarea[name='p403']").attr("placeholder",data.p403)
+            $("textarea[name='p502']").attr("placeholder",data.p502)
+            $("textarea[name='p504']").attr("placeholder",data.p504)
+            $("textarea[name='p512']").attr("placeholder",data.p512)
+            $("textarea[name='p513']").attr("placeholder",data.p513)
+            $("textarea[name='p514']").attr("placeholder",data.p514)
+            $("textarea[name='p515']").attr("placeholder",data.p515)
+            $("textarea[name='host_not_found']").attr("placeholder",data.host_not_found)
+            $("textarea[name='access_ip_not_allow']").attr("placeholder",data.access_ip_not_allow)
+          } else {
+            $("textarea[name='p400']").val(data.p400)
+            $("textarea[name='p403']").val(data.p403)
+            $("textarea[name='p502']").val(data.p502)
+            $("textarea[name='p504']").val(data.p504)
+            $("textarea[name='p512']").val(data.p512)
+            $("textarea[name='p513']").val(data.p513)
+            $("textarea[name='p514']").val(data.p514)
+            $("textarea[name='p515']").val(data.p515)
+            $("textarea[name='host_not_found']").val(data.host_not_found)
+            $("textarea[name='access_ip_not_allow']").val(data.access_ip_not_allow)
+            
+          }
+
+          form.render()
+        }
+        
+      });
+      return config_ajax;
+    }
+    get_config("global","0", false) 
+
+    $("textarea").on('change', function(){
+      var req_data = window.data
+
+      var scope_name = "global"
+      var scope_id = $(".regions").find(".layui-this").data("id")
+      if (scope_id != "0") {
+        // 检查是区域默认还是节点
+        if ($("input[name='config']:checked").val() == "node") {
+          scope_name = "node"
+          scope_id = $("select[name='node']").val()
+          if (!scope_id) {
+            layer.alert("请先选择节点")
+            return
+          }
+        } else {
+          scope_name = "region"
+        }
+
+        req_data = {}
+      }
+
+        var p400 = $("textarea[name='p400']").val()
+        var p403 = $("textarea[name='p403']").val()
+        var p502 = $("textarea[name='p502']").val()
+        var p504 = $("textarea[name='p504']").val()
+        var p512 = $("textarea[name='p512']").val()
+        var p513 = $("textarea[name='p513']").val()
+        var p514 = $("textarea[name='p514']").val()
+        var p515 = $("textarea[name='p515']").val()
+        var host_not_found = $("textarea[name='host_not_found']").val()
+        var access_ip_not_allow = $("textarea[name='access_ip_not_allow']").val()
+
+        if (scope_name=="global" &&( p400 == "" || p403 == "" || p502 == "" || p504 == "" || p512 == "" || p513 == "" || p514 == "" || p515 == "" || host_not_found == "" || access_ip_not_allow == "") ) {
+          layer.alert("错误页面不能为空")
+          return
+        }
+
+      if (p403) {
+        req_data['p403'] = p403
+      };
+      if (p400) {
+        req_data['p400'] = p400
+      };      
+
+      if (p502) {
+        req_data['p502'] = p502
+      }
+      
+      if (p504) {
+        req_data['p504'] = p504
+      }
+      
+      if (p512) {
+        req_data['p512'] = p512
+      }
+      
+      if (p513) {
+        req_data['p513'] = p513
+      }
+
+      if (p514) {
+        req_data['p514'] = p514
+      }
+
+      if (p515) {
+        req_data['p515'] = p515
+      }
+
+      if (host_not_found) {
+        req_data['host_not_found'] = host_not_found
+      }
+
+      if (access_ip_not_allow) {
+        req_data['access_ip_not_allow'] = access_ip_not_allow
+      }            
+
+      admin.req({
+        url: '/configs/' + scope_name + "-" + scope_id + "-error_page-error-page" //实际使用请改成服务端真实接口
+        ,type: "put"
+        ,data: JSON.stringify({"value": JSON.stringify(req_data)})
+        ,contentType:"application/json"
+        ,dataType: "json"
+        ,done: function(res){
+          layer.msg('更新成功', {
+            offset: '15px'
+            ,icon: 1
+            ,time: 1000
+          });          
+        }
+      });    
+    })
+
+  });
+
+
+  </script>
+

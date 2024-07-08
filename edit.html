@@ -1,0 +1,3639 @@
+
+
+<title>所有网站 - 网站管理</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">首页</a>
+    <a><cite>网站管理</cite></a>
+    <a href="#/site/site/"><cite>我的网站</cite></a>
+    <a><cite>编辑网站</cite></a>
+  </div>
+</div>
+
+<style type="text/css">
+.layui-elem-quote{padding: 6px;}
+.thin-gray{font-weight: 400;color: #999;} 
+.small-title{font-weight:700;font-size:14px}
+hr {margin-bottom: 30px}
+.force-ssl .layui-form-switch {
+  margin-bottom: 10px;
+  margin-right: 30px;
+}
+.layui-table-cell {
+      height: auto !important;
+  }
+</style>
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-body">
+         <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+          <ul class="layui-tab-title">
+            <li class="layui-this">基本配置</li>
+            <li>缓存配置</li>
+            <li>安全配置</li>
+            <li>访问控制</li>                        
+            <li>回源配置</li>            
+            <li>高级配置</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">基本信息</span></div>
+              </div>
+
+             <div class="layui-row layui-col-space10">
+              <div class="thin-gray layui-col-md2">启用：</div> <div id="enable" class="layui-col-md1"><span class="layui-badge layui-bg-orange">获取中...</span></div> 
+            </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2 thin-gray">配置同步：</div> <div id="state" class="layui-col-md1"><span class="layui-badge layui-bg-orange">获取中...</span></div> 
+            </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2 thin-gray">CNAME：</div> <div class="layui-col-md10 "><span id="cname" class="layui-hide">获取中...</span> <span id="cname_state" class="layui-badge layui-bg-orange">获取中...</span></div> 
+            </div>      
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2 thin-gray">套餐到期：</div> <div id="package-expire" class="layui-col-md10">获取中...</div>
+            </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2 thin-gray">创建时间：</div> <div id="create_at" class="layui-col-md10">获取中...</div>
+            </div>       
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2 thin-gray">更新时间：</div> <div id="update_at" class="layui-col-md10">获取中...</div>
+            </div>                          
+            <hr>    
+
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">基本设置</span></div>
+              </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2 thin-gray">套餐：</div>
+              <div id="package" class="layui-col-md2 layui-form">
+                <select lay-filter="user_package_update" id="user_package" name="user_package" lay-verify="required"></select>
+              </div>
+            </div>
+
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2 thin-gray">域名：</div> <div class="layui-col-lg4 layui-col-md6"><input id="domain" type="text" name="domain"  placeholder="请输入域名"  autocomplete="off" class="layui-input"></div>
+            </div>      
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2 thin-gray">所属分组：</div>
+              <div class="layui-col-md10">
+                <select lay-ignore class="site-group-select" multiple="multiple" style="width: 300px" name="groups">                
+                </select>
+              </div>
+            </div>                          
+            <hr>  
+
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">HTTP设置</span></div>
+              </div>
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md12 layui-form"><input type="checkbox" name="http_on" lay-skin="switch" lay-text="开启|关闭" lay-filter="http_on">
+              </div>
+            </div> 
+            <div class="layui-row layui-col-space10 http_listen layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px">监听端口：</div> <div class="layui-col-md2"><input type="text" name="http_listen_port"  placeholder="请输入端口"  value="80" autocomplete="off" class="layui-input"></div>
+            </div> 
+            <hr>       
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">HTTPS设置</span></div>
+              </div>
+            <div class="layui-row layui-col-space10 ">
+              <div class="layui-col-md12 layui-form"><input type="checkbox" lay-filter="https_on" name="https_on" lay-skin="switch" lay-text="开启|关闭">
+              </div>
+            </div> 
+            <div class="layui-row layui-col-space10 https_listen layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px">证书：</div> <div class="layui-col-md3 layui-form">
+                    <select lay-search lay-filter="cert" id="cert" name="cert" lay-verify="required">
+                    </select>
+              </div>
+            </div>           
+
+            <div class="layui-row layui-col-space10 https_listen layui-hide">
+              <div class="layui-col-md5">
+                <button disabled id="more-https" type="button" class="layui-btn-disabled layui-btn layui-btn-fluid layui-btn-xs layui-btn-primary">
+                  <i class="layui-icon layui-icon-down
+"></i> 更多设置
+                </button>
+              </div>  
+             </div>  
+            <div class="layui-row layui-col-space10 layui-hide more-https">
+              <div class="layui-col-md2" style="padding-top:10px">监听端口：</div> <div class="layui-col-md2"><input type="text" name="https_listen_port"  placeholder="请输入端口"  value="443" autocomplete="off" class="layui-input"></div>
+            </div>            
+            <div class="layui-row layui-col-space10 layui-hide more-https">
+              <div class="layui-col-md2" style="padding-top:10px">HSTS：</div> <div class="layui-col-md2 layui-form"><input lay-filter="hsts" type="checkbox"  name="hsts" lay-skin="switch" lay-text="ON|OFF"></div>
+            </div>
+            <div class="layui-row layui-col-space10 layui-hide more-https">
+              <div class="layui-col-md2" style="padding-top:10px">HTTP2：</div> <div class="layui-col-md2 layui-form"><input lay-filter="http2" type="checkbox"  name="http2" lay-skin="switch" lay-text="ON|OFF"></div>
+            </div>  
+
+            <div class="layui-row layui-col-space10 layui-hide more-https force-ssl">
+              <div class="layui-col-md2" style="padding-top:10px">强制HTTPS：</div>
+              <div class="layui-col-md4 layui-form">
+                <input lay-filter="force_ssl_enable" type="checkbox"  name="force_ssl_enable" lay-skin="switch" lay-text="ON|OFF">
+                跳转端口 <input style="display: inline-block;width: 150px;" type="text" name="force_ssl_port" value="443" autocomplete="off" class="layui-input">
+              </div>
+            </div>
+
+            <div class="layui-row layui-col-space10 layui-hide more-https">
+              <div class="layui-col-md2" style="padding-top:10px">OCSP stapling：</div> <div class="layui-col-md2 layui-form"><input lay-filter="ocsp_stapling" type="checkbox"  name="ocsp_stapling" lay-skin="switch" lay-text="ON|OFF"></div>
+            </div>
+
+            <div class="layui-row layui-col-space10 layui-hide more-https">
+              <div class="layui-col-md2" style="padding-top:10px">SSL配置：</div>
+              <div class="layui-col-md10 layui-form">
+                <input type="radio" lay-filter="ssl_mode" name="ssl_mode" value="old" checked="" title="兼容旧浏览器(安全性降低)">
+                <input type="radio" lay-filter="ssl_mode" name="ssl_mode" value="intermediate" title="兼容大部分浏览器(更安全)">
+                <input type="radio" lay-filter="ssl_mode" name="ssl_mode" value="custom" title="自定义">
+              </div>
+            </div>
+
+            <div class="layui-row layui-col-space10  ssl-config layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px"></div>
+              <div class="layui-col-md10 layui-form">
+                <div class="layui-row layui-col-space10 ">
+                  <div class="layui-col-md2" style="padding-top:10px">ssl_protocols：</div> <div class="layui-col-md2"><input type="text" name="https_listen_ssl_protocols"    autocomplete="off" class="layui-input"></div>
+                </div>     
+                <div class="layui-row layui-col-space10">
+                  <div class="layui-col-md2" style="padding-top:10px">ssl_ciphers：</div> <div class="layui-col-md2"><input type="text" name="https_listen_ssl_ciphers"    autocomplete="off" class="layui-input"></div>
+                </div>      
+                <div class="layui-row layui-col-space10">
+                  <div class="layui-col-md2" style="padding-top:10px">ssl_prefer_server_ciphers：</div> <div class="layui-col-md2"><input type="text" name="https_listen_ssl_prefer_server_ciphers"  autocomplete="off" class="layui-input"></div>
+                </div>                 
+              </div>
+            </div>
+
+            <hr>     
+              <div class="layui-row">
+               <div class="layui-col-md2"> <span class="small-title">源站设置</span> </div>
+              </div> 
+
+              <div class="layui-row layui-col-space10 backend-protocol">
+                <div class="layui-col-md2" style="padding-top:10px">回源协议：</div> <div class="layui-col-md10 layui-form">
+                  <input type="radio" lay-filter="backend_protocol" name="backend_protocol" value="http" checked="" title="HTTP">
+                  <input type="radio" lay-filter="backend_protocol" name="backend_protocol" value="https" title="HTTPS">
+                  <input type="radio" lay-filter="backend_protocol" name="backend_protocol" value="follow" title="跟随协议">
+                </div>
+              </div>
+            <div class="layui-row layui-col-space10 backend-http-port">
+              <div class="layui-col-md2" style="padding-top:10px">HTTP回源端口：</div> <div class="layui-col-md2"><input type="text" name="backend_http_port"  placeholder="请输入端口"  value="80" autocomplete="off" class="layui-input"></div>
+            </div> 
+            <div class="layui-row layui-col-space10 backend-https-port">
+              <div class="layui-col-md2" style="padding-top:10px">HTTPS回源端口：</div> <div class="layui-col-md2"><input type="text" name="backend_https_port"  placeholder="请输入端口"  value="443" autocomplete="off" class="layui-input"></div>
+            </div> 
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">源站列表：</div> 
+              <div class="layui-col-md7">
+              <table id="backend" lay-filter="backend"></table>
+                <script type="text/html" id="backend-toolbar">
+                    <div class="layui-row layui-col-space10">
+                      <div class="layui-col-md12">
+                          <button class="layui-btn  layui-btn-xs" lay-event="add">新增</button>
+                          <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</button>
+
+                      </div>  
+                    </div>
+                </script>
+                <script type="text/html" id="backend-bar">
+                  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                </script>
+            </div>
+           </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">回源超时：</div>
+              <div class="layui-col-md2"><input type="text" name="proxy_timeout"  placeholder="请输入超时时间"  value="5" autocomplete="off" class="layui-input"></div>
+              <div class="layui-form-mid layui-word-aux" style="padding-top:13px !important;">秒</div>
+            </div> 
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">负载方式：</div> <div class="layui-col-md2 layui-form">
+                    <select lay-search lay-filter="balance_way" id="balance_way" name="balance_way" lay-verify="required">
+                      <option value="ip_hash">ip hash</option>
+                      <option value="rr">轮询</option>
+                      <option value="url_hash">url hash</option>
+                      <option value="least_conn">最少连接数</option>
+                      <option value="random">随机</option>
+                    </select>
+              </div>
+            </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">回源端口映射：</div> 
+              <div class="layui-col-md2 layui-form">
+                <input type="checkbox" lay-filter="backend_port_mapping" name="backend_port_mapping" lay-skin="switch" lay-text="开启|关闭">
+              </div>
+            </div>   
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">源站健康检查：</div> <div class="layui-col-md3 layui-form">
+                  <input type="checkbox" lay-filter="health_check_enable" name="health_check_enable" lay-skin="switch" lay-text="开启|关闭">
+              </div>
+            </div>
+            <div class="layui-row layui-col-space10 health_check layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px"></div>
+              <div class="layui-col-md2 layui-form">
+                    <select lay-search lay-filter="health_check_protocol" id="health_check_protocol" name="health_check_protocol" lay-verify="required">
+                      <option value="http">http</option>
+                    </select>
+              </div>
+              <div class="layui-col-lg2 layui-col-md3" style="padding-top:15px;">协议</div>
+            </div>
+            <div class="layui-row layui-col-space10  health_check layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px"></div>
+              <div class="layui-col-md2 layui-form">
+                <input type="text" name="health_check_host"  placeholder="请输入域名"  value="" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-col-lg2 layui-col-md3" style="padding-top:15px;">域名</div>
+            </div>
+          
+            <div class="layui-row layui-col-space10  health_check layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px"></div>
+              <div class="layui-col-md2 layui-form">
+                <input type="text" name="health_check_path"  placeholder="请输入路径"  value="" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-col-lg2 layui-col-md3" style="padding-top:15px;">路径</div>
+            </div>
+            <div class="layui-row layui-col-space10  health_check layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px"></div>
+              <div class="layui-col-md2 layui-form">
+                <input type="text" name="health_check_status_code"  placeholder="请输入状态码"  value="200 301 302" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-col-lg2 layui-col-md3" style="padding-top:15px;">有效状态码</div>
+            </div>     
+
+            <div class="layui-row layui-col-space10  health_check layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px"></div>
+              <div class="layui-col-md2 layui-form">
+                <input type="text" name="health_check_interval"  placeholder="请输入间隔时间"  value="10" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-col-lg2 layui-col-md3" style="padding-top:15px;">检查间隔时间(秒)</div>
+            </div> 
+
+
+          </div>
+          <div class="layui-tab-item">
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md12">
+                <table id="cache" lay-filter="cache"></table>
+                  <script type="text/html" id="cache-toolbar">
+                      <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md12">
+                            <button class="layui-btn  layui-btn-xs" lay-event="add">新增</button>
+                            <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</button>
+                        </div>  
+                      </div>
+                  </script>
+                  <script type="text/html" id="cache-bar">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                  </script>
+              </div>
+             </div>
+          </div>
+          <div class="layui-tab-item">
+            <div class="layui-row ">
+             <div class="layui-col-md2"> <span class="small-title">CC防护</span></div>
+            </div>
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">默认防护：</div>
+              <div class="layui-col-md10 layui-form ">
+                <div class="layui-inline cc_internal_rule">
+                </div>
+
+                <div class="layui-inline layui-hide cc_custom_rule">
+                </div>                
+
+              </div>
+
+            </div>   
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">自动提升防护等级：</div> 
+              <div class="layui-col-md10 layui-form">
+                <div class="layui-form-item">
+                  <div style="margin-bottom: 12px;" class="layui-inline">
+                    <input type="checkbox" lay-filter="cc_switch_on" name="cc_switch_on" lay-skin="switch" lay-text="设置|未设置">
+                  </div>
+                
+                  <div class="layui-inline layui-hide cc_switch_on">
+                    <div class="layui-form-mid layui-word-aux">当网站每秒请求数大于</div>
+                    <div class="layui-input-inline">
+                      <select name="switch-qps" lay-filter="switch-qps">
+                        <option value="20">20 (小型网站)</option>
+                        <option value="50">50 (中型网站)</option>
+                        <option value="200">200 (大型网站)</option>
+                        <option value="custom">自定义</option>
+                      </select>                  
+                    </div>
+
+                    <div class="layui-input-inline layui-hide custom-qps">
+                      <input type="text" name="switch-qps" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">时，防护等级提升到</div>
+
+                    <div class="layui-input-inline">
+                      <select lay-search lay-filter="cc_switch_rule" id="cc_switch_rule" name="cc_switch_rule" lay-verify="required">
+                        <option value="">请选择</option>
+                        <optgroup class="internal_cc_rule" label="系统内置规则">
+
+                        </optgroup>
+                        <optgroup class="custom_cc_rule" label="自定义规则">
+
+                        </optgroup>
+
+                      </select>
+                    </div>                     
+
+                  </div>
+
+ 
+
+                </div>
+              </div>
+            </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">自定义规则：</div> 
+              <div class="layui-col-md7">
+              <table id="url-ratelimit" lay-filter="url-ratelimit"></table>
+                <script type="text/html" id="url-ratelimit-toolbar">
+                    <div class="layui-row layui-col-space10">
+                      <div class="layui-col-md12">
+                          <button class="layui-btn  layui-btn-xs" lay-event="add">新增</button>
+                          <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</button>
+
+                      </div>  
+                    </div>
+                </script>
+
+                <script type="text/html" id="url-ratelimit-bar">
+                  <a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642</i></a>
+                  <div class="layui-btn-group">
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="up"><i class="layui-icon">&#xe619;</i></a>
+                    <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="down"><i class="layui-icon">&#xe61a;</i></a>
+                  </div>
+                </script>
+            </div>
+           </div>
+           <div class="layui-row layui-col-space10">
+            <div class="layui-col-md2" style="padding-top:10px">提示</div> 
+            <div class="layui-col-md10 layui-form spider_list">
+              自定义规则优先匹配，没有匹配到才执行上面的默认防护。<br>
+              像API请求的放行可以使用此处的自定义规则。<br>
+              百度、搜狗、神马、必应、谷歌、头条、360这些蜘蛛不受防CC规则影响。
+            </div> 
+            </div>    
+            <hr>
+            <div class="layui-row ">
+             <div class="layui-col-md2"> <span class="small-title">黑白名单</span></div>
+            </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">黑名单IP</div> 
+              <div class="layui-col-md7 layui-form">
+                <textarea name="black_ip" required lay-verify="required" placeholder="一行一个，支持/8 /16 /24子掩码" class="layui-textarea"></textarea>
+
+              </div> 
+            </div>      
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">白名单IP</div> 
+              <div class="layui-col-md7 layui-form">
+                <textarea name="white_ip" required lay-verify="required" placeholder="一行一个，支持/8 /16 /24子掩码" class="layui-textarea"></textarea>
+
+              </div> 
+            </div>       
+
+            <hr>
+            <div class="layui-row ">
+             <div class="layui-col-md2"> <span class="small-title">屏蔽设置</span></div>
+            </div>
+
+
+            <style>
+              .region-list .layui-form-checkbox {width: 110px;}
+            </style>
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">屏蔽透明代理：</div> 
+              <div class="layui-col-md2 layui-form">
+                <input type="checkbox" lay-filter="block_proxy_on" name="block_proxy_on" lay-skin="switch" lay-text="是|否">
+              </div>
+            </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">屏蔽区域</div> 
+              <div class="layui-col-md10 layui-form">
+                <form class="layui-form region-list" action="">
+                  <div class="layui-form-item">
+                    <label class="layui-form-label asia">亚洲：</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" class="check-all-asia" lay-filter="check-all-asia" title="全选" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="cn" title="中国境内" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="hk" title="香港" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="mo" title="澳门" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="tw" title="台湾" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="mn" title="蒙古" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="kp" title="朝鲜" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="kr" title="韩国" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="jp" title="日本" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="vn" title="越南" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="la" title="老挝" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="kh" title="柬埔寨" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="th" title="泰国" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="mm" title="缅甸" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="my" title="马来西亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="sg" title="新加坡" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="id" title="印度尼西亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="bn" title="文莱" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="ph" title="菲律宾" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="tl" title="东帝汶" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="in" title="印度" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="bd" title="孟加拉国" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="bt" title="不丹" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="np" title="尼泊尔" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="pk" title="巴基斯坦" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="lk" title="斯里兰卡" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="mv" title="马尔代夫" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="sa" title="沙特阿拉伯" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="qa" title="卡塔尔" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="bh" title="巴林" lay-skin="primary">
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="kw" title="科威特" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="ae" title="阿联酋" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="om" title="阿曼" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="ye" title="也门" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="ge" title="格鲁吉亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="lb" title="黎巴嫩" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="sy" title="叙利亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="il" title="以色列" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="ps" title="巴勒斯坦" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="jo" title="约旦" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="iq" title="伊拉克" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="ir" title="伊朗" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="af" title="阿富汗" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="cy" title="塞浦路斯" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="az" title="阿塞拜疆" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="tm" title="土库曼斯坦" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="tj" title="塔吉克斯坦" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="kg" title="吉尔吉斯" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="uz" title="乌兹别克" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region asia_region" name="block_region" value="kz" title="哈萨克斯坦" lay-skin="primary"> 
+                    </div>
+
+                  </div>
+
+                  <div class="layui-form-item">
+                    <label class="layui-form-label africa">非洲：</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" lay-filter="check-all-africa" class="check-all-africa" title="全选" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="dz" title="阿尔及利亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ao" title="安哥拉" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="bj" title="贝宁" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="bw" title="博茨瓦纳" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="bf" title="布基纳法索" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="bi" title="布隆迪" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="cm" title="喀麦隆" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="cv" title="佛得角" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="cf" title="中非共和国" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="td" title="乍得" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="km" title="科摩罗联邦" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ci" title="科特迪瓦" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="cd" title="刚果(金)" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="dj" title="吉布提" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="eg" title="埃及" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="gq" title="赤道几内亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="er" title="厄立特里亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="et" title="埃塞俄比亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ga" title="加蓬" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="gm" title="冈比亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="gh" title="加纳" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="gn" title="几内亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="gw" title="几内亚比绍" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ke" title="肯尼亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ls" title="莱索托" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="lr" title="利比里亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ly" title="利比亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="mg" title="马达加斯加" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="mw" title="马拉维" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ml" title="马里" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="mr" title="毛里塔尼亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="mu" title="毛里求斯" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ma" title="摩洛哥" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="mz" title="莫桑比克" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="na" title="纳米比亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ne" title="尼日尔" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ng" title="尼日利亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="cg" title="刚果(布)" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="rw" title="卢旺达" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="st" title="圣普" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="sn" title="塞内加尔" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="sc" title="赛舌尔" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="sl" title="塞拉利昂" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="so" title="索马里" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="za" title="南非" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="sd" title="苏丹" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ss" title="南苏丹" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="tz" title="坦桑尼亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="tg" title="多哥" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="tn" title="突尼斯" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="ug" title="乌干达" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="zm" title="赞比亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region africa_region" name="block_region" value="zw" title="津巴布韦" lay-skin="primary"> 
+                    </div>
+
+
+                  </div>        
+                  <div class="layui-form-item">
+                    <label class="layui-form-label north-america">北美洲：</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" class="check-all-north-america" lay-filter="check-all-north-america" title="全选" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="ag" title="安巴" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="bs" title="巴哈马" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="bb" title="巴巴多斯" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="bz" title="伯利兹" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="ca" title="加拿大" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="cr" title="哥斯达黎加" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="cu" title="古巴" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="dm" title="多米尼克" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="do" title="多米尼加" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="sv" title="萨尔瓦多" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="ai" title="安圭拉" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="bm" title="百慕大" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="gl" title="格陵兰" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="gd" title="格林纳达" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="gp" title="瓜德罗普" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="gt" title="危地马拉" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="ht" title="海地" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="hn" title="洪都拉斯" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="jm" title="牙买加" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="mq" title="马提尼克" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="mx" title="墨西哥" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="ms" title="蒙特塞拉特" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="aw" title="阿鲁巴" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="cw" title="库拉索" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="ni" title="尼加拉瓜" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="pa" title="巴拿马" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="kn" title="圣尼" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="lc" title="圣卢西亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="vc" title="圣文森特" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="tt" title="特多" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="tc" title="特凯" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="us" title="美国" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="mf" title="法属圣马丁" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="pr" title="波多黎各" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="bl" title="圣巴泰勒米" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region north_america_region" name="block_region" value="sx" title="荷属圣马丁" lay-skin="primary"> 
+                    </div>
+
+
+                  </div>       
+
+                  <div  class="layui-form-item">
+                    <label class="layui-form-label south-america">南美洲：</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" class="check-all-south-america" lay-filter="check-all-south-america" title="全选" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region" name="block_region" value="ar" title="阿根廷" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="bo" title="玻利维亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="br" title="巴西" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="cl" title="智利" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="co" title="哥伦比亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="ec" title="厄瓜多尔" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="gy" title="圭亚那" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="py" title="巴拉圭" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="pe" title="秘鲁" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="sr" title="苏里南" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="uy" title="乌拉圭" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region south_america_region"  name="block_region" value="ve" title="委内瑞拉" lay-skin="primary"> 
+                    </div>
+
+               
+                  </div>      
+
+                  <div  class="layui-form-item">
+                    <label class="layui-form-label europe">欧洲：</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" class="check-all-europe" lay-filter="check-all-europe" title="全选" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region" name="block_region" value="al" title="阿尔巴尼亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="ad" title="安道尔" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="am" title="亚美尼亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="at" title="奥地利" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="by" title="白俄罗斯" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="be" title="比利时" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="ba" title="波黑" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="bg" title="保加利亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="hr" title="克罗地亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="cz" title="捷克共和国" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="dk" title="丹麦" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="ee" title="爱沙尼亚" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="fi" title="芬兰" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="fr" title="法国" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="de" title="德国" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="gr" title="希腊" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="hu" title="匈牙利" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="is" title="冰岛" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="ie" title="爱尔兰" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="it" title="意大利" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="lv" title="拉脱维亚" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="li" title="列支敦士登" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="lt" title="立陶宛" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="lu" title="卢森堡" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="mk" title="北马其顿" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="mt" title="马耳他" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="md" title="摩尔多瓦" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="mc" title="摩纳哥" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="me" title="黑山" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="nl" title="荷兰王国" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="no" title="挪威" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="pl" title="波兰" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="pt" title="葡萄牙" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="ro" title="罗马尼亚" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="ru" title="俄罗斯" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="sm" title="圣马力诺" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="rs" title="塞尔维亚" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="sk" title="斯洛伐克" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="si" title="斯洛文尼亚" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="es" title="西班牙" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="se" title="瑞典" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="ch" title="瑞士" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="tr" title="土耳其" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="ua" title="乌克兰" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="uk" title="英国" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region europe_region"  name="block_region" value="va" title="梵蒂冈" lay-skin="primary">                                                 
+                  
+                    </div>
+
+                  </div>   
+
+                  <div  class="layui-form-item">
+                    <label class="layui-form-label oceania">大洋洲：</label>
+                    <div class="layui-input-block">
+                      <input type="checkbox" class="check-all-oceania" lay-filter="check-all-oceania" title="全选" lay-skin="primary"> 
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="au" title="澳大利亚" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="pg" title="巴新" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="nz" title="新西兰" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="fj" title="斐济" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="sb" title="所罗门群岛" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="pf" title="波利尼西亚" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="nc" title="新喀里多" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="vu" title="瓦努阿图" lay-skin="primary">                      
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="ws" title="萨摩亚" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="gu" title="关岛" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="fm" title="密联邦" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="to" title="汤加" lay-skin="primary">                                                
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="ki" title="基里巴斯" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="as" title="美属萨摩亚" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="pw" title="帕劳" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="wf" title="瓦利斯" lay-skin="primary">                                                
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="nr" title="瑙鲁" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="tv" title="图瓦卢" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="nu" title="纽埃" lay-skin="primary">                          
+                      <input type="checkbox" class="block_region oceania_region" name="block_region" value="tk" title="托克劳" lay-skin="primary">     
+                    </div>
+                                           
+                  </div>   
+
+                  <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <button class="layui-btn layui-btn-sm" lay-submit lay-filter="save_block_region">立即提交</button>
+                  </div> 
+
+                </form>
+
+                
+              </div> 
+            </div>                                                                      
+
+          </div>
+          <div class="layui-tab-item">
+            <div class="layui-row ">
+             <div class="layui-col-md2"> <span class="small-title">ACL</span></div>
+            </div> 
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">ACL规则：</div> <div class="layui-col-md3 layui-form">
+                    <select lay-search lay-filter="acl" id="acl" name="acl" lay-verify="required">
+                    </select>
+              </div>
+            </div> 
+
+            <hr>
+            <div class="layui-row ">
+             <div class="layui-col-md2"> <span class="small-title">防盗链</span></div>
+            </div>       
+            <div class="layui-row layui-col-space10 layui-form">
+              <div class="layui-col-md2 " style="padding-top:10px">开启</div> 
+              <input type="checkbox"  lay-filter="hotlink_enable" name="hotlink_enable" lay-skin="switch" lay-text="是|否">
+            </div>
+
+            <div class="layui-row layui-col-space10 hotlink layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px">允许的域名</div> 
+              <div class="layui-col-md3 layui-form">
+                <input type="text" name="hotlink_domain"  placeholder="请输入除当前网站域名之外的域名"  value="" autocomplete="off" class="layui-input"> 
+
+              </div> 
+            </div>    
+            <div class="layui-row layui-col-space10 hotlink layui-hide layui-form">
+              <div class="layui-col-md2 " style="padding-top:10px">允许空来源</div> 
+              <input type="checkbox"  lay-filter="hotlink_allow_empty" name="hotlink_allow_empty" lay-skin="switch" lay-text="是|否">
+            </div>   
+
+            <hr>
+            <div class="layui-row ">
+             <div class="layui-col-md2"> <span class="small-title">跨域访问</span></div>
+            </div>       
+            <div class="layui-row layui-col-space10 layui-form">
+              <div class="layui-col-md2 " style="padding-top:10px">开启</div> 
+              <input type="checkbox"  lay-filter="cors_enable" name="cors_enable" lay-skin="switch" lay-text="是|否">
+            </div>
+
+            <div class="layui-row layui-col-space10 cors layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px">allow_origin</div> 
+              <div class="layui-col-md3 layui-form">
+                <input type="text" name="allow_origin"  placeholder="*或者http://domain.com，多个以空格分隔"  value="" autocomplete="off" class="layui-input"> 
+              </div> 
+            </div>    
+            <div class="layui-row layui-col-space10 cors layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px">allow_methods</div> 
+              <div class="layui-col-md3 layui-form">
+                <input type="text" name="allow_methods"  placeholder="可选值为GET, POST, OPTIONS, DELETE, PUT, PATCH, HEAD"  value="" autocomplete="off" class="layui-input"> 
+              </div> 
+            </div> 
+
+            <div class="layui-row layui-col-space10 cors layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px">allow_headers</div> 
+              <div class="layui-col-md3 layui-form">
+                <input type="text" name="allow_headers"  placeholder="多个以空格分隔"  value="" autocomplete="off" class="layui-input"> 
+              </div> 
+            </div> 
+
+            <div class="layui-row layui-col-space10 cors layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px">expose_headers</div> 
+              <div class="layui-col-md3 layui-form">
+                <input type="text" name="expose_headers"  placeholder="多个以空格分隔"  value="" autocomplete="off" class="layui-input"> 
+              </div> 
+            </div> 
+
+            <div class="layui-row layui-col-space10 cors layui-hide layui-form">
+              <div class="layui-col-md2" style="padding-top:10px">allow_credentials</div> 
+              <input type="checkbox"  lay-filter="allow_credentials" name="allow_credentials" lay-skin="switch" lay-text="是|否">
+            </div> 
+
+            <div class="layui-row layui-col-space10 cors layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px">max_age</div> 
+              <div class="layui-col-md3 layui-form">
+                <input type="text" name="max_age"  placeholder="请输入时间,单位为秒"  value="" autocomplete="off" class="layui-input"> 
+              </div> 
+            </div> 
+
+          </div>
+          <div class="layui-tab-item">
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">回源域名：</div> 
+              <div class="layui-col-md4 layui-form">
+                <input type="radio" lay-filter="backend_host_type" name="backend_host_type" value="$host" title="访问域名" checked>
+                <input type="radio" lay-filter="backend_host_type" name="backend_host_type" value="$host:$server_port" title="访问域名:访问端口">
+                <input type="radio" lay-filter="backend_host_type" name="backend_host_type" value="custom" title="自定义" >
+              </div>
+
+              <div class="layui-col-md2 layui-form backend_host layui-hide">
+                <input type="text" name="backend_host"  placeholder="请输入域名"  value="" autocomplete="off" class="layui-input"> 
+              </div>
+
+            </div> 
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">回源SSL协议：</div> <div class="layui-col-md3"><input type="text" name="proxy_ssl_protocols"  placeholder="请输入协议"  value="TLSv1 TLSv1.1 TLSv1.2" autocomplete="off" class="layui-input"></div>
+            </div>
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">分片回源：</div> 
+              <div class="layui-col-md2 layui-form">
+                <input type="checkbox"  lay-filter="range" name="range" lay-skin="switch" lay-text="开启|关闭">
+              </div>
+            </div>     
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">回源HTTP版本：</div> 
+              <div class="layui-col-md4 layui-form">
+                <input type="radio" lay-filter="proxy_http_version" name="proxy_http_version" value="1.0" title="HTTP 1.0" checked>
+                <input type="radio" lay-filter="proxy_http_version" name="proxy_http_version" value="1.1" title="HTTP 1.1" >
+              </div>
+
+            </div> 
+
+            <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">回源连接池：</div> <div class="layui-col-md3 layui-form">
+                  <input type="checkbox" lay-filter="ups_keepalive_enable" name="ups_keepalive_enable" lay-skin="switch" lay-text="开启|关闭">
+              </div>
+            </div>
+            <div class="layui-row layui-col-space10  ups_keepalive layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px"></div>
+              <div class="layui-col-md2 layui-form">
+                <input type="text" name="ups_keepalive_conn"  placeholder="请输入域名"  value="5" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-col-lg2 layui-col-md3" style="padding-top:15px;">最大空闲连接数</div>
+            </div>
+          
+            <div class="layui-row layui-col-space10  ups_keepalive layui-hide">
+              <div class="layui-col-md2" style="padding-top:10px"></div>
+              <div class="layui-col-md2 layui-form">
+                <input type="text" name="ups_keepalive_timeout"  placeholder="请输入路径"  value="60" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-col-lg2 layui-col-md3" style="padding-top:15px;">空闲连接的超时时间</div>
+            </div>
+
+          </div>
+          <div class="layui-tab-item">
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">压缩设置</span></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md2" style="padding-top:10px">Gzip压缩：</div> 
+                <div class="layui-col-md2 layui-form"><input type="checkbox" lay-filter="gzip_enable"  name="gzip_enable" lay-skin="switch" lay-text="开启|关闭">
+                </div>                 
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md2" style="padding-top:10px">Gzip类型</div> 
+                <div class="layui-col-md7 layui-form">
+                  <input type="text" name="gzip_types"  placeholder="请输入内容类型"  value="" autocomplete="off" class="layui-input"> 
+                 
+                </div>                 
+              </div>  
+               <hr>  
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">websocket配置</span></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md2" style="padding-top:10px">websocket：</div> 
+                <div class="layui-col-md2 layui-form"><input type="checkbox"  lay-filter="websocket" name="websocket" lay-skin="switch" lay-text="开启|关闭">
+                </div>                 
+              </div>     
+               <hr>  
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">错误页面配置</span></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md2" style="padding-top:10px">404页面</div> 
+                <div class="layui-col-md7 layui-form">
+                  <textarea name="page_404" lay-filter="page_404" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+
+                </div> 
+              </div>      
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md2" style="padding-top:10px">50x页面</div> 
+                <div class="layui-col-md7 layui-form">
+                  <textarea name="page_50x" lay-filter="page_50x" required lay-verify="required" placeholder="请输入" class="layui-textarea"></textarea>
+
+                </div> 
+              </div>  
+              <hr>
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">源站请求头</span></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md12">
+                <table id="req_header" lay-filter="req_header"></table>
+                  <script type="text/html" id="req_header-toolbar">
+                      <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md12">
+                            <button class="layui-btn  layui-btn-xs" lay-event="add">新增</button>
+                            <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</button>
+                        </div>  
+                      </div>
+                  </script>
+                  <script type="text/html" id="req_header-bar">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                  </script>
+              </div>
+             </div>
+
+              <hr>
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">CDN响应头</span></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md12">
+                <table id="resp_header" lay-filter="resp_header"></table>
+                  <script type="text/html" id="resp_header-toolbar">
+                      <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md12">
+                            <button class="layui-btn  layui-btn-xs" lay-event="add">新增</button>
+                            <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</button>
+                        </div>  
+                      </div>
+                  </script>
+                  <script type="text/html" id="resp_header-bar">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                  </script>
+              </div>
+             </div>
+
+              <hr>
+              <div class="layui-row ">
+               <div class="layui-col-md2"> <span class="small-title">URL转向</span></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-md12">
+                <table id="url_rewrite" lay-filter="url_rewrite"></table>
+                  <script type="text/html" id="url_rewrite-toolbar">
+                      <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md12">
+                            <button class="layui-btn  layui-btn-xs" lay-event="add">新增</button>
+                            <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</button>
+                        </div>  
+                      </div>
+                  </script>
+                  <script type="text/html" id="url_rewrite-bar">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                  </script>
+              </div>
+             </div>
+
+             <hr>  
+             <div class="layui-row ">
+              <div class="layui-col-md2"> <span class="small-title">其它</span></div>
+             </div>
+             <div class="layui-row layui-col-space10">
+               <div class="layui-col-md2" style="padding-top:10px">/.well-known/acme-challenge/请求回源</div> 
+               <div class="layui-col-md2 layui-form"><input type="checkbox"  lay-filter="acme_proxy_to_orgin" name="acme_proxy_to_orgin" lay-skin="switch" lay-text="开启|关闭">
+               </div>                 
+             </div>  
+             <div class="layui-row layui-col-space10">
+              <div class="layui-col-md2" style="padding-top:10px">POST请求大小限制：</div> 
+              <div class="layui-col-md2"><input id="post_size_limit" type="text" name="post_size_limit"  placeholder="请输入限制值"  autocomplete="off" class="layui-input"></div>
+              <div class="layui-form-mid layui-word-aux" style="padding-top:13px !important;">MB</div>
+             </div> 
+          </div>
+        </div>
+      </div>                 
+
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<link href="/src/style/select2.min.css" rel="stylesheet" />
+
+
+<script type="text/javascript">
+var jQuery = layui.$
+</script>
+
+  <script src="/src/lib/select2.min.js"></script>
+
+<script type="text/javascript">
+  window.match_item_map = {"ip":"IP地址","host":"域名","req_uri":"请求URI","uri":"请求URI(不带参数)","req_method":"请求方法","user_agent":"浏览器UA","referer":"请求来源","country_iso_code":"国家代码"}
+  window.match_op_map = {"=":"等于","!=":"不等于","contain":"包含","!contain":"不包含","prefix":"前缀匹配","suffix":"后缀匹配","regex":"正则匹配"}
+  window.filter_type_map = {"req_rate":"请求频率","browser_verify_auto": "无感验证", "delay_jump_filter":"5秒盾","click_filter":"点击验证","slide_filter":"滑动验证","captcha_filter":"验证码","rotate_filter":"旋转图片","302_challenge":"302跳转","url_auth":"URL鉴权"}
+  $ = layui.$
+
+
+  $(document).ready(function() {
+      $('.site-group-select').select2({
+        width: '300px'
+      });
+
+  });
+
+
+  layui.use(['admin', 'table','form'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,form = layui.form;
+
+    var site_id = layui.router().search.id
+    var uid = layui.router().search.uid
+    var uid_para = ""
+    if (uid) {
+      uid_para = "&uid="+uid
+    }
+
+    form.render();
+
+    form.on('submit(save_block_region)', function(data){
+      var block_region = []
+      $("input[name='block_region']:checked").each(function (){
+        block_region.push($(this).val())
+      })
+      block_region = block_region.join(",")
+      update_site({"block_region":block_region},null,null)
+
+      return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    });
+
+    form.on('checkbox(check-all-asia)', function(data){
+      $(".asia_region").prop("checked",data.elem.checked)
+      form.render("checkbox")
+    });  
+
+    form.on('checkbox(check-all-africa)', function(data){
+      $(".africa_region").prop("checked",data.elem.checked)
+      form.render("checkbox")
+    });  
+
+    form.on('checkbox(check-all-north-america)', function(data){
+      $(".north_america_region").prop("checked",data.elem.checked)
+      form.render("checkbox")
+    });  
+
+    form.on('checkbox(check-all-south-america)', function(data){
+      $(".south_america_region").prop("checked",data.elem.checked)
+      form.render("checkbox")
+    });  
+
+    form.on('checkbox(check-all-europe)', function(data){
+      $(".europe_region").prop("checked",data.elem.checked)
+      form.render("checkbox")
+    });  
+
+    form.on('checkbox(check-all-oceania)', function(data){
+      $(".oceania_region").prop("checked",data.elem.checked)
+      form.render("checkbox")
+    }); 
+
+    
+    layui.element.on('tab(docDemoTabBrief)', function(data){
+      table.resize("backend");
+      table.resize("url-ratelimit");
+      table.resize("cache");
+      table.resize("req_header");
+      table.resize("resp_header");
+      table.resize("url_rewrite");
+    }); 
+
+    // 更多https设置
+    $("#more-https").click(function (ele) {
+      // 展开
+      if ($("#more-https i").hasClass("layui-icon-down")) {
+        $("#more-https i").removeClass("layui-icon-down")
+        $("#more-https i").addClass("layui-icon-up")
+        $(".more-https").removeClass("layui-hide")
+        if ($("input[name='ssl_mode'][value='custom']").prop("checked")) {
+          $(".ssl-config").removeClass("layui-hide")
+        } 
+      } else {
+        $("#more-https i").removeClass("layui-icon-up")
+        $("#more-https i").addClass("layui-icon-down")
+        $(".more-https").addClass("layui-hide")
+        $(".ssl-config").addClass("layui-hide")
+
+      }
+    })
+
+    // 获取证书列表
+    var cert_ajax = admin.req({
+      url: '/certs?limit=0&valid=1'+uid_para //实际使用请改成服务端真实接口
+      ,type: "get"
+      ,contentType:"application/json"
+      ,dataType: "json"
+      ,done: function(res){
+        var data = res.data
+        $("#cert").append("<option value=''>请选择证书</option>");  
+        for (i in data) {
+          $("#cert").append("<option value='"+data[i]["id"]+"'>"+data[i]["name"]+"</option>");          
+        }
+      }
+    })
+
+    // 获取cc_rule
+    window.rule_is_internal = {}
+    var cc_rule_ajax = admin.req({
+      url: '/cc-rules?limit=0&is_show=1&internal_self=1'+uid_para //实际使用请改成服务端真实接口
+      ,type: "get"
+      ,contentType:"application/json"
+      ,dataType: "json"
+      ,done: function(res){
+        var data = res.data
+        var internal_rule = []
+        var custom_rule = []
+        for (i in data) {
+          var id = data[i]['id']
+          var name = data[i]['name']
+          var internal = data[i]['internal']
+
+          if (internal) {
+            internal_rule.push({"id":id,"name":name})
+            // 填充默认规则里
+            $(".cc_internal_rule").append('<input lay-filter="cc_default_rule" type="radio" value="'+id+'" name="cc_default_rule" title="'+name+'" lay-skin="primary">');
+
+            // 填充自动切换里，过滤关闭和宽松的
+            if (id != "6" && id != "10002") {
+              $(".internal_cc_rule").append("<option value='"+id+"'>"+name+"</option>"); 
+            }
+            
+          } else {
+            custom_rule.push({"id":id,"name":name})
+            $(".custom_cc_rule").append("<option value='"+id+"'>"+name+"</option>");        
+          }
+
+          window.rule_is_internal[id] = internal
+
+
+        }
+
+        $(".cc_internal_rule").append('<input lay-filter="cc_default_rule" type="radio" value="" name="cc_default_rule" title="自定义" lay-skin="primary">');
+        $(".cc_custom_rule").append('<select lay-filter="cc_default_rule" id="custom_cc_rule" name="custom_cc_rule"></select>');
+        $("#custom_cc_rule").append('<option value="">请选择规则</option>')
+        for (i in custom_rule) {
+          var id = custom_rule[i]['id']
+          var name = custom_rule[i]['name']
+          $("#custom_cc_rule").append('<option value="'+id+'">'+name+'</option>')
+        }
+
+        form.render()
+      }
+    })
+
+    // 获取acl列表
+    var acl_ajax = admin.req({
+      url: '/acls?limit=0&enable=1'+uid_para //实际使用请改成服务端真实接口
+      ,type: "get"
+      ,contentType:"application/json"
+      ,dataType: "json"
+      ,done: function(res){
+        var data = res.data
+        $("#acl").append("<option value='' >请选择</option>");  
+        for (i in data) {
+            $("#acl").append("<option value='"+data[i]["id"]+"'>"+data[i]["name"]+"</option>");        
+        }
+      }
+    })    
+
+    // 获取分组列表
+    var group_ajax = admin.req({
+      url: '/site-groups?limit=0'+uid_para //实际使用请改成服务端真实接口
+      ,type: "get"
+      ,contentType:"application/json"
+      ,dataType: "json"
+      ,done: function(res){
+        var data = res.data
+        for (i in data) {
+          $(".site-group-select").append("<option value='"+data[i]["id"]+"'>"+data[i]["name"]+"</option>");
+        }
+      }
+    });    
+
+      // 获取用户套餐
+    var user_package_ajax = admin.req({
+        url: '/user-packages?limit=0'+uid_para //实际使用请改成服务端真实接口
+        ,type: "get"
+        ,contentType:"application/json"
+        ,dataType: "json"
+        ,done: function(res){
+          var data = res.data
+          $("select[name='user_package']").append("<option value=''>请选择</option>");
+          for (i in data) {
+            $("select[name='user_package']").append("<option value='"+data[i]["id"]+"'>"+data[i]["name"]+"</option>");
+          }
+
+          form.render("select");
+        }
+      }); 
+
+    $.when(cert_ajax,cc_rule_ajax,acl_ajax,group_ajax,user_package_ajax).then(function () {
+      // 获取网站信息
+      admin.req({
+        url: '/sites/'+ site_id //实际使用请改成服务端真实接口
+        ,type: "get"
+        ,contentType:"application/json"
+        ,dataType: "json"
+        ,done: function(res){
+          var data = res.data
+          // 域名
+          $("#domain").val(data.domain)
+
+          // post请求大小
+          $("#post_size_limit").val(data.post_size_limit)
+
+          // 套餐
+          $("select[name='user_package']").val(data.user_package)
+
+          // 分组
+          if (data.groups) {
+            $("select[name='groups']").val(data.groups.split(","))
+          }
+
+          $('.site-group-select').select2();
+
+          // enable
+          if (data.enable == 1) {
+            $("#enable").html('<i class="layui-icon layui-icon-ok-circle" style="font-size: 25px; color: #009688;"></i>')
+          } else {
+            $("#enable").html('<i class="layui-icon layui-icon-close-fill" style="font-size: 25px; color: #FF5722;"></i>')
+          }
+
+          // 同步状态
+          if (data.sync_state == 'pending') {
+            $("#state").html('<span class="layui-badge layui-bg-orange">待同步</span>')
+          } else if (data.sync_state == 'process'){
+            $("#state").html('<span class="layui-badge layui-bg-orange">同步中</span>')
+          } else if (data.sync_state == 'failed'){
+            $("#state").html('<i class="layui-icon layui-icon-close-fill" style="font-size: 25px; color: #FF5722;"></i>')
+          } else {
+            $("#state").html('<i class="layui-icon layui-icon-ok-circle" style="font-size: 25px; color: #009688;"></i>')
+          }
+
+          // cname状态
+          var cname = ""
+          if (data.cname_mode == "site") {
+            if (data.cname_hostname2 == "") {
+              cname = data.cname_hostname + "." + data.cname_domain
+            } else {
+              cname = data.cname_hostname + "."+ data.cname_hostname2 + "." + data.cname_domain
+            }            
+          } else {
+            if (data.up_cname_hostname2 == "") {
+              cname = data.up_cname_hostname + "." + data.up_cname_domain
+            } else {
+              cname = data.up_cname_hostname + "."+ data.up_cname_hostname2 + "." + data.up_cname_domain
+            }               
+          }
+
+          if (data.cname_state == "done" || data.cname_state == null) {
+            $("#cname").text(cname)
+          } else {
+            $("#cname").html('<span class="layui-badge layui-bg-orange">生成中</span>')
+          }
+
+          
+
+          $("#cname").removeClass("layui-hide")
+          $("#cname_state").addClass("layui-hide")
+
+
+
+          // 套餐
+          $("#package-expire").text(data.end_at)
+
+          // 域名
+          $("#domain").text(data.domain)
+
+          //  POST请求大小限制
+          $("#post_size_limit").text(data.post_size_limit)
+
+          // 创建时间
+          $("#create_at").text(data.create_at2)
+
+          // 更新时间
+          $("#update_at").text(data.update_at2)
+
+          // http_listen
+          var http_listen = JSON.parse(data.http_listen)
+          if (! $.isEmptyObject(http_listen)) {
+            $("input[name='http_on']").prop("checked",true)
+            $("input[name='http_listen_port']").val(http_listen.port)
+            $(".http_listen").removeClass("layui-hide")
+
+          }
+
+          // https_listen
+          var https_listen = JSON.parse(data.https_listen)
+          if (! $.isEmptyObject(https_listen)) {
+            $("input[name='https_on']").prop("checked",true)
+            $("#cert").val(https_listen.cert)
+            $("input[name='https_listen_port']").val(https_listen.port)
+            $("input[name='hsts']").prop("checked",https_listen.hsts)
+            $("input[name='http2']").prop("checked",https_listen.http2)
+            $("input[name='proxy_ssl_protocols']").val(https_listen.proxy_ssl_protocols)
+            $("input[name='force_ssl_enable']").prop("checked",https_listen.force_ssl_enable)
+            $("input[name='ocsp_stapling']").prop("checked",https_listen.ocsp_stapling)
+
+            $("input[name='force_ssl_port']").val(https_listen.force_ssl_port)
+
+            $(".https_listen").removeClass("layui-hide")
+
+            // 激活更多按钮
+            $("#more-https").removeAttr("disabled")
+            $("#more-https").removeClass("layui-btn-disabled")
+
+            var ssl_protocols = https_listen.ssl_protocols
+            var ssl_ciphers = https_listen.ssl_ciphers
+            var ssl_prefer_server_ciphers = https_listen.ssl_prefer_server_ciphers
+
+            if (ssl_protocols == "TLSv1 TLSv1.1 TLSv1.2 TLSv1.3" && ssl_ciphers == "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
+                && ssl_prefer_server_ciphers=="on") {
+                 $("input[name='ssl_mode'][value='old']").prop("checked",true) 
+                } else if (ssl_protocols == "TLSv1.2 TLSv1.3" && ssl_ciphers=="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
+                && ssl_prefer_server_ciphers=="off") {
+                  $("input[name='ssl_mode'][value='intermediate']").prop("checked",true) 
+                } else {
+                  $("input[name='ssl_mode'][value='custom']").prop("checked",true) 
+                }
+              
+            $("input[name='https_listen_ssl_protocols']").val(ssl_protocols)
+            $("input[name='https_listen_ssl_ciphers']").val(ssl_ciphers)
+            $("input[name='https_listen_ssl_prefer_server_ciphers']").val(ssl_prefer_server_ciphers)
+
+
+          }
+
+          // 回源ssl协议
+          $("input[name='proxy_ssl_protocols']").val(data.proxy_ssl_protocols)
+
+          // 回源协议
+          $("input[name='backend_protocol'][value='"+data.backend_protocol+"']").prop("checked",true)
+
+          // 回源端口
+          $("input[name='backend_http_port']").val(data.backend_http_port)
+          $("input[name='backend_https_port']").val(data.backend_https_port)
+
+          // 回源超时
+          $("input[name='proxy_timeout']").val(data.proxy_timeout)
+
+          // 回源端口映射
+          $("input[name='backend_port_mapping']").prop("checked",data.backend_port_mapping)
+          if (data.backend_port_mapping) {
+            $(".backend-protocol").addClass("layui-hide")
+            $(".backend-https-port").addClass("layui-hide")
+            $(".backend-http-port").addClass("layui-hide")
+          } else {
+            $(".backend-protocol").removeClass("layui-hide")
+            $(".backend-https-port").removeClass("layui-hide")
+            $(".backend-http-port").removeClass("layui-hide")
+          }
+
+          // 负载方式
+          $("#balance_way").val(data.balance_way)
+
+          // 源站
+          window.backend = JSON.parse(data.backend)
+          var backend_table = JSON.parse(data.backend)
+
+          table.render({
+            elem: '#backend'
+            ,title: 'xx'
+            ,toolbar: '#backend-toolbar'
+            ,autoSort: false
+            ,defaultToolbar: []
+              ,size: 'sm' //小尺寸的表格
+
+            ,cols: [[ //表头
+              {type: 'checkbox', fixed: 'left'}
+              ,{field: 'addr', title: '源地址'}
+              ,{field: 'weight', title: '权重'}
+              ,{field: 'state', title: '状态', templet: function(d){
+                if (d.state == 'up') {
+                  return '<i class="layui-icon layui-icon-ok-circle" style="font-size: 20px; color: #009688;"></i>'
+                } else if (d.state == 'down') {
+                  return '<i class="layui-icon layui-icon-close-fill" style="font-size: 20px; color: #FF5722;"></i>'
+                } else {
+                  return '<span class="layui-badge layui-bg-orange">备用</span>'
+                }
+              }}
+              ,{fixed: 'right', title:'操作', toolbar: '#backend-bar', width:120}
+
+            ]]
+            ,data: backend_table
+            ,page: true
+            
+          });   
+
+          // 健康检查
+          var health_check = JSON.parse(data.health_check)
+          var health_check_enable = health_check["enable"]
+          var health_check_protocol = health_check["protocol"]
+          var health_check_host = health_check["host"]
+          var health_check_path = health_check["path"]
+          var health_check_status_code = health_check["status_code"]
+          var health_check_interval = health_check["interval"]
+
+          $("input[name='health_check_enable']").prop("checked", health_check_enable)
+          if (health_check_enable) {
+            $(".health_check").removeClass("layui-hide")
+          }
+          $("input[name='health_check_host']").val(health_check_host)
+          $("input[name='health_check_path']").val(health_check_path)
+          $("input[name='health_check_status_code']").val(health_check_status_code)
+          $("input[name='health_check_interval']").val(health_check_interval)
+
+          // 长连接
+          var ups_keepalive = data.ups_keepalive
+          $("input[name='ups_keepalive_enable']").prop("checked", ups_keepalive)
+          if (ups_keepalive) {
+            $(".ups_keepalive").removeClass("layui-hide")
+          }
+          $("input[name='ups_keepalive_timeout']").val(data.ups_keepalive_timeout)
+          $("input[name='ups_keepalive_conn']").val(data.ups_keepalive_conn)
+
+          // 缓存
+          var proxy_cache = JSON.parse(data.proxy_cache)
+          window.cache = proxy_cache
+
+          table.render({
+            elem: '#cache'
+            ,title: 'xx'
+            ,toolbar: '#cache-toolbar'
+            ,defaultToolbar: []
+              ,size: 'sm' //小尺寸的表格
+
+            ,cols: [[ //表头
+              {type: 'checkbox', fixed: 'left'}
+              ,{field: 'type', title: '类型',templet: function(d) {
+                if (d.type == "suffix") {
+                  return "后缀名"
+                } else if (d.type == "dir") {
+                  return "目录"
+                } else {
+                  return "全路径"
+                }
+              }}
+              ,{field: 'content', title: '内容'}
+              ,{field: 'expire', title: '有效期',templet: function(d) {
+                  return d.expire+d.unit
+              }}
+              ,{field: 'ignore_arg', title: '忽略参数',templet: function(d) {
+                if (d.ignore_arg) {
+                  return '<span class="layui-badge layui-bg-green">是</span>'
+                } else {
+                  return '<span class="layui-badge layui-bg-orange">否</span>'
+                }                
+              }}
+              ,{field: 'proxy_ignore_headers', title: '强制缓存',templet: function(d) {
+                var proxy_ignore_headers_arr = d.proxy_ignore_headers.split(/\s+/)
+
+                if ($.inArray("X-Accel-Expires",proxy_ignore_headers_arr) != -1 && $.inArray("Expires",proxy_ignore_headers_arr) != -1 && $.inArray("Cache-Control",proxy_ignore_headers_arr) != -1 && $.inArray("Set-Cookie",proxy_ignore_headers_arr) != -1) {
+                  return '<span class="layui-badge layui-bg-green">是</span>'
+                } else {
+                  return '<span class="layui-badge layui-bg-orange">否</span>'
+                }
+              
+              }}
+              ,{field: 'range', title: '分片回源',templet: function(d) {
+                if (d.range) {
+                  return '<span class="layui-badge layui-bg-green">是</span>'
+                } else {
+                  return '<span class="layui-badge layui-bg-orange">否</span>'
+                }                
+              }}              
+              ,{field: 'no_cache', title: '不缓存条件',templet: function(d) {
+                  var str = []
+                  for (i in d.no_cache) {
+                    str.push(d.no_cache[i]['variable'] + " ~ " + d.no_cache[i]['string'])
+                  }
+                  return str.join(" or ")
+
+              }}
+              ,{fixed: 'right', title:'操作', toolbar: '#cache-bar', width:120}
+
+            ]]
+            ,data: proxy_cache
+            ,page: true
+          });  
+
+          // 默认cc规则
+          if (window.rule_is_internal[data.cc_default_rule]) {
+            // 选了内置规则
+            $("input[name='cc_default_rule'][value='"+data.cc_default_rule+"']").prop("checked",true)
+          } else {
+            // 选了自定义规则
+            $("input[name='cc_default_rule'][value='']").prop("checked",true)
+            $(".cc_custom_rule").removeClass("layui-hide")
+            $("#custom_cc_rule option[value='"+data.cc_default_rule+"']").prop("selected", true);
+
+          }
+
+
+          // cc切换
+          var cc_switch = JSON.parse(data.cc_switch)
+          if (cc_switch.enable) {
+            $("input[name='cc_switch_on']").prop("checked",true)
+            $(".cc_switch_on").removeClass("layui-hide")
+            $("#cc_switch_rule").val(cc_switch.rule)
+            var qps = cc_switch.switch
+            if (qps == "20" || qps == "50" || qps == "200") {
+              $("select[name='switch-qps']").val(qps)
+            } else {
+              $("select[name='switch-qps']").val("custom")
+              $(".custom-qps").removeClass("layui-hide")
+              $("input[name='switch-qps']").val(qps)
+            }
+            
+          }
+
+
+          // url频率
+          window.url_ratelimit = JSON.parse(data.extra_cc_rule)
+          var url_ratelimit_table = JSON.parse(data.extra_cc_rule)
+
+          table.render({
+            elem: '#url-ratelimit'
+            ,title: 'xx'
+            ,toolbar: '#url-ratelimit-toolbar'
+            ,autoSort: false
+            ,defaultToolbar: []
+              ,size: 'sm' //小尺寸的表格
+
+            ,cols: [[ //表头
+              {type: 'checkbox'}
+              ,{field: 'uri', title: '匹配条件',templet:function(d) {
+                var matcher = d.matcher
+                var ret = ""
+                for (item in matcher) {
+                  var op = matcher[item]["operator"]
+                  var value = matcher[item]["value"]
+                  ret += window.match_item_map[item] +" " + window.match_op_map[op] + " "  + value.split("\n").join(" 或 ") + " " + "<br>且<br>"
+                  
+                }
+                return ret.replace(/<br>且<br>$/,"")
+
+              }}
+              ,{field: 'within', title: '执行过滤',templet:function(d){
+                var filter = d.filter
+                var type = filter['type']
+                var within_second = filter['within_second']
+                var max_challenge = filter['max_challenge']
+                var max_per_uri = filter['max_per_uri']
+                if (type == "req_rate") {
+                  if (within_second == "11" && max_challenge == "11111" && max_per_uri=="11111") {
+                    return "放行"
+                  } else if (within_second == "11" && max_challenge == "0" && max_per_uri=="0") {
+                    return "拉黑"
+                  } else {
+                    return "针对单个IP地址:<br>总请求允许 " + max_challenge + "次/" + within_second + "秒<br>同URL允许 "+max_per_uri+"次/" + within_second + "秒"
+                  }
+                } else {
+                  return window.filter_type_map[type]
+                }
+
+                
+
+              }}
+              ,{fixed: 'right', title:'操作', toolbar: '#url-ratelimit-bar', width:120}
+
+            ]]
+            ,data: url_ratelimit_table
+            ,page: false
+            
+          });   
+
+          // 屏蔽透明代理
+          $("input[name='block_proxy_on']").prop("checked",data.block_proxy)
+
+          // 屏蔽区域
+          var region_arr = data.block_region.split(",")
+          for (let index = 0; index < region_arr.length; index++) {
+            const element = region_arr[index];
+            $("input[name='block_region'][value='"+element+"']").prop("checked",true)
+          }
+
+          // 亚洲全选
+          if ($(".asia_region:checked").length == 49) {
+            $(".check-all-asia").prop("checked",true)
+          }
+
+          // 非洲全选
+          if ($(".africa_region:checked").length == 53) {
+            $(".check-all-africa").prop("checked",true)
+          }
+
+          // 北美洲全选
+          if ($(".north_america_region:checked").length == 36) {
+            $(".check-all-north-america").prop("checked",true)
+          }
+
+          // 南美洲全选
+          if ($(".south_america_region:checked").length == 12) {
+            $(".check-all-south-america").prop("checked",true)
+          }
+
+          // 欧洲全选
+          if ($(".europe_region:checked").length == 46) {
+            $(".check-all-europe").prop("checked",true)
+          }
+
+          // 大洋洲全选
+          if ($(".oceania_region:checked").length == 20) {
+            $(".check-all-oceania").prop("checked",true)
+          }
+
+          // spider_allow
+          var spider_allow = data.spider_allow.split("|")
+          for (i in spider_allow) {
+            $("input[name='spider_allow'][value='"+spider_allow[i]+"']").prop("checked",true)
+          }
+
+          // 黑名单 白名单
+          $("textarea[name='black_ip']").val(data.black_ip)
+          $("textarea[name='white_ip']").val(data.white_ip)
+
+          // acl
+          $("#acl").val(data.acl)
+
+          var hotlink = JSON.parse(data.hotlink)
+          // hotlink enable
+          $("input[name='hotlink_enable']").prop("checked",hotlink.enable)
+          if (hotlink.enable) {
+            $(".hotlink").removeClass("layui-hide")
+          }
+
+          // hotlink_domain
+          $("input[name='hotlink_domain']").val(hotlink.domain)
+
+          // hotlink_allow_empty
+          if (hotlink.allow_empty) {
+            $("input[name='hotlink_allow_empty']").prop("checked",true)
+          }
+
+          // cors
+          var cors = JSON.parse(data.cors)
+          $("input[name='cors_enable']").prop("checked",cors.enable)
+          if (cors.enable) {
+            $(".cors").removeClass("layui-hide")
+          }
+
+          $("input[name='allow_origin']").val(cors.allow_origin)
+          $("input[name='allow_methods']").val(cors.allow_methods)
+          $("input[name='allow_headers']").val(cors.allow_headers)
+          $("input[name='expose_headers']").val(cors.expose_headers)
+          $("input[name='max_age']").val(cors.max_age)
+          $("input[name='allow_credentials']").prop("checked",cors.allow_credentials)
+
+
+          // backend_host
+          if (data.backend_host != "$host" && data.backend_host != "$host:$server_port") {
+            $(".backend_host").removeClass("layui-hide")
+            $("input[name='backend_host_type'][value='custom']").prop("checked",true)
+            $("input[name='backend_host']").val(data.backend_host)
+          } else {
+            $("input[name='backend_host_type'][value='"+data.backend_host+"']").prop("checked",true)
+          }
+
+          // range
+          $("input[name='range']").prop("checked",data.range)
+
+          // proxy_http_version
+          $("input[name='proxy_http_version'][value='"+data.proxy_http_version+"']").prop("checked",true)
+
+          // gzip_enable
+          $("input[name='gzip_enable']").prop("checked",data.gzip_enable)
+
+          // gzip_types
+          $("input[name='gzip_types']").val(data.gzip_types)
+
+          // websocket
+          $("input[name='websocket']").prop("checked",data.websocket_enable)
+
+          // acme_proxy_to_orgin
+          $("input[name='acme_proxy_to_orgin']").prop("checked",data.acme_proxy_to_orgin)
+
+          // page_404 page_50x
+          $("textarea[name='page_404']").val(data.page_404)
+          $("textarea[name='page_50x']").val(data.page_50x)
+
+          // 源站请求头
+          window.req_header = JSON.parse(data.req_header)
+          var req_header_table = JSON.parse(data.req_header)
+
+          table.render({
+            elem: '#req_header'
+            ,title: 'xx'
+            ,toolbar: '#req_header-toolbar'
+            ,autoSort: false
+            ,defaultToolbar: []
+              ,size: 'sm' //小尺寸的表格
+
+            ,cols: [[ //表头
+              {type: 'checkbox', fixed: 'left'}
+              ,{field: 'name', title: '名称'}
+              ,{field: 'value', title: '值'}
+              ,{fixed: 'right', title:'操作', toolbar: '#req_header-bar', width:120}
+
+            ]]
+            ,data: req_header_table
+            ,page: true
+            
+          });
+
+          // cdn响应头
+          window.resp_header = JSON.parse(data.resp_header)
+          var resp_header_table = JSON.parse(data.resp_header)
+
+          table.render({
+            elem: '#resp_header'
+            ,title: 'xx'
+            ,toolbar: '#resp_header-toolbar'
+            ,autoSort: false
+            ,defaultToolbar: []
+              ,size: 'sm' //小尺寸的表格
+
+            ,cols: [[ //表头
+              {type: 'checkbox', fixed: 'left'}
+              ,{field: 'name', title: '名称'}
+              ,{field: 'value', title: '值'}
+              ,{fixed: 'right', title:'操作', toolbar: '#resp_header-bar', width:120}
+
+            ]]
+            ,data: resp_header_table
+            ,page: true
+            
+          });
+
+          // url转向
+          window.url_rewrite = JSON.parse(data.url_rewrite)
+          var url_rewrite_table = JSON.parse(data.url_rewrite)
+
+          table.render({
+            elem: '#url_rewrite'
+            ,title: 'xx'
+            ,toolbar: '#url_rewrite-toolbar'
+            ,autoSort: false
+            ,defaultToolbar: []
+              ,size: 'sm' //小尺寸的表格
+
+            ,cols: [[ //表头
+              {type: 'checkbox', fixed: 'left'}
+              ,{field: 'host', title: '域名端口'}
+              ,{field: 'match', title: '匹配'}
+              ,{field: 'redirect', title: '转向'}
+              ,{field: 'code', title: '响应码'}
+              ,{fixed: 'right', title:'操作', toolbar: '#url_rewrite-bar', width:120}
+
+            ]]
+            ,data: url_rewrite_table
+            ,page: true
+            
+          });
+
+          form.render()
+
+        }
+      });    
+    })
+
+    // 源站表格事件
+    //头工具栏事件
+    table.on('toolbar(backend)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      var table_data = obj.config.data
+      switch(obj.event){
+        case 'add':
+          admin.popup({
+            title: '新增源站'
+            ,area: ['500px', '450px']
+            ,id: 'LAY-popup-backend-add'
+            ,success: function(layero, index){
+              view(this.id).render('site/site/backend_form').done(function(){
+                //监听提交
+                form.on('submit(LAY-site-site-edit-backend-add-submit)', function(data){
+                  var field = data.field
+                  var addr = field.backend_addr; //获取提交的字段
+                  var weight = field.backend_weight
+                  var state = field.backend_state
+
+                  var backend = JSON.parse(JSON.stringify(table_data))
+                  for (i in backend) {
+                    delete backend[i]['LAY_TABLE_INDEX']
+                    delete backend[i]['LAY_CHECKED']
+                  }
+
+                  backend.push({"addr":addr,"weight":weight,"state":state})
+
+                  window.backend = backend
+
+                  var success = function (argument) {
+                    table.reload('backend',{"data":backend}); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+
+                  var fail = function (argument) {
+                  }
+
+                  update_site({"backend":backend},success,fail)
+
+                });
+              });
+            }
+          });
+        break;
+        case 'delete':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要删除的源站');   
+            return
+          }
+
+          layer.confirm('将删除所选源站，是否继续', function(index){
+              var backend = []
+              for (i in table_data) {
+                if (!table_data[i]['LAY_CHECKED']) {
+                  backend.push(table_data[i])
+                }
+              }
+
+              for (i in backend) {
+                delete backend[i]['LAY_TABLE_INDEX']
+                delete backend[i]['LAY_CHECKED']
+              }
+
+              var success = function (argument) {
+                layui.table.reload('backend',{"data":backend}); //重载表格
+                layer.close(index); //执行关闭 
+              }
+
+              var fail = function (argument) {
+              } 
+
+              window.backend = backend
+
+              update_site({"backend":backend},success,fail)
+          });
+        break;                   
+      };
+    });
+    
+    //监听行工具事件
+    table.on('tool(backend)', function(obj){
+      var edit_index = $(obj.tr).data("index");
+      var table_data = obj.data
+      if(obj.event === 'edit'){
+        admin.popup({
+          title: '编辑源站'
+          ,area: ['500px', '450px']
+          ,id: 'LAY-popup-backend-add'
+          ,success: function(layero, index){
+            view(this.id).render('site/site/backend_form',table_data).done(function(){
+              $("#backend_state").val(table_data.state)
+              form.render(null, 'layuiadmin-form-backendadmin');
+              window.backend_pre = JSON.parse(JSON.stringify(window.backend))
+              
+              //监听提交
+              form.on('submit(LAY-site-site-edit-backend-add-submit)', function(data_submit){
+                var field = data_submit.field; //获取提交的字段
+                var addr = field.backend_addr
+                var weight = field.backend_weight
+                var state = field.backend_state
+                
+                // 保存旧数据
+                window.backend_pre = JSON.parse(JSON.stringify(window.backend))
+
+                window.backend[edit_index] = {"index":edit_index, "addr":addr,"weight":weight,"state":state}
+                var backend = JSON.parse(JSON.stringify(window.backend))
+
+                var success = function (argument) {
+                  layui.table.reload('backend',{"data":backend}); //重载表格
+                  layer.close(index); //执行关闭 
+                }
+
+                var fail = function (argument) {
+                  window.backend = JSON.parse(JSON.stringify(window.backend_pre))
+                } 
+
+                update_site({"backend":backend},success,fail)
+
+              });
+            });
+          }
+        });
+      }
+    });  
+
+    // url频率表格事件
+    //头工具栏事件
+    table.on('toolbar(url-ratelimit)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      var table_data = obj.config.data
+      switch(obj.event){
+        case 'add':
+          admin.popup({
+            title: '新增自定义规则'
+            ,area: ['750px', '550px']
+            ,id: 'LAY-popup-url-ratelimit-add'
+            ,success: function(layero, index){
+              view(this.id).render('site/site/url_ratelimit_form').done(function(){
+                //监听提交
+                form.on('submit(LAY-site-site-edit-custom-rule-add-submit)', function(data){
+                  var field = data.field
+                  var uri = field.uri; //获取提交的字段
+                  var within_second = field.within_second
+                  var max_req = field.max_req
+                  var max_req_per_uri = field.max_req_per_uri
+                  var type = field["filter-type"]
+                  if (type == "bypass" || type == "block") {
+                    type = "req_rate"
+                  }
+
+                  if (type == undefined) {
+                    layer.alert("请选择过滤")
+                    return
+                  }
+
+                  if (within_second == "") {
+                    layer.alert("请输入n秒内")
+                    return
+                  }
+
+                  if (max_req == "") {
+                    layer.alert("请输入最大次数")
+                    return
+                  }
+
+                  if (max_req_per_uri == "" && type == "req_rate") {
+                    layer.alert("请输入单URL最大次数")
+                    return
+                  }
+
+                  // extra
+                  var extra = {}
+                  if (type == "url_auth") {
+                    var key = field.url_auth_key
+                    var sign_name = field.url_auth_sign_name
+                    var sign_use_times = field.url_auth_sign_use_times 
+                    var time_diff = field.url_auth_time_diff
+                    var mode = field.url_auth_mode
+
+                    if (key == "") {
+                      layer.alert("请输入密钥")
+                      return        
+                    }
+
+                    if (sign_name == "") {
+                      layer.alert("请输入签名参数名")
+                      return        
+                    }
+
+                    if (sign_use_times == "") {
+                      layer.alert("请输入签名使用次数")
+                      return        
+                    }
+
+                    if (time_diff == "") {
+                      layer.alert("请输入最大时间相差")
+                      return        
+                    }
+
+                    var time_name = field.url_auth_sign_name 
+                    if (mode == "TypeA" && time_name == "" ) {
+                      layer.alert("请输入时间戳参数名")
+                      return              
+                    }
+                    
+                    extra = {"key":key,"sign_name":sign_name,"time_name":time_name,"time_diff":time_diff,"sign_use_times":sign_use_times,"mode":mode}
+                  };
+
+                  // 检查匹配规则
+                  if (match_rules.length == 0) {
+                    layer.alert("请添加匹配条件")
+                    return           
+                  }
+
+                  // 组合成类似的数据{"matcher":{"req_uri": {"operator": "AC", "value": ""}},
+                  //                "filter":{"within_second": "60", "max_challenge": "5", "max_per_uri": "", "type": "req_rate", "extra": {}}}
+
+                  var rule = {"matcher":{}}
+                  for (let index = 0; index < match_rules.length; index++) {
+                    const element = match_rules[index]
+                    var item = element['item']
+                    var op = element['op']
+                    var value = element['value']
+                    rule["matcher"][item] = {"operator":op, "value":value}
+                    
+                  }
+
+                  rule["filter"] = {"within_second":within_second,"max_challenge":max_req,"max_per_uri":max_req_per_uri,"type": type,"extra":extra}
+                  window.url_ratelimit.push(rule)
+
+                  var success = function (argument) {
+                    table.reload("url-ratelimit",{
+                    data: window.url_ratelimit
+                    ,done:function() {
+                      layer.closeAll();
+                    }
+                    })
+                  }
+
+                  var fail = function (argument) {
+                  }
+
+                  update_site({"extra_cc_rule":url_ratelimit},success,fail)
+
+                });
+
+              });
+            }
+          });
+        break;
+        case 'delete':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要删除的规则');   
+            return
+          }
+
+          layer.confirm('将删除所选规则，是否继续', function(index){
+              var url_ratelimit = []
+              for (i in table_data) {
+                if (!table_data[i]['LAY_CHECKED']) {
+                  url_ratelimit.push(table_data[i])
+                }
+              }
+
+              for (i in url_ratelimit) {
+                delete url_ratelimit[i]['LAY_TABLE_INDEX']
+                delete url_ratelimit[i]['LAY_CHECKED']
+              }
+
+              var success = function (argument) {
+                layui.table.reload('url-ratelimit',{"data":url_ratelimit}); //重载表格
+                layer.close(index); //执行关闭 
+              }
+
+              var fail = function (argument) {
+              } 
+
+              window.url_ratelimit = url_ratelimit
+
+              update_site({"extra_cc_rule":url_ratelimit},success,fail)
+          });
+        break;                   
+      };
+    });
+    
+    //url频率 监听行工具事件
+    table.on('tool(url-ratelimit)', function(obj){
+      var edit_index = $(obj.tr).data("index");
+      var table_data = obj.data
+      if(obj.event === 'edit'){
+        admin.popup({
+          title: '编辑自定义规则'
+          ,area: ['750px', '550px']
+          ,id: 'LAY-popup-url-ratelimit-add'
+          ,success: function(layero, index){
+            view(this.id).render('site/site/url_ratelimit_form',table_data).done(function(){
+              $("#url_ratelimit_state").val(table_data.state)
+              form.render(null, 'layuiadmin-form-url_ratelimitadmin');
+              window.url_ratelimit_pre = JSON.parse(JSON.stringify(window.url_ratelimit))
+
+              form.on('submit(LAY-site-site-edit-custom-rule-add-submit)', function(data){
+                  var field = data.field
+                  var uri = field.uri; //获取提交的字段
+                  var within_second = field.within_second
+                  var max_req = field.max_req
+                  var max_req_per_uri = field.max_req_per_uri
+                  var type = field["filter-type"]
+                  if (type == "bypass" || type == "block") {
+                    type = "req_rate"
+                  }
+
+                  if (type == undefined) {
+                    layer.alert("请选择过滤")
+                    return
+                  }
+
+                  if (within_second == "") {
+                    layer.alert("请输入n秒内")
+                    return
+                  }
+
+                  if (max_req == "") {
+                    layer.alert("请输入最大次数")
+                    return
+                  }
+
+                  if (max_req_per_uri == "" && type == "req_rate") {
+                    layer.alert("请输入单URL最大次数")
+                    return
+                  }
+
+                  // extra
+                  var extra = {}
+                  if (type == "url_auth") {
+                    var key = field.url_auth_key
+                    var sign_name = field.url_auth_sign_name
+                    var time_name = field.url_auth_time_name
+                
+                    var sign_use_times = field.url_auth_sign_use_times 
+                    var time_diff = field.url_auth_time_diff
+                    var mode = field.url_auth_mode
+
+                    if (key == "") {
+                      layer.alert("请输入密钥")
+                      return        
+                    }
+
+                    if (sign_name == "") {
+                      layer.alert("请输入签名参数名")
+                      return        
+                    }
+
+                    if (time_name == "") {
+                      layer.alert("请输入时间戳参数名")
+                      return        
+                    }
+
+                    if (sign_use_times == "") {
+                      layer.alert("请输入签名使用次数")
+                      return        
+                    }
+
+                    if (time_diff == "") {
+                      layer.alert("请输入最大时间相差")
+                      return        
+                    }
+
+                    if (mode == "TypeA" && time_name == "" ) {
+                      layer.alert("请输入时间戳参数名")
+                      return              
+                    }
+                    
+                    extra = {"key":key,"sign_name":sign_name,"time_name":time_name,"time_diff":time_diff,"sign_use_times":sign_use_times,"mode":mode}
+                  };
+
+                  // 检查匹配规则
+                  if (match_rules.length == 0) {
+                    layer.alert("请添加匹配条件")
+                    return           
+                  }
+
+                  // 组合成类似的数据{"matcher":{"req_uri": {"operator": "AC", "value": ""}},
+                  //                "filter":{"within_second": "60", "max_challenge": "5", "max_per_uri": "", "type": "req_rate", "extra": {}}}
+
+                  var rule = {"matcher":{}}
+                  for (let index = 0; index < match_rules.length; index++) {
+                    const element = match_rules[index]
+                    var item = element['item']
+                    var op = element['op']
+                    var value = element['value']
+                    rule["matcher"][item] = {"operator":op, "value":value}
+                    
+                  }
+
+                  rule["filter"] = {"within_second":within_second,"max_challenge":max_req,"max_per_uri":max_req_per_uri,"type": type,"extra":extra}
+                  window.url_ratelimit[edit_index] = rule
+
+                  var success = function (argument) {
+                    table.reload("url-ratelimit",{
+                    data: window.url_ratelimit
+                    ,done:function() {
+                      layer.closeAll();
+                    }
+                    })
+                  }
+
+                  var fail = function (argument) {
+                  }
+
+                  update_site({"extra_cc_rule":window.url_ratelimit},success,fail)
+
+                });
+            });
+          }
+        });
+      } else if(obj.event === 'up'){
+        // 判断是否到顶
+        if (edit_index == 0) {
+          layer.msg("已到顶部")
+          return               
+        }
+
+        window.url_ratelimit.splice(edit_index,1)
+        window.url_ratelimit.splice(edit_index-1,0,table_data)
+        var success = function (argument) {
+          table.reload("url-ratelimit",{
+          data: window.url_ratelimit
+          ,done:function() {
+            layer.closeAll();
+          }
+          })
+        }
+
+        var fail = function (argument) {
+        }
+
+         update_site({"extra_cc_rule":window.url_ratelimit},success,fail)
+
+      } else if(obj.event === 'down'){
+        // 判断是否到底
+        if (window.url_ratelimit.length -1 == edit_index) {
+          layer.msg("已到底部")
+          return               
+        }
+
+        window.url_ratelimit.splice(edit_index,1)
+        window.url_ratelimit.splice(edit_index+1,0,table_data)
+
+        var success = function (argument) {
+          table.reload("url-ratelimit",{
+          data: window.url_ratelimit
+          ,done:function() {
+            layer.closeAll();
+          }
+          })
+        }
+
+        var fail = function (argument) {
+        }
+
+         update_site({"extra_cc_rule":window.url_ratelimit},success,fail)
+
+      }  
+    });  
+
+    //缓存事件
+    //头工具栏事件
+    table.on('toolbar(cache)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      var table_data = obj.config.data
+      switch(obj.event){
+        case 'add':
+          admin.popup({
+            title: '新增缓存'
+            ,area: ['800px', '550px']
+            ,id: 'LAY-popup-cache-add'
+            ,success: function(layero, index){
+              view(this.id).render('site/site/cache_form').done(function(){
+                //监听提交
+                form.on('submit(LAY-site-site-edit-cache-add-submit)', function(data){
+                  var field = data.field
+                  var type = field.cache_type; //获取提交的字段
+                  var content = field.cache_content
+                  var expire = field.cache_expire
+                  var unit = field.cache_unit
+                  var ignore_arg = $("input[name='cache_ignore_arg']").prop("checked")
+                  var range = $("input[name='cache_range']").prop("checked")
+
+                  var no_cache = []
+                  $(".no-cache-item .del-span").each(function (index,ele) {
+                    var item = $(ele).text()
+                    var variable = item.split(" ~ ")[0]
+                    var string = item.split(" ~ ")[1].slice(0,-1)
+                    no_cache.push({"variable":variable,"string":string})
+                  })
+
+                  var proxy_ignore_headers_arr = []
+                  $("input[name='proxy_ignore_headers']:checked").each(function (){
+                    proxy_ignore_headers_arr.push($(this).val())
+                  })
+
+                  var proxy_ignore_headers = proxy_ignore_headers_arr.join(" ")
+
+                  var proxy_cache = JSON.parse(JSON.stringify(table_data))
+                  for (i in proxy_cache) {
+                    delete proxy_cache[i]['LAY_TABLE_INDEX']
+                    delete proxy_cache[i]['LAY_CHECKED']
+                  }
+
+                  proxy_cache.push({"type":type,"content":content,"expire":expire,"unit":unit,"ignore_arg":ignore_arg,"range":range,"proxy_ignore_headers":proxy_ignore_headers, "no_cache":no_cache})
+
+                  window.cache = proxy_cache
+
+                  var success = function (argument) {
+                    layui.table.reload('cache',{data:proxy_cache}); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+
+                  var fail = function (argument) {
+                  }
+
+                  update_site({"proxy_cache":proxy_cache},success,fail)
+
+                });
+              });
+            }
+          });
+        break;
+        case 'delete':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要删除的缓存配置');   
+            return
+          }
+
+          layer.confirm('将删除所选的缓存配置，是否继续', function(index){
+              var proxy_cache = []
+              for (i in table_data) {
+                if (!table_data[i]['LAY_CHECKED']) {
+                  proxy_cache.push(table_data[i])
+                }
+              }
+
+              for (i in proxy_cache) {
+                delete proxy_cache[i]['LAY_TABLE_INDEX']
+                delete proxy_cache[i]['LAY_CHECKED']
+              }
+
+              var success = function (argument) {
+                layui.table.reload('cache',{data: proxy_cache}); //重载表格
+                layer.close(index); //执行关闭 
+              }
+
+              var fail = function (argument) {
+              } 
+
+              window.cache = proxy_cache
+              update_site({"proxy_cache":proxy_cache},success,fail)
+          });
+        break;                   
+      };
+    });
+    
+    //监听行工具事件
+    table.on('tool(cache)', function(obj){
+      var edit_index = $(obj.tr).data("index");
+      var table_data = obj.data
+      if(obj.event === 'edit'){
+        admin.popup({
+          title: '编辑缓存'
+          ,area: ['800px', '550px']
+          ,id: 'LAY-popup-cache-add'
+          ,success: function(layero, index){
+            view(this.id).render('site/site/cache_form',table_data).done(function(){
+              $("#cache_type").val(table_data.type)
+              $("#cache_unit").val(table_data.unit)
+              $("input[name='cache_ignore_arg']").prop("checked",table_data.ignore_arg)
+              $("input[name='cache_range']").prop("checked",table_data.range)
+              var proxy_ignore_headers_arr = table_data.proxy_ignore_headers.split(/\s+/)
+              for (i in proxy_ignore_headers_arr) {
+                $("input[name='proxy_ignore_headers'][value='"+proxy_ignore_headers_arr[i]+"']").prop("checked",true)
+              }
+
+              if ($.inArray("X-Accel-Expires",proxy_ignore_headers_arr) != -1 && $.inArray("Expires",proxy_ignore_headers_arr) != -1 && $.inArray("Cache-Control",proxy_ignore_headers_arr) != -1 && $.inArray("Set-Cookie",proxy_ignore_headers_arr) != -1) {
+                $("input[name='force_cache']").prop("checked",true)
+              }
+
+              var no_cache = table_data.no_cache
+              for (i in no_cache) {
+                var variable = no_cache[i]['variable']
+                var string = no_cache[i]['string']
+                $(".no-data").remove()
+                $(".no-cache").append('<div class="layui-form-mid no-cache-item"><span class="layui-badge layui-bg-blue del-span">'+variable+' ~ '+string+'<span onclick=\'del_item(this)\' class="layui-badge del">x</span></span></div>')                
+              }
+
+              form.render(null, 'layuiadmin-form-cacheadmin');
+              
+              //监听提交
+              form.on('submit(LAY-site-site-edit-cache-add-submit)', function(data_submit){
+                var field = data_submit.field
+                var type = field.cache_type; //获取提交的字段
+                var content = field.cache_content
+                var expire = field.cache_expire
+                var unit = field.cache_unit
+                var ignore_arg = $("input[name='cache_ignore_arg']").prop("checked")
+                var range = $("input[name='cache_range']").prop("checked")
+
+                var no_cache = []
+                $(".no-cache-item .del-span").each(function (index,ele) {
+                  var item = $(ele).text()
+                  var variable = item.split(" ~ ")[0]
+                  var string = item.split(" ~ ")[1].slice(0,-1)
+                  no_cache.push({"variable":variable,"string":string})
+                })
+
+                var proxy_ignore_headers_arr = []
+                $("input[name='proxy_ignore_headers']:checked").each(function (){
+                  proxy_ignore_headers_arr.push($(this).val())
+                })
+
+                var proxy_ignore_headers = proxy_ignore_headers_arr.join(" ")
+
+                // 保存旧数据
+                window.cache_pre = JSON.parse(JSON.stringify(window.cache))
+
+                window.cache[edit_index] = {"type":type,"content":content,"expire":expire,"unit":unit,"ignore_arg":ignore_arg,"range":range,"proxy_ignore_headers":proxy_ignore_headers, "no_cache":no_cache}
+                var proxy_cache = JSON.parse(JSON.stringify(window.cache))
+
+                var success = function (argument) {
+                  layui.table.reload('cache',{"data":proxy_cache}); //重载表格
+                  layer.close(index); //执行关闭 
+                }
+
+                var fail = function (argument) {
+                  window.cache = JSON.parse(JSON.stringify(window.cache_pre))
+                } 
+
+                update_site({"proxy_cache":proxy_cache},success,fail)
+
+
+              });
+            });
+          }
+        });
+      }
+    });  
+
+    //源站请求头事件
+    //头工具栏事件
+    table.on('toolbar(req_header)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      var table_data = obj.config.data
+      switch(obj.event){
+        case 'add':
+          admin.popup({
+            title: '新增源站请求头'
+            ,area: ['500px', '320px']
+            ,id: 'LAY-popup-req_header-add'
+            ,success: function(layero, index){
+              view(this.id).render('site/site/req_header_form').done(function(){
+                //监听提交
+                form.on('submit(LAY-site-site-edit-req_header-add-submit)', function(data){
+                  var field = data.field
+                  var name = field.req_header_name; //获取提交的字段
+                  var value = field.req_header_value
+
+                  var req_header = JSON.parse(JSON.stringify(table_data))
+                  for (i in req_header) {
+                    delete req_header[i]['LAY_TABLE_INDEX']
+                    delete req_header[i]['LAY_CHECKED']
+                  }
+
+                  req_header.push({"name":name,"value":value})
+
+                  window.req_header = req_header
+
+                  var success = function (argument) {
+                    layui.table.reload('req_header',{data:req_header}); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+
+                  var fail = function (argument) {
+                  }
+
+                  update_site({"req_header":req_header},success,fail)
+
+                });
+              });
+            }
+          });
+        break;
+        case 'delete':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要删除的请求头');   
+            return
+          }
+
+          layer.confirm('将删除所选的请求头，是否继续', function(index){
+              var req_header = []
+              for (i in table_data) {
+                if (!table_data[i]['LAY_CHECKED']) {
+                  req_header.push(table_data[i])
+                }
+              }
+
+              for (i in req_header) {
+                delete req_header[i]['LAY_TABLE_INDEX']
+                delete req_header[i]['LAY_CHECKED']
+              }
+
+              var success = function (argument) {
+                layui.table.reload('req_header',{data: req_header}); //重载表格
+                layer.close(index); //执行关闭 
+              }
+
+              var fail = function (argument) {
+              } 
+
+              window.req_header = req_header
+              update_site({"req_header":req_header},success,fail)
+          });
+        break;                   
+      };
+    });
+    
+    //监听行工具事件
+    table.on('tool(req_header)', function(obj){
+      var edit_index = $(obj.tr).data("index");
+      var table_data = obj.data
+      if(obj.event === 'edit'){
+        admin.popup({
+          title: '编辑请求头'
+          ,area: ['500px', '320px']
+          ,id: 'LAY-popup-req_header-add'
+          ,success: function(layero, index){
+            view(this.id).render('site/site/req_header_form',table_data).done(function(){
+              form.render(null, 'layuiadmin-form-req_headeradmin');
+              
+              //监听提交
+              form.on('submit(LAY-site-site-edit-req_header-add-submit)', function(data_submit){
+                var field = data_submit.field
+                var name = field.req_header_name; //获取提交的字段
+                var value = field.req_header_value
+
+                // 保存旧数据
+                window.req_header_pre = JSON.parse(JSON.stringify(window.req_header))
+
+                window.req_header[edit_index] = {"name":name,"value":value}
+                var req_header = JSON.parse(JSON.stringify(window.req_header))
+
+                var success = function (argument) {
+                  layui.table.reload('req_header',{"data":req_header}); //重载表格
+                  layer.close(index); //执行关闭 
+                }
+
+                var fail = function (argument) {
+                  window.req_header = JSON.parse(JSON.stringify(window.req_header_pre))
+                } 
+
+                update_site({"req_header":req_header},success,fail)
+
+              });
+            });
+          }
+        });
+      }
+    });  
+
+    //cdn响应头事件
+    //头工具栏事件
+    table.on('toolbar(resp_header)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      var table_data = obj.config.data
+      switch(obj.event){
+        case 'add':
+          admin.popup({
+            title: '新增cdn响应头'
+            ,area: ['500px', '320px']
+            ,id: 'LAY-popup-resp_header-add'
+            ,success: function(layero, index){
+              view(this.id).render('site/site/resp_header_form').done(function(){
+                //监听提交
+                form.on('submit(LAY-site-site-edit-resp_header-add-submit)', function(data){
+                  var field = data.field
+                  var name = field.resp_header_name; //获取提交的字段
+                  var value = field.resp_header_value
+
+                  var resp_header = JSON.parse(JSON.stringify(table_data))
+                  for (i in resp_header) {
+                    delete resp_header[i]['LAY_TABLE_INDEX']
+                    delete resp_header[i]['LAY_CHECKED']
+                  }
+
+                  resp_header.push({"name":name,"value":value})
+
+                  window.resp_header = resp_header
+
+                  var success = function (argument) {
+                    layui.table.reload('resp_header',{data:resp_header}); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+
+                  var fail = function (argument) {
+                  }
+
+                  update_site({"resp_header":resp_header},success,fail)
+
+                });
+              });
+            }
+          });
+        break;
+        case 'delete':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要删除的响应头');   
+            return
+          }
+
+          layer.confirm('将删除所选的响应头，是否继续', function(index){
+              var resp_header = []
+              for (i in table_data) {
+                if (!table_data[i]['LAY_CHECKED']) {
+                  resp_header.push(table_data[i])
+                }
+              }
+
+              for (i in resp_header) {
+                delete resp_header[i]['LAY_TABLE_INDEX']
+                delete resp_header[i]['LAY_CHECKED']
+              }
+
+              var success = function (argument) {
+                layui.table.reload('resp_header',{data: resp_header}); //重载表格
+                layer.close(index); //执行关闭 
+              }
+
+              var fail = function (argument) {
+              } 
+
+              window.resp_header = resp_header
+              update_site({"resp_header":resp_header},success,fail)
+          });
+        break;                   
+      };
+    });
+    
+    //监听行工具事件
+    table.on('tool(resp_header)', function(obj){
+      var edit_index = $(obj.tr).data("index");
+      var table_data = obj.data
+      if(obj.event === 'edit'){
+        admin.popup({
+          title: '编辑响应头'
+          ,area: ['500px', '320px']
+          ,id: 'LAY-popup-resp_header-add'
+          ,success: function(layero, index){
+            view(this.id).render('site/site/resp_header_form',table_data).done(function(){
+              form.render(null, 'layuiadmin-form-resp_headeradmin');
+              
+              //监听提交
+              form.on('submit(LAY-site-site-edit-resp_header-add-submit)', function(data_submit){
+                var field = data_submit.field
+                var name = field.resp_header_name; //获取提交的字段
+                var value = field.resp_header_value
+
+                // 保存旧数据
+                window.resp_header_pre = JSON.parse(JSON.stringify(window.resp_header))
+
+                window.resp_header[edit_index] = {"name":name,"value":value}
+                var resp_header = JSON.parse(JSON.stringify(window.resp_header))
+
+                var success = function (argument) {
+                  layui.table.reload('resp_header',{"data":resp_header}); //重载表格
+                  layer.close(index); //执行关闭 
+                }
+
+                var fail = function (argument) {
+                  window.resp_header = JSON.parse(JSON.stringify(window.resp_header_pre))
+                } 
+
+                update_site({"resp_header":resp_header},success,fail)
+
+              });
+            });
+          }
+        });
+      }
+    });  
+
+    //url转向事件
+    //头工具栏事件
+    table.on('toolbar(url_rewrite)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      var table_data = obj.config.data
+      switch(obj.event){
+        case 'add':
+          admin.popup({
+            title: '新增url转向'
+            ,area: ['500px', '420px']
+            ,id: 'LAY-popup-url_rewrite-add'
+            ,success: function(layero, index){
+              view(this.id).render('site/site/url_rewrite_form').done(function(){
+                //监听提交
+                form.on('submit(LAY-site-site-edit-url_rewrite-add-submit)', function(data){
+                  var field = data.field
+                  var host = field.url_rewrite_host; //获取提交的字段
+                  var match = field.url_rewrite_match
+                  var redirect = field.url_rewrite_redirect
+                  var code = field.url_rewrite_code
+
+                  var url_rewrite = JSON.parse(JSON.stringify(table_data))
+                  for (i in url_rewrite) {
+                    delete url_rewrite[i]['LAY_TABLE_INDEX']
+                    delete url_rewrite[i]['LAY_CHECKED']
+                  }
+
+                  url_rewrite.push({"host":host,"match":match,"redirect":redirect,"code":code})
+
+                  window.url_rewrite = url_rewrite
+
+                  var success = function (argument) {
+                    layui.table.reload('url_rewrite',{data:url_rewrite}); //重载表格
+                    layer.close(index); //执行关闭 
+                  }
+
+                  var fail = function (argument) {
+                  }
+
+                  update_site({"url_rewrite":url_rewrite},success,fail)
+
+                });
+              });
+            }
+          });
+        break;
+        case 'delete':
+          var data = checkStatus.data;
+          if (data.length == 0) {
+            layer.alert('请选择需要删除的url转向');   
+            return
+          }
+
+          layer.confirm('将删除所选的url转向，是否继续', function(index){
+              var url_rewrite = []
+              for (i in table_data) {
+                if (!table_data[i]['LAY_CHECKED']) {
+                  url_rewrite.push(table_data[i])
+                }
+              }
+
+              for (i in url_rewrite) {
+                delete url_rewrite[i]['LAY_TABLE_INDEX']
+                delete url_rewrite[i]['LAY_CHECKED']
+              }
+
+              var success = function (argument) {
+                layui.table.reload('url_rewrite',{data: url_rewrite}); //重载表格
+                layer.close(index); //执行关闭 
+              }
+
+              var fail = function (argument) {
+              } 
+
+              window.url_rewrite = url_rewrite
+              update_site({"url_rewrite":url_rewrite},success,fail)
+          });
+        break;                   
+      };
+    });
+    
+    //监听行工具事件
+    table.on('tool(url_rewrite)', function(obj){
+      var edit_index = $(obj.tr).data("index");
+      var table_data = obj.data
+      if(obj.event === 'edit'){
+        admin.popup({
+          title: '编辑url转向'
+          ,area: ['500px', '420px']
+          ,id: 'LAY-popup-url_rewrite-add'
+          ,success: function(layero, index){
+            view(this.id).render('site/site/url_rewrite_form',table_data).done(function(){
+              $("#url_rewrite_code").val(table_data.code)
+              form.render(null, 'layuiadmin-form-url_rewriteadmin');
+              
+              //监听提交
+              form.on('submit(LAY-site-site-edit-url_rewrite-add-submit)', function(data_submit){
+                var field = data_submit.field
+                var host = field.url_rewrite_host; //获取提交的字段
+                var match = field.url_rewrite_match
+                var redirect = field.url_rewrite_redirect
+                var code = field.url_rewrite_code
+
+                // 保存旧数据
+                window.url_rewrite_pre = JSON.parse(JSON.stringify(window.url_rewrite))
+
+                window.url_rewrite[edit_index] = {"host":host,"match":match,"redirect":redirect,"code":code}
+                var url_rewrite = JSON.parse(JSON.stringify(window.url_rewrite))
+
+                var success = function (argument) {
+                  layui.table.reload('url_rewrite',{"data":url_rewrite}); //重载表格
+                  layer.close(index); //执行关闭 
+                }
+
+                var fail = function (argument) {
+                  window.url_rewrite = JSON.parse(JSON.stringify(window.url_rewrite_pre))
+                } 
+
+                update_site({"url_rewrite":url_rewrite},success,fail)
+
+              });
+            });
+          }
+        });
+      }
+    });  
+
+    function update_site(data,success,fail) {
+      admin.req({
+        url: '/sites/'+site_id //实际使用请改成服务端真实接口
+        ,type: "put"
+        ,data: JSON.stringify(data)
+        ,contentType:"application/json"
+        ,dataType: "json"        
+        ,fail: fail
+        ,done: function(res){
+          //登入成功的提示与跳转
+          layer.msg('更新成功', {
+            offset: '15px'
+            ,icon: 1
+            ,time: 1000
+          }, function(){
+            if (success) {
+              success()
+            }
+            
+          });
+        }
+      });
+    }
+
+    // 监听修改并提交
+
+    // 监听 domain
+    $("input[name='domain']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var domain = $(this).val();
+        var fail = function (argument) {
+          $("input[name='domain']").val(prev)
+        }
+        update_site({"domain":domain},null,fail)
+
+    });
+
+      // 监听 post请求大小限制
+      $("input[name='post_size_limit']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var post_size_limit = $(this).val();
+        var fail = function (argument) {
+          $("input[name='post_size_limit']").val(prev)
+        }
+        update_site({"post_size_limit":post_size_limit},null,fail)
+
+    });
+
+    //监听 套餐select
+    form.on('select(user_package_update)', function(data){
+      var user_package = $("select[name='user_package']").val()
+      update_site({"user_package":user_package},null)
+
+    });
+
+    //监听 http_listen 开关
+    form.on('switch(http_on)', function(data){
+      var port = $("input[name='http_listen_port']").val()
+      var fail_on = function (argument) {
+        $("input[name='http_on']").prop("checked",false)
+        form.render("checkbox")
+        $(".http_listen").addClass("layui-hide")
+      }      
+
+      var fail_off = function (argument) {
+        $("input[name='http_on']").prop("checked",true)
+        form.render("checkbox")
+        $(".http_listen").removeClass("layui-hide")
+      } 
+
+      // 开启
+      if (data.elem.checked) {
+        $(".http_listen").removeClass("layui-hide")
+        update_site({"http_listen":{"port":port}},null,fail_on)
+
+      // 关闭
+      } else {
+        $(".http_listen").addClass("layui-hide")
+        update_site({"http_listen":{}},null,fail_off)
+      }
+
+    });
+
+    // 监听 http_listen port
+    $("input[name='http_listen_port']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var port = $(this).val();
+        var fail = function (argument) {
+          $("input[name='http_listen_port']").val(prev)
+        }
+        update_site({"http_listen":{"port":port}},null,fail)
+
+    });
+
+    // https开关
+    form.on('switch(https_on)', function(data){
+      if (data.elem.checked) {
+        $(".https_listen").removeClass("layui-hide")
+      } else {
+        var fail = function (argument) {
+          $(".https_listen").removeClass("layui-hide")
+          $("input[name='https_on']").prop("checked",true)
+          form.render("checkbox")          
+        }
+        $(".https_listen").addClass("layui-hide")
+        update_site({"https_listen":{}},null,fail)
+
+      }
+    });   
+
+    // 监听证书选择
+    form.on('select(cert)', function(data){
+      $("#more-https").removeAttr("disabled")
+      $("#more-https").removeClass("layui-btn-disabled")
+
+      update_site({"https_listen":{"cert":data.value}},null,null)
+
+    });   
+
+    // https_listen port
+    $("input[name='https_listen_port']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var port = $(this).val();
+        var fail = function (argument) {
+          $("input[name='https_listen_port']").val(prev)
+        }
+        update_site({"https_listen":{"port":port}},null,fail)
+
+    });
+
+    // 监听https_listen hsts
+    form.on('switch(hsts)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='hsts']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+      update_site({"https_listen":{"hsts":checked}},null,fail)
+
+    });     
+
+    // 监听https_listen http2
+    form.on('switch(http2)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='http2']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+      update_site({"https_listen":{"http2":checked}},null,fail)
+
+    }); 
+
+    // 监听https_listen ocsp_stapling
+    form.on('switch(ocsp_stapling)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='ocsp_stapling']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+      update_site({"https_listen":{"ocsp_stapling":checked}},null,fail)
+
+    }); 
+
+    // 监听 https_listen ssl_protocols
+    $("input[name='https_listen_ssl_protocols']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var ssl_protocols = $(this).val();
+        var fail = function (argument) {
+          $("input[name='https_listen_ssl_protocols']").val(prev)
+        }
+        update_site({"https_listen":{"ssl_protocols":ssl_protocols}},null,fail)
+
+    });
+
+    // 监听 https_listen ssl_ciphers
+    $("input[name='https_listen_ssl_ciphers']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var ssl_ciphers = $(this).val();
+        var fail = function (argument) {
+          $("input[name='https_listen_ssl_ciphers']").val(prev)
+        }
+        update_site({"https_listen":{"ssl_ciphers":ssl_ciphers}},null,fail)
+
+    });
+
+    // 监听 https_listen ssl_prefer_server_ciphers
+    $("input[name='https_listen_ssl_prefer_server_ciphers']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var ssl_prefer_server_ciphers = $(this).val();
+        var fail = function (argument) {
+          $("input[name='https_listen_ssl_prefer_server_ciphers']").val(prev)
+        }
+        update_site({"https_listen":{"ssl_prefer_server_ciphers":ssl_prefer_server_ciphers}},null,fail)
+
+    });
+
+    // 监听https_listen 强制https
+    form.on('switch(force_ssl_enable)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='force_ssl_enable']").prop("checked",!checked)
+        form.render("checkbox")
+      }
+      update_site({"https_listen":{"force_ssl_enable":checked}},null,fail)
+
+    }); 
+
+    // 监听 https_listen force_ssl_port
+    $("input[name='force_ssl_port']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var force_ssl_port = $(this).val();
+        var fail = function (argument) {
+          $("input[name='force_ssl_port']").val(prev)
+        }
+        update_site({"https_listen":{"force_ssl_port":force_ssl_port}},null,fail)
+
+    });
+
+    // 监听负载方式
+    form.on('select(balance_way)', function(data){
+      var balance_way = data.value
+      update_site({"balance_way":balance_way},null,null)
+
+    }); 
+
+    // 监听backend protocol
+    form.on('radio(backend_protocol)', function(data){
+      var backend_protocol = data.value
+      update_site({"backend_protocol":backend_protocol},null,null)
+
+    }); 
+
+    // 监听ssl_mode
+    form.on('radio(ssl_mode)', function(data){
+      var ssl_mode = data.value
+      if (ssl_mode == "old") {
+        var ssl_protocols = "TLSv1 TLSv1.1 TLSv1.2 TLSv1.3"
+        var ssl_ciphers = "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA256:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA"
+        var ssl_prefer_server_ciphers = "on"
+      } else if (ssl_mode == "intermediate") {
+        var ssl_protocols = "TLSv1.2 TLSv1.3"
+        var ssl_ciphers = "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
+        var ssl_prefer_server_ciphers = "off"
+      } else if (ssl_mode == "custom") {
+        $(".ssl-config").removeClass("layui-hide")
+      }
+
+      if (ssl_mode == "old" || ssl_mode == "intermediate") {
+        $(".ssl-config").addClass("layui-hide")
+        $("input[name='https_listen_ssl_protocols']").val(ssl_protocols)
+        $("input[name='https_listen_ssl_ciphers']").val(ssl_ciphers)
+        $("input[name='https_listen_ssl_prefer_server_ciphers']").val(ssl_prefer_server_ciphers)        
+        update_site({"https_listen":{"ssl_protocols":ssl_protocols,"ssl_ciphers":ssl_ciphers,"ssl_prefer_server_ciphers":ssl_prefer_server_ciphers}},null,null)
+
+      }
+
+    }); 
+
+    // 监听 http回源端口
+    $("input[name='backend_http_port']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var backend_http_port = $(this).val();
+        var fail = function (argument) {
+          $("input[name='backend_http_port']").val(prev)
+        }
+        update_site({"backend_http_port":backend_http_port},null,fail)
+
+    });
+
+    // 监听 https回源端口
+    $("input[name='backend_https_port']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var backend_https_port = $(this).val();
+        var fail = function (argument) {
+          $("input[name='backend_https_port']").val(prev)
+        }
+        update_site({"backend_https_port":backend_https_port},null,fail)
+
+    });
+
+    // 监听 回源超时
+    $("input[name='proxy_timeout']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var proxy_timeout = $(this).val();
+        var fail = function (argument) {
+          $("input[name='proxy_timeout']").val(prev)
+        }
+        update_site({"proxy_timeout":proxy_timeout},null,fail)
+
+    });
+
+    // 回源端口映射开关
+    form.on('switch(backend_port_mapping)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='backend_port_mapping']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      var success = function (argument) {
+        if (checked) {
+          $(".backend-protocol").addClass("layui-hide")
+          $(".backend-https-port").addClass("layui-hide")
+          $(".backend-http-port").addClass("layui-hide")
+        } else {
+          $(".backend-protocol").removeClass("layui-hide")
+          $(".backend-https-port").removeClass("layui-hide")
+          $(".backend-http-port").removeClass("layui-hide")
+        }
+      }
+
+      update_site({"backend_port_mapping":checked},success,fail)
+
+    });   
+
+    // 监听健康检查开关
+    form.on('switch(health_check_enable)', function(data){
+      var checked = data.elem.checked
+
+      var success = function (argument) {
+        if (checked) {
+          $(".health_check").removeClass("layui-hide")
+        } else {
+          $(".health_check").addClass("layui-hide")
+        }
+      }
+
+      var fail = function (argument) {
+        $("input[name='health_check_enable']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_site({"health_check":{"enable": checked}},success,fail)
+
+    });      
+
+    // 健康检查域名
+    $("input[name='health_check_host']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var curr = $(this).val();
+        var fail = function (argument) {
+          $("input[name='health_check_host']").val(prev)
+        }
+        update_site({"health_check":{"host":curr}},null,fail)
+
+    });
+
+    // 健康检查路径
+    $("input[name='health_check_path']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var curr = $(this).val();
+        var fail = function (argument) {
+          $("input[name='health_check_path']").val(prev)
+        }
+        update_site({"health_check":{"path":curr}},null,fail)
+
+    });
+
+    // 健康检查状态码
+    $("input[name='health_check_status_code']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var curr = $(this).val();
+        var fail = function (argument) {
+          $("input[name='health_check_status_code']").val(prev)
+        }
+        update_site({"health_check":{"status_code":curr}},null,fail)
+
+    });
+
+    // 健康检查间隔时间
+    $("input[name='health_check_interval']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var curr = $(this).val();
+        var fail = function (argument) {
+          $("input[name='health_check_interval']").val(prev)
+        }
+        update_site({"health_check":{"interval":curr}},null,fail)
+
+    });
+
+    // 监听长连接开关
+    form.on('switch(ups_keepalive_enable)', function(data){
+      var checked = data.elem.checked
+
+      var success = function (argument) {
+        if (checked) {
+          $(".ups_keepalive").removeClass("layui-hide")
+        } else {
+          $(".ups_keepalive").addClass("layui-hide")
+        }
+      }
+
+      var fail = function (argument) {
+        $("input[name='ups_keepalive_enable']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_site({"ups_keepalive": checked },success,fail)
+
+    });  
+
+    // 长连接数
+    $("input[name='ups_keepalive_conn']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var curr = $(this).val();
+        var fail = function (argument) {
+          $("input[name='ups_keepalive_conn']").val(prev)
+        }
+        update_site({"ups_keepalive_conn":curr},null,fail)
+
+    });
+
+    // 长连接超时
+    $("input[name='ups_keepalive_timeout']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var curr = $(this).val();
+        var fail = function (argument) {
+          $("input[name='ups_keepalive_timeout']").val(prev)
+        }
+        update_site({"ups_keepalive_timeout":curr},null,fail)
+
+    });
+
+    // 监听选择内置规则
+    form.on('radio(cc_default_rule)', function(data){
+      var value = data.value
+      if (value != "") {
+        update_site({"cc_default_rule":value},null,null)
+        $(".cc_custom_rule").addClass("layui-hide")
+      } else {
+        $(".cc_custom_rule").removeClass("layui-hide")
+      }
+      
+    });  
+
+    // 监听选择自定义规则
+    form.on('select(cc_default_rule)', function(data){
+        update_site({"cc_default_rule":data.value},null,null)
+    });  
+
+
+    // cc_switch开关
+    form.on('switch(cc_switch_on)', function(data){
+      if (data.elem.checked) {
+        $(".cc_switch_on").removeClass("layui-hide")
+      } else {
+        var fail = function (argument) {
+          $(".cc_switch_on").removeClass("layui-hide")
+          $("input[name='cc_switch_on']").prop("checked",true)
+          form.render("checkbox")          
+        }
+        $(".cc_switch_on").addClass("layui-hide")
+        update_site({"cc_switch":{}},null,fail)
+
+      }
+    });  
+
+    // 屏蔽透明代理开关
+    form.on('switch(block_proxy_on)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='block_proxy_on']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_site({"block_proxy":checked},null,fail)
+
+    });   
+
+    // 监听 switch-qps
+    form.on('select(switch-qps)', function(data){
+        var switch_qps = data.value
+        if (switch_qps == "custom") {
+          $(".custom-qps").removeClass("layui-hide")
+        } else {
+          $(".custom-qps").addClass("layui-hide")
+          $("input[name='custom-qps']").val("")
+
+          var cc_switch_rule = $("select[name='cc_switch_rule']").val()
+          if (cc_switch_rule && switch_qps) {
+            update_site({"cc_switch":{"rule":cc_switch_rule,"switch":switch_qps,"enable":1}},null,null)
+          }          
+        }
+
+    }); 
+
+    // 监听 custom-qps
+    $("input[name='switch-qps']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+
+        var prev = $(this).data('val');
+        var custom_qps = $(this).val();
+        var cc_switch_rule = $("select[name='cc_switch_rule']").val()
+        var fail = function (argument) {
+          $("input[name='switch-qps']").val(prev)
+        }
+
+        if (custom_qps && cc_switch_rule) {
+          update_site({"cc_switch":{"rule":cc_switch_rule,"switch":custom_qps,"enable":1}},null,fail)
+        }
+    });
+
+    // 监听 cc_switch_rule
+    form.on('select(cc_switch_rule)', function(data){
+        var cc_switch_rule = data.value
+        var cc_switch_switch = $("select[name='switch-qps']").val()
+        if (cc_switch_switch == "custom") {
+          cc_switch_switch = $("input[name='switch-qps']").val()
+        }
+
+        if (cc_switch_switch && cc_switch_rule) {
+          update_site({"cc_switch":{"rule":cc_switch_rule,"switch":cc_switch_switch,"enable":1}},null,null)
+        }
+
+    }); 
+
+
+
+    // spider_allow
+    form.on('checkbox(spider_allow)', function(data){
+      var spider = []
+      $("input[name='spider_allow']:checked").each(function () {
+        var name = $(this).val()
+        spider.push(name)
+      })
+
+      var spider_allow = spider.join("|")
+      update_site({"spider_allow":spider_allow},null,null)
+
+    });
+
+    // block_region
+    form.on('radio(block_region)', function(data){
+      var block_region = $(this).val()
+      update_site({"block_region":block_region},null,null)
+
+    });
+
+    // black_ip
+    $("textarea[name='black_ip']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var black_ip = $(this).val();
+        var fail = function (argument) {
+          $("textarea[name='black_ip']").val(prev)
+        }
+
+        update_site({"black_ip":black_ip},null,fail)
+    });
+
+    // white_ip
+    $("textarea[name='white_ip']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var white_ip = $(this).val();
+        var fail = function (argument) {
+          $("textarea[name='white_ip']").val(prev)
+        }
+
+        update_site({"white_ip":white_ip},null,fail)
+    });
+
+    // 监听 acl
+    form.on('select(acl)', function(data){
+        var acl = data.value
+        if (acl == "") {
+          acl=null
+        }
+        update_site({"acl":acl},null,null)
+
+    }); 
+
+    // 更新hotlink
+    function update_hotlink(fail) {
+      var enable = $("input[name='hotlink_enable']").prop("checked")
+      var domain = $("input[name='hotlink_domain']").val()
+      var allow_empty = $("input[name='hotlink_allow_empty']").prop("checked")
+      var data = {"hotlink": {"enable":enable,"domain":domain,"allow_empty":allow_empty}}
+
+      update_site(data,null,fail)
+    }
+
+    // 监听hotlink_enable
+    form.on('switch(hotlink_enable)', function(data){
+      var checked = data.elem.checked
+      if (checked) {
+        $(".hotlink").removeClass("layui-hide")
+      } else {
+        $(".hotlink").addClass("layui-hide")
+      }
+
+      var fail = function (argument) {
+        $("input[name='hotlink_enable']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_hotlink(fail)
+
+    });   
+
+    // 监听 hotlink_domain
+    $("input[name='hotlink_domain']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+
+        var prev = $(this).data('val');
+        var hotlink_domain = $(this).val();
+        var fail = function (argument) {
+          $("input[name='hotlink_domain']").val(prev)
+        }
+
+        update_hotlink(fail)
+    });    
+
+    // 监听hotlink_allow_empty
+    form.on('switch(hotlink_allow_empty)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='hotlink_allow_empty']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_hotlink(fail)
+
+    });   
+
+    // 更新cors
+    function update_cors(fail) {
+      var enable = $("input[name='cors_enable']").prop("checked")
+      var allow_origin = $("input[name='allow_origin']").val()
+      var allow_methods = $("input[name='allow_methods']").val()
+      var allow_headers = $("input[name='allow_headers']").val()
+      var expose_headers = $("input[name='expose_headers']").val()
+      var max_age = $("input[name='max_age']").val()
+      var allow_credentials = $("input[name='allow_credentials']").prop("checked")
+      var data = {"cors": {"enable":enable,"allow_origin":allow_origin,"allow_methods":allow_methods,"allow_headers":allow_headers,"expose_headers":expose_headers,"max_age":max_age,"allow_credentials":allow_credentials}}
+      update_site(data,null,fail)
+    }
+
+    // 监听cors_enable
+    form.on('switch(cors_enable)', function(data){
+      var checked = data.elem.checked
+      if (checked) {
+        $(".cors").removeClass("layui-hide")
+      } else {
+        $(".cors").addClass("layui-hide")
+      }
+
+      var fail = function (argument) {
+        $("input[name='cors_enable']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_cors(fail)
+    });
+
+    // 监听 allow_origin,allow_methods,allow_headers,expose_headers,max_age
+    $("input[name='allow_origin'],input[name='allow_methods'],input[name='allow_headers'],input[name='expose_headers'],input[name='max_age']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        update_cors(null)
+    }); 
+
+    form.on('switch(allow_credentials)', function(data){
+      update_cors(null)
+    });
+
+    // 监听回源host radio
+    form.on('radio(backend_host_type)', function(data){
+      var backend_host_type = data.value
+      var pre = $("input[name='backend_host_type']:checked").val()
+      if (data.value == "$host" || data.value == "$host:$server_port") {
+        $(".backend_host").addClass("layui-hide")
+        update_site({"backend_host":data.value},null,fail)
+
+      } else {
+        $(".backend_host").removeClass("layui-hide")
+      }
+      
+      var fail = function (argument) {
+        $("input[name='backend_host_type'][value='"+pre+"']").prop("checked",true)
+        form.render("radio")
+      }
+
+    }); 
+
+    // 监听proxy_http_version
+    form.on('radio(proxy_http_version)', function(data){
+      var proxy_http_version = data.value
+      update_site({"proxy_http_version":proxy_http_version},null,null)
+
+    }); 
+
+    // 监听回源host input
+    $("input[name='backend_host']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+
+        var prev = $(this).data('val');
+        var backend_host = $(this).val();
+        var fail = function (argument) {
+          $("input[name='backend_host']").val(prev)
+        }
+
+        update_site({"backend_host":backend_host},null,fail)
+    }); 
+
+    // 监听range
+    form.on('switch(range)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='range']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_site({"range":checked},null,fail)
+
+    });  
+
+    // 监听gzip_enable
+    form.on('switch(gzip_enable)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='gzip_enable']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_site({"gzip_enable":checked},null,fail)
+
+    });  
+
+    // 监听gzip_types
+    $("input[name='gzip_types']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+
+        var prev = $(this).data('val');
+        var gzip_types = $(this).val();
+        var fail = function (argument) {
+          $("input[name='gzip_types']").val(prev)
+        }
+
+        update_site({"gzip_types":gzip_types},null,fail)
+    }); 
+
+    // 监听websocket
+    form.on('switch(websocket)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='websocket']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_site({"websocket_enable":checked,"ups_keepalive":0},null,fail)
+
+    });  
+
+    // 监听acme_proxy_to_orgin
+    form.on('switch(acme_proxy_to_orgin)', function(data){
+      var checked = data.elem.checked
+      var fail = function (argument) {
+        $("input[name='acme_proxy_to_orgin']").prop("checked",!checked)
+        form.render("checkbox")          
+      }
+
+      update_site({"acme_proxy_to_orgin":checked},null,fail)
+
+    });  
+    
+    
+    // page_404
+    $("textarea[name='page_404']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var page_404 = $(this).val();
+        var fail = function (argument) {
+          $("textarea[name='page_404']").val(prev)
+        }
+
+        update_site({"page_404":page_404},null,fail)
+    });
+
+    // page_50x
+    $("textarea[name='page_50x']").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var page_50x = $(this).val();
+        var fail = function (argument) {
+          $("textarea[name='page_50x']").val(prev)
+        }
+
+        update_site({"page_50x":page_50x},null,fail)
+    });
+
+    // 分组监听
+    $("select[name='groups']").on('change', function (e) {
+      var groups = $("select[name='groups']").val()
+      if (groups) {
+        groups = groups.join(",")
+      } else {
+        groups = ""
+      }      
+
+      update_site({"groups":groups},null,null)
+    });
+
+  });  
+
+</script>

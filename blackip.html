@@ -1,0 +1,251 @@
+
+
+  <title>黑名单IP - 监控统计 - 网站管理</title>
+
+  <div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+      <a lay-href="">首页</a>
+      <a><cite>网站管理</cite></a>
+      <a><cite>监控统计</cite></a>
+      <a><cite>黑名单IP</cite></a>
+    </div>
+  </div>
+  
+  <div class="layui-fluid" id="component-tabs">
+    <div class="layui-row">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body">
+            <div class="layui-tab layui-tab-brief" lay-filter="monitor-tab">
+              <ul class="layui-tab-title">
+                <li class="layui-this">黑名单列表</li>
+                <li>黑名单统计</li>
+              </ul>
+              <div class="layui-tab-content">
+                
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form-item">
+                        <div class="layui-input-inline" >
+                          <input style="height: 32px;" type="text" name="site_id"  placeholder="输入网站id" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline" >
+                          <input style="height: 32px;" type="text" name="ip"  placeholder="输入客户IP" autocomplete="off" class="layui-input">
+                        </div>                
+                  
+                        <div class="layui-input-inline">
+                          <button id="query" type="button" class="layui-btn layui-btn-sm">查询</button>
+                        </div>
+                        
+                      </div>
+
+                      <table class="layui-hide" id="test-table-toolbar" lay-filter="test-table-toolbar"></table>
+                      <script type="text/html" id="test-table-toolbar-toolbarDemo">
+                          <div class="layui-row layui-col-space10">
+                            <div class="layui-col-md9">
+                              <button class="layui-btn layui-btn-sm" lay-event="unlock-ip">解锁所选IP</button>
+                              <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="unlock-site">解锁指定网站</button>
+                            </div>
+                          </div>
+                      </script>
+                  
+                </div>
+
+                <div class="layui-tab-item">
+                    <div class="layui-row layui-col-space15">
+                      <div class="layui-col-lg6 layui-col-md12">
+                        <table id="top-domain-black" lay-filter="top-domain-black"></table>
+                      </div>
+                    </div>
+                </div> 
+
+              </div>
+            </div>
+          </div>
+        </div>
+  
+     </div>
+  </div>
+  
+  <script>
+  layui.use(['admin', 'table','laydate'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,element = layui.element
+    ,form = layui.form;
+
+    function timestampToTime(timestamp) {
+        var date = new Date(timestamp * 1000);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        var D = (date.getDate() < 10 ? '0'+date.getDate() : date.getDate()) + ' ';
+        var h = (date.getHours() < 10 ? '0'+date.getHours() : date.getHours()) + ':';
+        var m = (date.getMinutes() < 10 ? '0'+date.getMinutes() : date.getMinutes()) + ':';
+        var s = (date.getSeconds() < 10 ? '0'+date.getSeconds() : date.getSeconds());
+        return Y+M+D+h+m+s;
+    }
+
+    var access_token = layui.data('layuiAdmin')['access-token']
+
+    function render_black_list_table() {
+      table.render({
+      elem: '#test-table-toolbar' 
+      ,url:'/monitor/site/blackip'
+      ,headers: {"access-token":access_token}
+      ,title: '黑名单IP'
+      ,toolbar: '#test-table-toolbar-toolbarDemo'
+      ,cols: [[
+        {type: 'checkbox', fixed: 'left'}
+        ,{field:'site_id', title:'网站ID'}
+        ,{field:'domain', title:'域名'}
+        ,{field:'ip', title:'IP'}
+        ,{field:'name', title:'过滤器',templet:function (d) {
+          if (d.name) {
+            return d.name
+          } else {
+            var match = d.fname.match(/extra_f_(\d+)/)
+            if (match) {
+              return "自定义规则第"+match[1]+"条"
+            }
+
+            if (d.fname == "block_region") {
+              return "区域屏蔽"
+            } else if (d.fname == "block_proxy") {
+              return "代理屏蔽"
+            }
+
+            return d.fname
+          }
+        }}
+        ,{field:'create_at', title:'拉黑时间',templet:function (d) {
+          return timestampToTime(d.create_at);
+        }}
+        ,{field:'exp', title:'解锁时间',templet:function (d) {
+          return timestampToTime(d.exp);
+        }}
+      ]]
+      ,page: true
+    });
+    }
+
+
+    $("#query").click(function () {
+      var ip = $("input[name='ip']").val()
+      var site_id = $("input[name='site_id']").val()
+      table.reload('test-table-toolbar',{where: {"ip":ip,"site_id":site_id}, page: {curr: 1}})
+    })
+
+    //头工具栏事件
+    table.on('toolbar(test-table-toolbar)', function(obj){
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch(obj.event){
+        case 'unlock-ip':
+          var site_data = checkStatus.data;
+          if (site_data.length == 0) {
+            layer.alert('请选择需要解锁的IP');   
+            return
+          }
+
+          var req_data = []
+          for (i in site_data) {
+            var site_id = site_data[i]['site_id']
+            var ip = site_data[i]['ip']
+            var job_type = "unlock_ip"
+            var data = {"site_id":site_id,"ip": ip,"key1":"site_id"} 
+            req_data.push({"type":job_type,"data":data})
+          }
+
+          admin.req({
+            url: '/jobs' //实际使用请改成服务端真实接口
+            ,data: JSON.stringify(req_data)
+            ,type: "post"
+            ,contentType:"application/json"
+            ,dataType: "json"
+            ,done: function(res){
+              //登入成功的提示与跳转
+              layer.msg('解锁IP任务提交成功，请稍等几分钟左右.', {
+                offset: '15px'
+                ,icon: 1
+                ,time: 3000
+              }, function(){
+                table.reload('test-table-toolbar')
+
+              });
+            }
+          });
+
+        break;    
+        case 'unlock-site':
+          layer.prompt({
+            formType: 0,
+            title: '请输入网站ID',
+          }, function(site_id, index, elem){
+            var data = {"site_id":site_id,"key1":"site_id"} 
+            var req_data = [{"type":"unlock_ip","data":data}]
+
+            admin.req({
+              url: '/jobs' //实际使用请改成服务端真实接口
+              ,data: JSON.stringify(req_data)
+              ,type: "post"
+              ,contentType:"application/json"
+              ,dataType: "json"
+              ,done: function(res){
+                //登入成功的提示与跳转
+                layer.msg('解锁IP任务提交成功，请稍等几分钟左右.', {
+                  offset: '15px'
+                  ,icon: 1
+                  ,time: 3000
+                }, function(){
+                  layer.close(index);
+                });
+              }
+            });            
+            
+          });
+
+        break;  
+
+      };
+    });
+
+    function render_black_count_table (argument) {
+      $(".recent-time-group").addClass("layui-hide")
+      admin.req({
+        url: '/monitor/site/blackip-count'
+        ,type: "get"
+        ,done: function(res){
+          var data = res.data
+          table.render({
+            elem: '#top-domain-black'
+            ,cols: [[
+              {title:'排行',type: "numbers"}
+              ,{field:'site_id', title: "网站ID"}
+              ,{field:'count', title:'黑名单数量',width:120}
+            ]]
+            ,data: data
+            ,page: false
+            ,limit: 100
+          });  
+      
+        }
+      }); 
+    }
+    function render_table() {
+      //类型
+      var curr_tab = $(".layui-tab-title .layui-this").text()
+      if (curr_tab == "黑名单列表") {
+        render_black_list_table()
+      } else if (curr_tab == "黑名单统计") {
+        render_black_count_table()
+      }
+    }
+
+    render_table()
+
+    element.on('tab(monitor-tab)', function(data){
+      render_table()
+    });
+
+  });
+  </script>

@@ -1,0 +1,606 @@
+
+
+<title>资源配置 - 全局配置</title>
+
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">首页</a>
+    <a><cite>全局配置</cite></a>
+    <a><cite>默认配置</cite></a>
+  </div>
+</div>
+
+<style type="text/css">
+.layui-elem-quote{padding: 6px;}
+.thin-gray{font-weight: 400;color: #999;} 
+.small-title{font-weight:700;font-size:14px}
+hr {margin-bottom: 30px}
+</style>
+<div class="layui-fluid">
+  <div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+      <div class="layui-card">
+        <div class="layui-card-body">
+          <div class="layui-tab" lay-filter="region-tab" style="margin-bottom:20px">
+            <ul class="layui-tab-title regions">
+              <li data-id="0" class="layui-this">全局</li>
+            </ul>
+
+          </div>
+
+         <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+          <ul class="layui-tab-title">
+            <li class="layui-this">网站</li>
+            <li>转发</li>
+            <li>证书</li>
+          </ul>
+          <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+              <div class="layui-row ">
+               <div class="layui-col-lg2 layui-col-md4"> <span class="small-title">HTTP</span></div>
+              </div>
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">监听端口：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-http_listen-port"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>             
+              <hr>
+
+              <div class="layui-row ">
+               <div class="layui-col-lg2 layui-col-md4"> <span class="small-title">HTTPS</span></div>
+              </div>
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">监听端口：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-https_listen-port"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">开启HSTS：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-https_listen-hsts"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>                                           
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">开启HTTP2：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-https_listen-http2"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>   
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">强制HTTPS：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-https_listen-force_ssl_enable"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>               
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">ssl_protocols：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-https_listen-ssl_protocols"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>    
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">ssl_ciphers：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-https_listen-ssl_ciphers"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>      
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">ssl_prefer_server_ciphers：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-https_listen-ssl_prefer_server_ciphers"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>                                       
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">ocsp_stapling：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-https_listen-ocsp_stapling"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>
+              <hr>
+
+              <div class="layui-row ">
+               <div class="layui-col-lg2 layui-col-md4"> <span class="small-title">回源设置</span></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">回源协议：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-backend_protocol"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">回源http端口：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-backend_http_port"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">回源https端口：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-backend_https_port"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">回源超时：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-proxy_timeout"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">回源HTTP版本：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-proxy_http_version"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">回源连接池：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-ups_keepalive"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">最大空闲连接数：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-ups_keepalive_conn"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">空闲连接的超时时间：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-ups_keepalive_timeout"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>                                            
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">回源SSL协议：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-proxy_ssl_protocols"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>     
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">Range回源：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-range"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>
+              <hr>
+
+              <div class="layui-row ">
+               <div class="layui-col-lg2 layui-col-md4"> <span class="small-title">缓存</span></div>
+               <div class="layui-col-lg2 layui-col-md4 layui-form cache-set layui-hide">
+                  <input type="radio" lay-filter="cache-set" name="cache-set" value="1" title="自定义">
+                  <input type="radio" lay-filter="cache-set" name="cache-set" value="0" checked title="继承全局">
+                </div>
+              </div>
+
+              <div class="cache layui-row layui-col-space10">
+                <div class="layui-col-md12">
+                <table id="cache" lay-filter="cache"></table>
+                  <script type="text/html" id="cache-toolbar">
+                      <div class="layui-row layui-col-space10">
+                        <div class="layui-col-md12">
+                            <button class="layui-btn  layui-btn-xs" lay-event="add">新增</button>
+                            <button class="layui-btn layui-btn-danger layui-btn-xs" lay-event="delete">删除</button>
+                        </div>  
+                      </div>
+                  </script>
+                  <script type="text/html" id="cache-bar">
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                  </script>
+                </div>
+             </div>
+
+              <hr>
+              <div class="layui-row ">
+               <div class="layui-col-lg2 layui-col-md4"> <span class="small-title">其它</span></div>
+              </div>
+
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">负载方式：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-balance_way"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">默认CC规则：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-cc_default_rule"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">开启Gzip：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-gzip_enable"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">gzip types：</div> <div class="layui-col-md6"><input type="text" name="site_default_config-gzip_types"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">开启Websocket：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-websocket_enable"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>               
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">POST请求大小限制(单位MB)：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-post_size_limit"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">屏蔽透明代理：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="site_default_config-block_proxy"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>
+            </div>
+            <div class="layui-tab-item">
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">监听协议：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="stream_default_config-listen_protocol"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">负载方式：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="stream_default_config-balance_way"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div> 
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">开启proxy protocol：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="stream_default_config-proxy_protocol"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+              </div>                                                                                                                                                                                      
+            </div>
+
+            <div class="layui-tab-item">
+              <div class="layui-row layui-col-space10">
+                <div class="layui-col-lg2 layui-col-md4">默认证书类型：</div> <div class="layui-col-lg2 layui-col-md4"><input type="text" name="cert_default_config-cert_default_type"  placeholder="请输入"  autocomplete="off" class="layui-input"></div>
+                <div class="layui-form-mid layui-word-aux">支持zerossl和lets</div>
+              </div> 
+
+                                                                                                                                                                                  
+            </div>
+
+        </div>
+      </div>                 
+
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">
+  layui.use(['admin', 'table','form'], function(){
+    var $ = layui.$
+    ,admin = layui.admin
+    ,view = layui.view
+    ,table = layui.table
+    ,element = layui.element
+    ,form = layui.form;
+
+    // 获取所有区域
+    admin.req({
+      url: '/regions?limit=0' //实际使用请改成服务端真实接口
+      ,type: "get"
+      ,done: function(res){
+        var data = res.data
+        window.region_list = data
+        for (var i = 0; i < data.length; i++) {
+          $(".regions").append("<li data-id='"+data[i]['id']+"'>"+data[i]['name']+"</li>")
+        };
+        element.render()
+      }
+    });
+
+    // 监听tab
+    element.on('tab(region-tab)', function(data){
+      var scope_id = $(this).data("id")
+      // 清空input
+      $("input[type='text']").val("")
+
+      var scope_name = "global"
+      if (scope_id != "0") {
+        scope_name = "region"
+        $(".cache-set").removeClass("layui-hide")
+      } else {
+        $(".cache-set").addClass("layui-hide")
+        $(".cache").removeClass("layui-hide")
+      }
+
+      form.render("radio")
+      get_config(scope_name,scope_id)
+      
+
+    });
+
+    // 监听缓存radio
+    form.on('radio(cache-set)', function(data){
+      if (data.value == "1") {
+        $(".cache").removeClass("layui-hide")
+        table.reload('cache'); //重载表格
+      } else {
+        $(".cache").addClass("layui-hide")
+        update_config("site_default_config-proxy_cache","",null,null) 
+
+      }
+
+    });     
+
+    get_config("global","0")
+
+    function get_config(scope_name,scope_id) {
+      $(".layui-card-body input[type='text']").each(function (argument) {
+        var id = $(this).attr("name")
+        if (!id) {
+          return true
+        }
+        admin.req({
+          url: '/configs/'+scope_name+'-'+scope_id+'-'+id //实际使用请改成服务端真实接口
+          ,type: "get"
+          ,contentType:"application/json"
+          ,dataType: "json"        
+          ,done: function(res){
+            if (res.data) {
+              var v = res.data.value
+              $("input[name='"+id+"']").val(v)
+              if (scope_name == "global") {
+                $("input[name='"+id+"']").attr("placeholder",v)
+              }   
+
+            }
+          }
+        });
+
+      })
+
+      // 缓存设置
+      admin.req({
+        url: '/configs/'+scope_name+'-'+scope_id+'-site_default_config-proxy_cache' //实际使用请改成服务端真实接口
+        ,type: "get"
+        ,contentType:"application/json"
+        ,dataType: "json"        
+        ,done: function(res){
+          var proxy_cache
+          if (res.data) {
+            proxy_cache = JSON.parse(res.data.value)
+            $(".cache").removeClass("layui-hide")
+            if (scope_name == "region") {
+              $("input[name='cache-set'][value=1]").prop("checked",true)
+            }
+          } else {
+            $(".cache").addClass("layui-hide")
+            $("input[name='cache-set'][value=0]").prop("checked",true)
+            proxy_cache = []
+          }
+
+          form.render("radio")
+
+          window.cache = proxy_cache
+          table.render({
+            elem: '#cache'
+            ,title: 'xx'
+            ,toolbar: '#cache-toolbar'
+            ,defaultToolbar: []
+              ,size: 'sm' //小尺寸的表格
+
+            ,cols: [[ //表头
+              {type: 'checkbox', fixed: 'left'}
+              ,{field: 'type', title: '类型',templet: function(d) {
+                if (d.type == "suffix") {
+                  return "后缀名"
+                } else if (d.type == "dir") {
+                  return "目录"
+                } else {
+                  return "全路径"
+                }
+              }}
+              ,{field: 'content', title: '内容'}
+              ,{field: 'expire', title: '有效期',templet: function(d) {
+                  return d.expire+d.unit
+              }}
+              ,{field: 'ignore_arg', title: '忽略参数',templet: function(d) {
+                if (d.ignore_arg) {
+                  return '<span class="layui-badge layui-bg-green">是</span>'
+                } else {
+                  return '<span class="layui-badge layui-bg-orange">否</span>'
+                }                
+              }}
+              ,{field: 'range', title: '分片回源',templet: function(d) {
+                if (d.range) {
+                  return '<span class="layui-badge layui-bg-green">是</span>'
+                } else {
+                  return '<span class="layui-badge layui-bg-orange">否</span>'
+                }                
+              }}              
+              ,{field: 'proxy_ignore_headers', title: '强制缓存',templet: function(d) {
+                var proxy_ignore_headers_arr = d.proxy_ignore_headers.split(/\s+/)
+
+                if ($.inArray("X-Accel-Expires",proxy_ignore_headers_arr) != -1 && $.inArray("Expires",proxy_ignore_headers_arr) != -1 && $.inArray("Cache-Control",proxy_ignore_headers_arr) != -1 && $.inArray("Set-Cookie",proxy_ignore_headers_arr) != -1) {
+                  return '<span class="layui-badge layui-bg-green">是</span>'
+                } else {
+                  return '<span class="layui-badge layui-bg-orange">否</span>'
+                }
+              
+              }}
+              ,{field: 'no_cache', title: '不缓存条件',templet: function(d) {
+                  var str = []
+                  for (i in d.no_cache) {
+                    str.push(d.no_cache[i]['variable'] + " ~ " + d.no_cache[i]['string'])
+                  }
+                  return str.join(" or ")
+
+              }}
+              ,{fixed: 'right', title:'操作', toolbar: '#cache-bar', width:120}
+
+            ]]
+            ,data: proxy_cache
+            ,page: true
+          });  
+
+          //缓存事件
+          //头工具栏事件
+          table.on('toolbar(cache)', function(obj){
+            var checkStatus = table.checkStatus(obj.config.id);
+            var table_data = obj.config.data
+            switch(obj.event){
+              case 'add':
+                admin.popup({
+                  title: '新增缓存'
+                  ,area: ['800px', '550px']
+                  ,id: 'LAY-popup-cache-add'
+                  ,success: function(layero, index){
+                    view(this.id).render('site/site/cache_form').done(function(){
+                      //监听提交
+                      form.on('submit(LAY-site-site-edit-cache-add-submit)', function(data){
+                        var field = data.field
+                        var type = field.cache_type; //获取提交的字段
+                        var content = field.cache_content
+                        var expire = field.cache_expire
+                        var unit = field.cache_unit
+                        var ignore_arg = $("input[name='cache_ignore_arg']").prop("checked")
+                        var cache_range = $("input[name='cache_range']").prop("checked")
+
+                        var no_cache = []
+                        $(".no-cache-item .del-span").each(function (index,ele) {
+                          var item = $(ele).text()
+                          var variable = item.split(" ~ ")[0]
+                          var string = item.split(" ~ ")[1].slice(0,-1)
+                          no_cache.push({"variable":variable,"string":string})
+                        })
+
+                        var proxy_ignore_headers_arr = []
+                        $("input[name='proxy_ignore_headers']:checked").each(function (){
+                          proxy_ignore_headers_arr.push($(this).val())
+                        })
+
+                        var proxy_ignore_headers = proxy_ignore_headers_arr.join(" ")
+
+                        var proxy_cache = JSON.parse(JSON.stringify(table_data))
+                        for (i in proxy_cache) {
+                          delete proxy_cache[i]['LAY_TABLE_INDEX']
+                          delete proxy_cache[i]['LAY_CHECKED']
+                        }
+
+                        proxy_cache.push({"type":type,"content":content,"expire":expire,"unit":unit,"ignore_arg":ignore_arg,"range":cache_range, "proxy_ignore_headers":proxy_ignore_headers, "no_cache":no_cache})
+
+                        window.cache = proxy_cache
+
+                        var success = function (argument) {
+                          layui.table.reload('cache',{data:proxy_cache}); //重载表格
+                          layer.close(index); //执行关闭 
+                        }
+
+                        var fail = function (argument) {
+                        }
+
+                        var data = {"value": JSON.stringify(proxy_cache)}
+                        update_config("site_default_config-proxy_cache",data,success,fail) 
+
+                      });
+                    });
+                  }
+                });
+              break;
+              case 'delete':
+                var data = checkStatus.data;
+                if (data.length == 0) {
+                  layer.alert('请选择需要删除的缓存配置');   
+                  return
+                }
+
+                layer.confirm('将删除所选的缓存配置，是否继续', function(index){
+                    var proxy_cache = []
+                    for (i in table_data) {
+                      if (!table_data[i]['LAY_CHECKED']) {
+                        proxy_cache.push(table_data[i])
+                      }
+                    }
+
+                    for (i in proxy_cache) {
+                      delete proxy_cache[i]['LAY_TABLE_INDEX']
+                      delete proxy_cache[i]['LAY_CHECKED']
+                    }
+
+                    var success = function (argument) {
+                      layui.table.reload('cache',{data: proxy_cache}); //重载表格
+                      layer.close(index); //执行关闭 
+                    }
+
+                    var fail = function (argument) {
+                    } 
+
+                    window.cache = proxy_cache
+                    var data = {"value": JSON.stringify(proxy_cache)}
+                    update_config("site_default_config-proxy_cache",data,success,fail) 
+                });
+              break;                   
+            };
+          });
+          
+          //监听行工具事件
+          table.on('tool(cache)', function(obj){
+            var edit_index = $(obj.tr).data("index");
+            var table_data = obj.data
+            if(obj.event === 'edit'){
+              admin.popup({
+                title: '编辑缓存'
+                ,area: ['800px', '550px']
+                ,id: 'LAY-popup-cache-add'
+                ,success: function(layero, index){
+                  view(this.id).render('site/site/cache_form',table_data).done(function(){
+                    $("#cache_type").val(table_data.type)
+                    $("#cache_unit").val(table_data.unit)
+                    $("input[name='cache_ignore_arg']").prop("checked",table_data.ignore_arg)
+                    $("input[name='cache_range']").prop("checked",table_data.range)
+                    var proxy_ignore_headers_arr = table_data.proxy_ignore_headers.split(/\s+/)
+                    for (i in proxy_ignore_headers_arr) {
+                      $("input[name='proxy_ignore_headers'][value='"+proxy_ignore_headers_arr[i]+"']").prop("checked",true)
+                    }
+                    var no_cache = table_data.no_cache
+                    for (i in no_cache) {
+                      var variable = no_cache[i]['variable']
+                      var string = no_cache[i]['string']
+                      $(".no-data").remove()
+                      $(".no-cache").append('<div class="layui-form-mid no-cache-item"><span class="layui-badge layui-bg-blue del-span">'+variable+' ~ '+string+'<span onclick=\'del_item(this)\' class="layui-badge del">x</span></span></div>')                
+                    }
+
+                    form.render(null, 'layuiadmin-form-cacheadmin');
+                    
+                    //监听提交
+                    form.on('submit(LAY-site-site-edit-cache-add-submit)', function(data_submit){
+                      var field = data_submit.field
+                      var type = field.cache_type; //获取提交的字段
+                      var content = field.cache_content
+                      var expire = field.cache_expire
+                      var unit = field.cache_unit
+                      var ignore_arg = $("input[name='cache_ignore_arg']").prop("checked")
+                      var cache_range = $("input[name='cache_range']").prop("checked")
+
+                      var no_cache = []
+                      $(".no-cache-item .del-span").each(function (index,ele) {
+                        var item = $(ele).text()
+                        var variable = item.split(" ~ ")[0]
+                        var string = item.split(" ~ ")[1].slice(0,-1)
+                        no_cache.push({"variable":variable,"string":string})
+                      })
+
+                      var proxy_ignore_headers_arr = []
+                      $("input[name='proxy_ignore_headers']:checked").each(function (){
+                        proxy_ignore_headers_arr.push($(this).val())
+                      })
+
+                      var proxy_ignore_headers = proxy_ignore_headers_arr.join(" ")
+
+                      // 保存旧数据
+                      window.cache_pre = JSON.parse(JSON.stringify(window.cache))
+
+                      window.cache[edit_index] = {"type":type,"content":content,"expire":expire,"unit":unit,"ignore_arg":ignore_arg,"range":cache_range, "proxy_ignore_headers":proxy_ignore_headers, "no_cache":no_cache}
+                      var proxy_cache = JSON.parse(JSON.stringify(window.cache))
+
+                      var success = function (argument) {
+                        layui.table.reload('cache',{"data":proxy_cache}); //重载表格
+                        layer.close(index); //执行关闭 
+                      }
+
+                      var fail = function (argument) {
+                        window.cache = JSON.parse(JSON.stringify(window.cache_pre))
+                      } 
+
+                      var data = {"value": JSON.stringify(proxy_cache)}
+                      update_config("site_default_config-proxy_cache",data,success,fail) 
+
+                    });
+                  });
+                }
+              });
+            }
+          });  
+
+        }
+      });      
+    }
+
+    function update_config(id,data,success,fail) {
+      var scope_name = "global"
+      var scope_id = $(".regions").find(".layui-this").data("id")
+      if (scope_id != "0") {
+        scope_name = "region"
+      }
+      method = "put"
+      if (!data['value']) {
+        method = "delete"
+      } 
+      var option = {
+        url: '/configs/'+scope_name+'-'+scope_id+'-'+id //实际使用请改成服务端真实接口
+        ,type: method
+        ,contentType:"application/json"
+        ,dataType: "json"        
+        ,fail: fail
+        ,done: function(res){
+          //登入成功的提示与跳转
+          layer.msg('更新成功', {
+            offset: '15px'
+            ,icon: 1
+            ,time: 1000
+          }, function(){
+            if (success) {
+              success()
+            }
+            
+          });
+        }
+      }
+
+      if (data['value']) {
+        option["data"] = JSON.stringify(data)
+      }
+
+      admin.req(option);
+    }
+
+    $("input").on('focusin', function(){
+        $(this).data('val', $(this).val());
+    }).on('change', function(){
+        var prev = $(this).data('val');
+        var curr = $(this).val();
+        var id = $(this).attr("name")
+
+        var fail = function (argument) {
+          $("input[name='"+id+"']").val(prev)
+        }
+
+        var req_data = {"value": curr}
+        update_config(id, req_data, null,fail )
+
+    });
+
+
+
+
+  });  
+
+</script>

@@ -2,39 +2,50 @@ name: Update GeoIP
 
 on:
   schedule:
-    - cron: '0 0 * * *' # 每天北京时间早上8点执行 (UTC时间0点)
+    - cron: '0 0 * * *' 
   push:
     branches:
-      - main     # 仅在该分支有代码推送时触发
-  workflow_dispatch:     # 允许手动点击按钮触发
+      - main
+  workflow_dispatch: 
 
-# 必须显式声明写权限，否则最后一名的 git push 会报错拒绝
 permissions:
   contents: write
+
+# 解决警告：强制整个工作流使用最新的 Node.js 24 运行环境
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 1. 拉取代码
       - name: Checkout code
-        uses: actions/checkout@v4 # 修复：必须使用官方标准的拉取代码插件
+        uses: actions/checkout@v4
 
+      # 2. 安全下载（增加重试机制，防止因网络波动导致 exit code 1）
       - name: Download GeoIP
         run: |
-          # 下载最新的 GeoLite2-Country.mmdb 并覆盖本地同名文件
-          curl -Lo GeoLite2-Country.mmdb https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-Country.mmdb
+          echo "Starting download..."
+          curl -fLo GeoLite2-Country.mmdb --connect-timeout 30 --retry 5 githubusercontent.com
+          
+          # 验证文件是否成功下载且大小不为0
+          if [ ! -s GeoLite2-Country.mmdb ]; then
+            echo "Error: Downloaded file is empty or download failed."
+            exit 1
+          fi
 
+      # 3. 提交并推送
       - name: Commit and Push
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.email "github-actions[bot]@github.com"
           git config --local user.name "github-actions[bot]"
           git add GeoLite2-Country.mmdb
           
-          # 检查文件是否真的有更新，避免无意义的空提交
           if ! git diff --cached --quiet; then
             git commit -m "Update GeoIP: $(date +%Y-%m-%d) [skip ci]"
-            git pull --rebase origin main/cdnfly # 推送前先拉取，防止并发冲突
-            git push origin HEAD:main/cdnfly
+            # 兼容非标准分支名的安全推送写法
+            git push origin HEAD:${{ github.ref_name }}
           else
-            echo "GeoIP data is already up to date."
+            echo "GeoIP data is already up to date. No commit needed."
           fi

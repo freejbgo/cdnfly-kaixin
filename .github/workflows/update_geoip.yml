@@ -5,7 +5,7 @@ on:
     - cron: '0 0 * * *' # 每天北京时间早上8点执行 (UTC时间0点)
   push:
     branches:
-      - main   # 仅在该分支有代码推送时触发
+      - main    # 仅在该分支有代码推送时触发
   workflow_dispatch:     # 允许手动点击按钮触发
 
 # 必须显式声明写权限，否则最后一名的 git push 会报错拒绝
@@ -21,6 +21,12 @@ jobs:
 
       - name: Download GeoIP
         run: |
+          # 显式清理旧文件，确保如果存在则强行覆盖
+          if [ -f GeoLite2-Country.mmdb ]; then
+            echo "Old file found. Removing to overwrite..."
+            rm -f GeoLite2-Country.mmdb
+          fi
+
           echo "Starting download via jsDelivr..."
           # 修复核心：在 -Lo 后面必须紧跟保存的文件名 GeoLite2-Country.mmdb
           curl -fLo GeoLite2-Country.mmdb --connect-timeout 30 --retry 5 https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-Country.mmdb

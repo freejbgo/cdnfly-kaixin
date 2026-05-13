@@ -1,0 +1,43 @@
+name: Auto Copy GeoLite2 File
+
+on:
+  schedule:
+    # 每天北京时间凌晨 6 点（UTC 22点时间）自动执行，可根据需求修改 Cron 表达式
+    - cron: '0 22 * * *'
+  workflow_dispatch: # 允许手动点击按钮触发
+
+jobs:
+  copy-file:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: main
+
+    - name: Copy and replace file
+      run: |
+        # 检查根目录下是否存在源文件
+        if [ -f "GeoLite2-Country.mmdb" ]; then
+          # 强制复制并覆盖 cdnfly 文件夹下的同名文件
+          cp -f GeoLite2-Country.mmdb cdnfly/
+          echo "File copied successfully."
+        else
+          echo "Source file GeoLite2-Country.mmdb not found!"
+          exit 1
+        fi
+
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@github.com"
+        
+        # 检查文件是否有变化
+        if git status --porcelain | grep -q "cdnfly/GeoLite2-Country.mmdb"; then
+          git add cdnfly/GeoLite2-Country.mmdb
+          git commit -m "Automated update of GeoLite2-Country.mmdb in cdnfly"
+          git push origin main
+        else
+          echo "No changes to commit."
+        fi

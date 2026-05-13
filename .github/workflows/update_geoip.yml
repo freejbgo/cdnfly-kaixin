@@ -5,9 +5,10 @@ on:
     - cron: '0 0 * * *' # 每天北京时间早上8点执行 (UTC时间0点)
   push:
     branches:
-      - main
-  workflow_dispatch: # 允许手动触发
+      - main    # 仅在该分支有代码推送时触发
+  workflow_dispatch:     # 允许手动点击按钮触发
 
+# 必须显式声明写权限，否则最后一名的 git push 会报错拒绝
 permissions:
   contents: write
 
@@ -15,33 +16,32 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # 1. 拉取代码（恢复默认 Node 环境，不再强制指定 env，从而消除歧义警告）
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 
 
-      # 2. 下载 GeoIP 数据库（修复了导致 exit code 6 的域名错误）
       - name: Download GeoIP
         run: |
-          echo "Starting download..."
-          # 修复核心：必须使用完整的 githubusercontent.com 域名
-          curl -fLo GeoLite2-Country.mmdb --connect-timeout 30 --retry 5 githubusercontent.com
+          echo "Starting download via jsDelivr..."
+          # 修复核心：在 -Lo 后面必须紧跟保存的文件名 GeoLite2-Country.mmdb
+          curl -fLo GeoLite2-Country.mmdb --connect-timeout 30 --retry 5 https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-Country.mmdb
           
-          # 检查文件大小，确保下载结果正确
+          # 验证文件大小，确保下载未静默失败
           if [ ! -s GeoLite2-Country.mmdb ]; then
             echo "Error: Downloaded file is empty or download failed."
             exit 1
           fi
 
-      # 3. 提交并推送
       - name: Commit and Push
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add GeoLite2-Country.mmdb
           
+          # 检查文件是否真的有更新，避免无意义的空提交
           if ! git diff --cached --quiet; then
             git commit -m "Update GeoIP: $(date +%Y-%m-%d) [skip ci]"
-            git push origin HEAD:${{ github.ref_name }}
+            git pull --rebase origin main # 推送前先拉取，防止并发冲突
+            git push origin HEAD:main
           else
-            echo "GeoIP data is already up to date. No commit needed."
+            echo "GeoIP data is already up to date."
           fi

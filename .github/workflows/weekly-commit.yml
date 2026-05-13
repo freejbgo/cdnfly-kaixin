@@ -1,38 +1,39 @@
-name: Weekly Keepalive Commit
+name: Weekly Keepalive Append
 
 on:
   schedule:
-    # 每周一凌晨 0:00 (UTC 时间) 定时触发
+    # 每周一凌晨 0:00 (UTC 时间) 定时触发 [1]
     - cron: '0 0 * * 1'
-  # 允许在 GitHub 网页端手动点击运行（方便测试）
+  # 支持在 GitHub 网页端随时手动点击运行测试 [1]
   workflow_dispatch:
 
 jobs:
-  commit-job:
+  append-job:
     runs-on: ubuntu-latest
     
-    # 授予工作流向仓库写入和提交代码的权限
+    # 赋予工作流向仓库写入代码的权限 [1]
     permissions:
       contents: write
 
     steps:
-    # 1. 检出 main 分支的代码
+    # 1. 检出 main 分支的代码 [1]
     - name: Checkout Repository
       uses: actions/checkout@v4
       with:
         ref: main
 
-    # 2. 向 testcode.txt 文件追加写入 123
-    - name: Update testcode.txt
+    # 2. 如果文件不存在则自动创建，并在末尾追加内容 1
+    - name: Append Content to testcode.txt
       run: |
-        echo "123" >> testcode.txt
+        # 即使文件不存在，>> 也会自动创建文件并写入内容
+        echo "1" >> testcode.txt
 
-    # 3. 自动配置 Git 并提交推送
+    # 3. 自动配置 Git 并提交推送 [1]
     - name: Commit and Push Changes
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@github.com"
         git add testcode.txt
-        # 如果文件没有变化则不报错退出
-        git commit -m "chore: weekly build keepalive [skip ci]" || exit 0
+        # 提交信息附带 [skip ci] 避免重复触发其他工作流 [1]
+        git commit -m "chore: weekly keepalive append [skip ci]" || exit 0
         git push origin main

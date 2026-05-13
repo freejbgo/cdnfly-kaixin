@@ -8,6 +8,10 @@ on:
       - main    # 仅在该分支有代码推送时触发
   workflow_dispatch:     # 允许手动点击按钮触发
 
+# 解决 Node 20 废弃警告，强行指定使用 Node 24 运行 Actions
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 # 必须显式声明写权限，否则最后一名的 git push 会报错拒绝
 permissions:
   contents: write
@@ -27,9 +31,9 @@ jobs:
             rm -f GeoLite2-Country.mmdb
           fi
 
-          echo "Starting download via jsDelivr..."
-          # 修复核心：在 -Lo 后面必须紧跟保存的文件名 GeoLite2-Country.mmdb
-          curl -fLo GeoLite2-Country.mmdb --connect-timeout 30 --retry 5 https://cdn.jsdelivr.net/gh/Loyalsoldier/geoip@release/GeoLite2-Country.mmdb
+          echo "Starting download..."
+          # 修复核心：改用 GitHub 原生 Raw 链接，规避 jsDelivr 404 (exit code 22) 错误
+          curl -fLo GeoLite2-Country.mmdb --connect-timeout 30 --retry 5 https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-Country.mmdb
           
           # 验证文件大小，确保下载未静默失败
           if [ ! -s GeoLite2-Country.mmdb ]; then
@@ -39,7 +43,7 @@ jobs:
 
       - name: Commit and Push
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.email "github-actions[bot]@github.com"
           git config --local user.name "github-actions[bot]"
           git add GeoLite2-Country.mmdb
           

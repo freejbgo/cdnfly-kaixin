@@ -1,0 +1,28 @@
+name: Update GeoIP
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天北京时间早上8点执行 (UTC时间0点)
+  push:
+    branches:
+      - main/cdnfly
+  workflow_dispatch: # 允许手动触发
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Download GeoIP
+        run: |
+          # 示例：下载最新的 GeoLite2-Country.mmdb
+          curl -LO https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-Country.mmdb
+
+      - name: Commit and Push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update GeoIP: $(date +%Y-%m-%d)" && git push)

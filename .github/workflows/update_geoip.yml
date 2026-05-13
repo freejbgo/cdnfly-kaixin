@@ -5,7 +5,7 @@ on:
     - cron: '0 0 * * *' # 每天北京时间早上8点执行 (UTC时间0点)
   push:
     branches:
-      - main/cdnfly    # 仅在该分支有代码推送时触发
+      - main   # 仅在该分支有代码推送时触发
   workflow_dispatch:     # 允许手动点击按钮触发
 
 # 必须显式声明写权限，否则最后一名的 git push 会报错拒绝
@@ -40,8 +40,8 @@ jobs:
           # 检查文件是否真的有更新，避免无意义的空提交
           if ! git diff --cached --quiet; then
             git commit -m "Update GeoIP: $(date +%Y-%m-%d) [skip ci]"
-            git pull --rebase origin main/cdnfly # 推送前先拉取，防止并发冲突
-            git push origin HEAD:main/cdnfly
+            git pull --rebase origin main # 推送前先拉取，防止并发冲突
+            git push origin HEAD:main
           else
             echo "GeoIP data is already up to date."
           fi

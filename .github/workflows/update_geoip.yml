@@ -5,24 +5,36 @@ on:
     - cron: '0 0 * * *' # 每天北京时间早上8点执行 (UTC时间0点)
   push:
     branches:
-      - main/cdnfly
-  workflow_dispatch: # 允许手动触发
+      - main     # 仅在该分支有代码推送时触发
+  workflow_dispatch:     # 允许手动点击按钮触发
+
+# 必须显式声明写权限，否则最后一名的 git push 会报错拒绝
+permissions:
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/freejbgo
+        uses: actions/checkout@v4 # 修复：必须使用官方标准的拉取代码插件
 
       - name: Download GeoIP
         run: |
-          # 示例：下载最新的 GeoLite2-Country.mmdb
-          curl -LO https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-Country.mmdb
+          # 下载最新的 GeoLite2-Country.mmdb 并覆盖本地同名文件
+          curl -Lo GeoLite2-Country.mmdb https://raw.githubusercontent.com/Loyalsoldier/geoip/release/GeoLite2-Country.mmdb
 
       - name: Commit and Push
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add .
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update GeoIP: $(date +%Y-%m-%d)" && git push)
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add GeoLite2-Country.mmdb
+          
+          # 检查文件是否真的有更新，避免无意义的空提交
+          if ! git diff --cached --quiet; then
+            git commit -m "Update GeoIP: $(date +%Y-%m-%d) [skip ci]"
+            git pull --rebase origin main/cdnfly # 推送前先拉取，防止并发冲突
+            git push origin HEAD:main/cdnfly
+          else
+            echo "GeoIP data is already up to date."
+          fi

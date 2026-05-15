@@ -6,6 +6,10 @@ on:
     - cron: '0 22 * * *'
   workflow_dispatch: # 允许手动点击按钮触发
 
+env:
+  # 修复警告：强制工作流中的 Action 插件使用最新的 Node 24 运行
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   copy-file:
     runs-on: ubuntu-latest
@@ -22,11 +26,10 @@ jobs:
         if [ -f "GeoLite2-Country.mmdb" ]; then
           mkdir -p cdnfly
           
-          # 核心技巧：修改源文件的访问和修改时间。
-          # 即使内容一样，这也会让 Linux 和 Git 认为文件已被修改，从而彻底刷新提交状态！
+          # 修改源文件时间戳，确保即使内容相同也会触发 Git 的真正提交
           touch GeoLite2-Country.mmdb
           
-          # 强制复制并覆盖 cdnfly 目录下的旧文件
+          # 强制复制并覆盖
           cp -f GeoLite2-Country.mmdb cdnfly/
           echo "File copied and overwritten successfully."
         else
@@ -41,13 +44,13 @@ jobs:
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@github.com"
         
-        # 强制将目标文件添加到暂存区（即便被 .gitignore 忽略也能成功）
+        # 强制将目标文件添加到暂存区
         git add -f cdnfly/GeoLite2-Country.mmdb
         
         # 获取当前的北京时间
         CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
         
-        # 强制提交更新，并带上最新的时间戳
+        # 强制提交更新
         echo "Committing changes..."
         git commit -m "Automated update of GeoLite2-Country.mmdb in cdnfly ($CURRENT_TIME)"
         

@@ -2,8 +2,8 @@ name: Auto Copy GeoLite2 File
 
 on:
   schedule:
-    # 每天北京时间凌晨 6 点（UTC 22点时间）自动执行，可根据需求修改 Cron 表达式
-    - cron: '0 22 * * *'
+    # 每天北京时间凌晨 5 点（UTC 21点时间）自动执行，可根据需求修改 Cron 表达式
+    - cron: '0 21 * * *'
   workflow_dispatch: # 允许手动点击按钮触发
 
 jobs:

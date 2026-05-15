@@ -21,8 +21,14 @@ jobs:
       run: |
         if [ -f "GeoLite2-Country.mmdb" ]; then
           mkdir -p cdnfly
+          
+          # 核心技巧：修改源文件的访问和修改时间。
+          # 即使内容一样，这也会让 Linux 和 Git 认为文件已被修改，从而彻底刷新提交状态！
+          touch GeoLite2-Country.mmdb
+          
+          # 强制复制并覆盖 cdnfly 目录下的旧文件
           cp -f GeoLite2-Country.mmdb cdnfly/
-          echo "File copied successfully."
+          echo "File copied and overwritten successfully."
         else
           echo "::error::Source file GeoLite2-Country.mmdb not found!"
           exit 1
@@ -30,25 +36,20 @@ jobs:
 
     - name: Commit and push changes
       env:
-        TZ: 'Asia/Shanghai' # 设置时区为北京时间，确保下面 date 命令准确
+        TZ: 'Asia/Shanghai' # 设置系统时区为北京时间
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@github.com"
         
-        # 强制添加 cdnfly 目录下的文件
+        # 强制将目标文件添加到暂存区（即便被 .gitignore 忽略也能成功）
         git add -f cdnfly/GeoLite2-Country.mmdb
         
         # 获取当前的北京时间
         CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
         
-        if ! git diff --cached --quiet; then
-          echo "Changes detected! Committing changes..."
-          git commit -m "Automated update of GeoLite2-Country.mmdb in cdnfly ($CURRENT_TIME)"
-        else
-          echo "No changes detected. Creating an empty commit to record execution..."
-          # 核心修复：更安全的空 commit 语法
-          git commit --allow-empty -m "Automated sync run (No changes) - $CURRENT_TIME"
-        fi
+        # 强制提交更新，并带上最新的时间戳
+        echo "Committing changes..."
+        git commit -m "Automated update of GeoLite2-Country.mmdb in cdnfly ($CURRENT_TIME)"
         
         # 推送提交到远程仓库
         git push origin main

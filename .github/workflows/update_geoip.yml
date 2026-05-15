@@ -2,7 +2,7 @@ name: Update GeoIP
 
 on:
   schedule:
-    - cron: '0 20 * * *' # 每天北京时间早上4点执行 (UTC时间20点)
+    - cron: '0 19 * * *' # 每天北京时间早上3点执行 (UTC时间19点)
   push:
     branches:
       - main    # 仅在该分支有代码推送时触发

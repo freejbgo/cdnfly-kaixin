@@ -7,7 +7,6 @@ on:
   workflow_dispatch: # 允许手动点击按钮触发
 
 env:
-  # 修复警告：强制工作流中的 Action 插件使用最新的 Node 24 运行
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
@@ -23,36 +22,38 @@ jobs:
 
     - name: Copy and replace file
       run: |
-        if [ -f "GeoLite2-Country.mmdb" ]; then
-          mkdir -p cdnfly
+        mkdir -p cdnfly
+        
+        # 智能查找根目录下包含 geolite2 且以 .mmdb 结尾的文件（忽略大小写）
+        REAL_FILE=$(find . -maxdepth 1 -iname "*geolite2*.mmdb" | head -n 1 | sed 's|^\./||')
+        
+        if [ -n "$REAL_FILE" ]; then
+          echo "Found source file: $REAL_FILE"
           
-          # 修改源文件时间戳，确保即使内容相同也会触发 Git 的真正提交
-          touch GeoLite2-Country.mmdb
+          # 刷新源文件时间戳，确保 Git 认为文件已被修改
+          touch "$REAL_FILE"
           
-          # 强制复制并覆盖
-          cp -f GeoLite2-Country.mmdb cdnfly/
+          # 强制复制并统一命名为大写的目标文件
+          cp -f "$REAL_FILE" cdnfly/GeoLite2-Country.mmdb
           echo "File copied and overwritten successfully."
         else
-          echo "::error::Source file GeoLite2-Country.mmdb not found!"
+          echo "=== Current root files for debugging ==="
+          ls -la
+          echo "::error::No GeoLite2 .mmdb file found in root directory!"
           exit 1
         fi
 
     - name: Commit and push changes
       env:
-        TZ: 'Asia/Shanghai' # 设置系统时区为北京时间
+        TZ: 'Asia/Shanghai'
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "github-actions[bot]@github.com"
         
-        # 强制将目标文件添加到暂存区
         git add -f cdnfly/GeoLite2-Country.mmdb
-        
-        # 获取当前的北京时间
         CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
         
-        # 强制提交更新
         echo "Committing changes..."
         git commit -m "Automated update of GeoLite2-Country.mmdb in cdnfly ($CURRENT_TIME)"
         
-        # 推送提交到远程仓库
         git push origin main
